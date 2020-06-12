@@ -3,9 +3,15 @@ function makeProgramSVG() {
     'arduino': 'arduino',
   };
 
+  function loadSVG(fileName, onSuccess) {
+    $.get('/resources/svg/' + fileName + '.svg', (data) => {
+      onSuccess(data.getElementsByTagName('svg')[0].outerHTML);
+    }, 'xml');
+  }
+
   return {
-    getByRobot(robot) {
-      return robotBoards[robot] + '.svg';
+    getByRobot(robot, onSuccess) {
+      return loadSVG(robotBoards[robot], onSuccess);
     }
   };
 
@@ -19,16 +25,12 @@ function makeConfigurationPanel(programSVG) {
   let draw;
   let xmlConfigFile;
 
-  function onLoadedBoard(data) {
-    const fileContent = data.getElementsByTagName('svg')[0].outerHTML;
-    draw.svg(fileContent);
-  }
-
   function loadBoard() {
     const boardEl = xmlConfigFile.getElementsByTagName('block_set')[1];
     const robotName = boardEl.getAttribute('robottype');
-    const svgRobotFileName = programSVG.getByRobot(robotName);
-    $.get('/resources/svg/' + svgRobotFileName, onLoadedBoard, 'xml');
+    programSVG.getByRobot(robotName, (svgFile) => {
+      draw.svg(svgFile);
+    });
   }
 
   function loadXml(xmlFile) {
