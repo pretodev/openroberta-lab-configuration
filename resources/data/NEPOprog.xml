@@ -1,32 +1,17 @@
 <export xmlns="http://de.fhg.iais.roberta.blockly">
   <program>
     <block_set xmlns="http://de.fhg.iais.roberta.blockly" robottype="arduino" xmlversion="2.0" description="" tags="">
-      <instance x="273" y="50">
-        <block type="robControls_start_ardu" id=",wOQ4m~i-p`K!D`S`I)N" intask="true" deletable="false">
+      <instance x="143" y="96">
+        <block type="robControls_start_ardu" id="Uyd?UyiVdEK6o@6}/iR@" intask="true" deletable="false">
           <mutation declare="false"></mutation>
           <field name="DEBUG"></field>
         </block>
-        <block type="robControls_loopForever_ardu" id="Uyv}C/}::o*{on-:C]Fo" intask="true" deletable="false" movable="false">
+        <block type="robControls_loopForever_ardu" id="d-Wc;8sx2yfEl-xASAx8" intask="true" deletable="false" movable="false">
           <statement name="DO">
-            <block type="robActions_brickLight_on" id="GRG*7-^h}%xwc@:?Ru25" intask="true">
-              <field name="ACTORPORT">L</field>
-              <field name="SWITCH_BLINK">ON</field>
-            </block>
-            <block type="robControls_wait_time" id="6k:icZv~w@7/#J=vU_7z" intask="true">
-              <value name="WAIT">
-                <block type="math_number" id="D]n7S[Vvna]vem;c[E0G" intask="true">
-                  <field name="NUM">500</field>
-                </block>
-              </value>
-            </block>
-            <block type="robActions_brickLight_on" id="4r|=u|h(O7yv%rBC%@5+" intask="true">
-              <field name="ACTORPORT">L</field>
-              <field name="SWITCH_BLINK">OFF</field>
-            </block>
-            <block type="robControls_wait_time" id="yH7Xk?~O2bQVnkb=1{jd" intask="true">
-              <value name="WAIT">
-                <block type="math_number" id="Jd:M;Nn-b[(HRs`=le,~" intask="true">
-                  <field name="NUM">500</field>
+            <block type="robActions_serial_print" id="MdzzaN)~Qu.SJB`9~|Dh" intask="true">
+              <value name="OUT">
+                <block type="text" id="fEd[)_AD{lu|:0WWA[t5" intask="true">
+                  <field name="TEXT">Hallo</field>
                 </block>
               </value>
             </block>
@@ -37,10 +22,16 @@
   </program>
   <config>
     <block_set xmlns="http://de.fhg.iais.roberta.blockly" robottype="arduino" xmlversion="2.0" description="" tags="">
-      <instance x="138" y="88">
+      <instance x="151" y="76">
         <block type="robConf_led" id="1" intask="true">
-          <field name="NAME">L</field>
-          <field name="INPUT">LED_BUILTIN</field>
+          <field name="NAME">luz</field>
+          <field name="INPUT">2</field>
+        </block>
+      </instance>
+      <instance x="370" y="75">
+        <block type="robConf_servo" id="[4u_ZL_,,7#4xyTqZ5{^" intask="true">
+          <field name="NAME">motor</field>
+          <field name="PULSE">4</field>
         </block>
       </instance>
     </block_set>

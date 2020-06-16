@@ -1,35 +1,53 @@
-function makeProgramSVG() {
-  const robotBoards = {
-    'arduino': 'arduino',
-  };
+function makeComponent(canva, { name, x, y }) {
+  function svgPath(fileName) {
+    return '/resources/svg/' + fileName + '.svg';
+  }
 
-  function loadSVG(fileName, onSuccess) {
-    $.get('/resources/svg/' + fileName + '.svg', (data) => {
-      onSuccess(data.getElementsByTagName('svg')[0].outerHTML);
-    }, 'xml');
+  function render(xmlData) {
+    const componentSvg = xmlData.querySelector('g');
+    componentSvg.classList.add('component');
+    componentSvg.setAttribute('transform', `translate(${x}, ${y}) rotate(0) scale(1,1)`);
+    canva.appendChild(componentSvg);
+  }
+
+  function show() {
+    const path = svgPath(name);
+    $.get(path, render, 'xml');
   }
 
   return {
-    getByRobot(robot, onSuccess) {
-      return loadSVG(robotBoards[robot], onSuccess);
-    }
+    show
   };
-
 }
 
-
-function makeConfigurationPanel(programSVG) {
-  const $xmlFileInput = $('#xmlFileInput');
+function makeConfigurationPanel() {
+  const xmlFileInput = document.querySelector('#xmlFileInput');
+  const canva = document.querySelector('svg');
   const parser = new DOMParser();
 
-  let draw;
-  let xmlConfigFile;
+  let xmlConfig;
+
+  let board, components = {};
 
   function loadBoard() {
-    const boardEl = xmlConfigFile.getElementsByTagName('block_set')[1];
-    const robotName = boardEl.getAttribute('robottype');
-    programSVG.getByRobot(robotName, (svgFile) => {
-      draw.svg(svgFile);
+    const robotElement = xmlConfig.querySelector('block_set');
+    const robotName = robotElement.getAttribute('robottype');
+    // arduino hete
+    board = makeComponent(canva, { name: robotName, x: 100, y: 300 });
+    board.show();
+  }
+
+  function loadComponents() {
+    const blocks = xmlConfig.querySelectorAll('instance');
+    blocks.forEach((instance, i) => {
+      const block = instance.querySelector('block');
+      const x = instance.getAttribute('x');
+      const y = instance.getAttribute('y');
+      const type = block.getAttribute('type');
+      const name = type.replace('robConf_', ''); // TODO: create mapper
+      const component = makeComponent(canva, { name, x, y });
+      component.show();
+      components['elem' + i] = component;
     });
   }
 
@@ -37,25 +55,27 @@ function makeConfigurationPanel(programSVG) {
     const reader = new FileReader();
     reader.onloadend = e => {
       const text = e.target.result;
-      xmlConfigFile = parser.parseFromString(text, "text/xml");
+      const data = parser.parseFromString(text, "text/xml");
+      xmlConfig = data.querySelector('config');
       loadBoard();
+      loadComponents();
     }
     reader.readAsText(xmlFile);
   }
 
-  function onStart() {
-    draw = SVG().addTo('#configurationContainer').size(540, 540);
-    $xmlFileInput.change((e) => loadXml(e.target.files[0]));
+  function onInit() {
+    xmlFileInput.addEventListener('change', e => loadXml(e.target.files[0]));
   }
 
   return {
-    start: onStart
+    init: onInit
   }
 }
 
-$(document).ready(() => {
+
+
+document.addEventListener('DOMContentLoaded', function () {
   bsCustomFileInput.init();
-  const programSVG = makeProgramSVG();
-  const panel = makeConfigurationPanel(programSVG);
-  panel.start();
-});
+  const panel = makeConfigurationPanel();
+  panel.init();
+})
