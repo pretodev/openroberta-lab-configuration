@@ -1,11 +1,12 @@
 const state = createState();
 const parser = createParser();
+const presentation = createConfigurationView();
 
 async function start() {
   bsCustomFileInput.init();
 
   state.subscribe((value) => {
-    console.log(value);
+    presentation.show(value);
   })
 
   document.querySelector('#xmlFileInput').addEventListener('change', async (e) => {

@@ -10,11 +10,11 @@
   background-color: rgb(244, 245, 246);
 }
 
-.component {
-  cursor: move;
+.draggable {
+  cursor: default;
 }
 
-.component text {
+.draggable text {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;

@@ -4,7 +4,7 @@ function createParser() {
   function parseBoard(xmlConfig) {
     const robotElement = xmlConfig.querySelector('block_set');
     const board = robotElement.getAttribute('robottype');
-    return { board };
+    return { name: board };
   }
 
   function parseComponents(xmlConfig) {
