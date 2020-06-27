@@ -10,11 +10,11 @@
   background-color: rgb(244, 245, 246);
 }
 
-.draggable {
-  cursor: default;
+.plain-draggable {
+  cursor: default !important;
 }
 
-.draggable text {
+.plain-draggable text {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;

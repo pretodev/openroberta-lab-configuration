@@ -1,19 +1,15 @@
-const state = createState();
-const parser = createParser();
-const presentation = createConfigurationView();
+import createEditor from './editor/editor.js';
+
+const editor = createEditor();
 
 async function start() {
   bsCustomFileInput.init();
-
-  state.subscribe((value) => {
-    presentation.show(value);
-  })
+  editor.init('.container-canva');
 
   document.querySelector('#xmlFileInput').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const props = await parser.parse(file);
-      state.setValue(props);
+      await editor.load(file);
     }
   });
 }
