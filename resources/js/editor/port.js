@@ -1,21 +1,44 @@
-import { svg } from './utils.js';
+import { svg, getRelativeCenter } from './utils.js';
+import ChangeNotifier from './change_notifier.js';
 
-export default function (editor, component, { name, position }) {
-  const self_ = {};
-  self_.element = svg('rect', {
-    'width': 5,
-    'height': 5,
-    'fill': 'red',
-    'stroke': 'black',
-    'stroke-width': 1,
-    'x': position.x,
-    'y': position.y,
-    'r': 3
-  });
-  self_.element.addEventListener('mousedown', () => editor.wireBuilder.setPort(self_));
+class Port extends ChangeNotifier {
+  constructor({ editor, component, name, position }) {
+    super();
 
-  // TODO: transform in vanilla js
-  $(self_.element).popover({ content: name, trigger: 'hover', placement: 'bottom' });
-  component.element.appendChild(self_.element);
-  return self_;
+    this.editor = editor;
+
+    this.name = name;
+
+    this.component = component;
+
+    this.position = position;
+
+    this.element = svg('rect', {
+      'width': 5,
+      'height': 5,
+      'fill': 'red',
+      'stroke': 'black',
+      'stroke-width': 1,
+      'x': position.x,
+      'y': position.y,
+      'r': 3
+    });
+
+    this.element.addEventListener('mousedown', () => editor.wire.create(this));
+
+    component.element.appendChild(this.element);
+
+    $(this.element).popover({ content: name, trigger: 'hover', placement: 'bottom' });
+
+    component.addListener(() => {
+      this.notifyListeners();
+    });
+  }
+
+  get positionAbsolute() {
+    return getRelativeCenter(this.editor.container, this.element);
+  }
+
 }
+
+export default Port;

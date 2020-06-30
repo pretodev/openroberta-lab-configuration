@@ -1,34 +1,30 @@
-import createPort from './port.js';
-import { getSVG, svg } from './utils.js';
+import ChangeNotifier from './change_notifier.js';
 
-export default async function (editor, { name, svgPath, position, ports }) {
-  const self_ = { name, position };
-  if (svgPath) {
-    self_.element = await getSVG(svgPath);
-  } else {
-    const background = svg('path', { 'fill': 'lightgrey', 'd': 'm0,2 H 150 v 50 H 0 z' });
+class Component extends ChangeNotifier {
+  constructor({ editor, element, name, position }) {
+    super();
+    this.editor = editor;
 
-    const label = svg('text', {
-      'transform': 'translate(75, 25)',
-      'dominant-baseline': 'middle',
-      'text-anchor': 'middle'
-    });
-    label.innerHTML = name;
+    this.name = name;
 
-    self_.element = svg('g');
-    self_.element.appendChild(background);
-    self_.element.appendChild(label);
+    this.position = position;
+
+    this.ports = [];
+
+    this.element = element;
+
+    this.element.setAttribute('transform', `translate(${position.x}, ${position.y})`);
+
+    editor.container.appendChild(this.element);
+
+    const draggable = new PlainDraggable(this.element);
+
+    draggable.onMove = (_) => this.notifyListeners();
   }
 
-  self_.element.setAttribute('transform', `translate(${position.x}, ${position.y})`);
-  editor.container.appendChild(self_.element);
-
-  new PlainDraggable(self_.element);
-
-  ports.forEach(({ name, position }) => createPort(editor, self_, {
-    name,
-    position: position ?? { x: (150 / ports.length) / 2, y: 40 }
-  }));
-
-  return self_;
+  addPort(port) {
+    this.ports.push(port);
+  }
 }
+
+export default Component;
