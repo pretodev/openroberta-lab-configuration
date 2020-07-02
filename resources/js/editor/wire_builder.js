@@ -45,6 +45,8 @@ class WireCreator {
       this.drawing = false;
       this.wire.destination = port;
       this.wire.refresh();
+
+      this.editor.wires.push(this.wire);
     }
   }
 }

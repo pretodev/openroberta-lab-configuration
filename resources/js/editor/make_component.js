@@ -1,6 +1,7 @@
 import Port from './port.js';
 import Component from './component.js';
 import { getSVG, svg } from './utils.js';
+import Wire from './wire.js';
 
 export default async function ({ editor, svgPath, name, position, ports, type }) {
   let element;
@@ -24,13 +25,24 @@ export default async function ({ editor, svgPath, name, position, ports, type })
 
   const placeholderPosition = { x: (150 / ports.length) / 2, y: 40 };
   ports.forEach(({ name, position, connectedTo }) => {
-    component.addPort(new Port({
+    const componentPort = new Port({
       editor,
       component,
       name,
       position: position ?? placeholderPosition,
       connectedTo,
-    }));
+    });
+
+    component.addPort(componentPort);
+
+    if (connectedTo) {
+      const boardPort = editor.board.getPort('D' + connectedTo);
+      editor.wires.push(new Wire({
+        editor,
+        port: componentPort,
+        destination: boardPort,
+      }));
+    }
   });
 
   return component;

@@ -27,6 +27,13 @@ class Component extends ChangeNotifier {
   addPort(port) {
     this.ports.push(port);
   }
+
+  getPort(name) {
+    const index = this.ports.findIndex((port) => port.name == name);
+    if (index > -1) {
+      return this.ports[index];
+    }
+  }
 }
 
 export default Component;

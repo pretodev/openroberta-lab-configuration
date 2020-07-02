@@ -16,6 +16,8 @@ class Editor {
 
     this.container = wrapper;
 
+    this.wires = [];
+
     this.wire = new WireCreator(this);
 
   }

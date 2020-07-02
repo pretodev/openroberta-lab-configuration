@@ -2,7 +2,7 @@ import { svg } from './utils.js';
 import Port from './port.js';
 
 class Wire {
-  constructor({ editor, port }) {
+  constructor({ editor, port, destination }) {
     this.editor = editor;
 
     this.origin = port;
@@ -16,6 +16,11 @@ class Wire {
     });
 
     editor.container.appendChild(this.element);
+
+    if (destination) {
+      this.destination = destination;
+      this.refresh.bind(this)();
+    }
   }
 
   set destination(port) {
