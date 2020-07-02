@@ -2,7 +2,7 @@ import Port from './port.js';
 import Component from './component.js';
 import { getSVG, svg } from './utils.js';
 
-export default async function ({ editor, svgPath, name, position, ports }) {
+export default async function ({ editor, svgPath, name, position, ports, type }) {
   let element;
   if (svgPath) {
     element = await getSVG(svgPath);
@@ -20,15 +20,18 @@ export default async function ({ editor, svgPath, name, position, ports }) {
     element.appendChild(label);
   }
 
-  const component = new Component({ editor, element, name, position });
+  const component = new Component({ editor, element, name, position, type });
 
   const placeholderPosition = { x: (150 / ports.length) / 2, y: 40 };
-  ports.forEach(({ name, position }) => {
+  ports.forEach(({ name, position, connectedTo }) => {
     component.addPort(new Port({
       editor,
       component,
       name,
       position: position ?? placeholderPosition,
+      connectedTo,
     }));
   });
+
+  return component;
 }

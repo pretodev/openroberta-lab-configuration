@@ -20,3 +20,11 @@
   -webkit-user-select: none;
   cursor: inherit;
 }
+
+.menu {
+  display: flex;
+}
+
+.menu-item {
+  margin: 0 8px;
+}

@@ -1,13 +1,15 @@
 import ChangeNotifier from './change_notifier.js';
 
 class Component extends ChangeNotifier {
-  constructor({ editor, element, name, position }) {
+  constructor({ editor, element, name, position, type }) {
     super();
     this.editor = editor;
 
     this.name = name;
 
     this.position = position;
+
+    this.type = type;
 
     this.ports = [];
 

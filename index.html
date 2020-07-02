@@ -13,9 +13,12 @@
 <body>
   <div class="container">
     <h3 class="text-center">Configuration visualization</h3>
-    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="xmlFileInput">
-      <label class="custom-file-label" for="xmlFileInput">Upload program</label>
+    <div class="menu">
+      <div class="custom-file menu-item">
+        <input type="file" class="custom-file-input" id="xmlFileInput">
+        <label class="custom-file-label" for="xmlFileInput">Upload program</label>
+      </div>
+      <button id="bntExport" type="button" class="btn btn-secondary menu-item">Export</button>
     </div>
     <div class="container-canva">
       <!--
@@ -34,6 +37,7 @@
     crossorigin="anonymous"></script>
   <script src="vendors/bs-custom-file-input/bs-custom-file-input.min.js"></script>
   <script src="vendors/plain-draggable.min.js"></script>
+  <script src="vendors/file-saver.min.js"></script>
   <script>
     function addRectTo(x, y) {
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');

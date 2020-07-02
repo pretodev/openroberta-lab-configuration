@@ -2,7 +2,7 @@ import { svg, getRelativeCenter } from './utils.js';
 import ChangeNotifier from './change_notifier.js';
 
 class Port extends ChangeNotifier {
-  constructor({ editor, component, name, position }) {
+  constructor({ editor, component, name, position, connectedTo }) {
     super();
 
     this.editor = editor;
@@ -12,6 +12,8 @@ class Port extends ChangeNotifier {
     this.component = component;
 
     this.position = position;
+
+    this.connectedTo = connectedTo;
 
     this.element = svg('rect', {
       'width': 5,
