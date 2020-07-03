@@ -52,9 +52,6 @@ class WireCreator {
         this.wire.origin.connectedTo = this.wire.destination.name;
       }
 
-      console.log(this.wire.origin.name, this.wire.origin.connectedTo);
-      console.log(this.wire.destination.name, this.wire.destination.connectedTo);
-
       this.editor.wires.push(this.wire);
     }
   }

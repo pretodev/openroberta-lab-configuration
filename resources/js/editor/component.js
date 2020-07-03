@@ -22,8 +22,6 @@ class Component extends ChangeNotifier {
 
     const draggable = new PlainDraggable(this.element);
 
-    console.log(position);
-
     draggable.onMove = (_) => {
       this.position = getPositionRelative(this.editor.container, this.element);
       this.notifyListeners();

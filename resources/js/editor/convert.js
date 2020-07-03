@@ -44,7 +44,6 @@ export function configEnconde({ board, components }) {
   let instances = '';
   for (let key in components) {
     const { name, position, ports, type } = components[key];
-    console.log(position);
     instances += (`
       <instance x="${position.x}" y="${position.y}">
         <block type="${type}" id="${key}" intask="true">
