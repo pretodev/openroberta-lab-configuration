@@ -36,10 +36,10 @@ export default async function ({ editor, svgPath, name, position, ports, type })
     component.addPort(componentPort);
 
     if (connectedTo) {
-      const boardPort = editor.board.getPort('D' + connectedTo);
+      const boardPort = editor.board.getPort(connectedTo);
       editor.wires.push(new Wire({
         editor,
-        port: componentPort,
+        origin: componentPort,
         destination: boardPort,
       }));
     }

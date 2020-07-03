@@ -1,4 +1,4 @@
-import { svg, getRelativeCenter } from './utils.js';
+import { svg, getPositionRelative } from './utils.js';
 import ChangeNotifier from './change_notifier.js';
 
 class Port extends ChangeNotifier {
@@ -37,8 +37,12 @@ class Port extends ChangeNotifier {
     });
   }
 
-  get positionAbsolute() {
-    return getRelativeCenter(this.editor.container, this.element);
+  get center() {
+    const position = getPositionRelative(this.editor.container, this.element)
+    return {
+      x: position.x + 3,
+      y: position.y + 3,
+    };
   }
 
 }

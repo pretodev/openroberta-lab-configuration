@@ -2,10 +2,10 @@ import { svg } from './utils.js';
 import Port from './port.js';
 
 class Wire {
-  constructor({ editor, port, destination }) {
+  constructor({ editor, origin, destination }) {
     this.editor = editor;
 
-    this.origin = port;
+    this.origin = origin;
 
     this.element = svg('path', {
       'fill': 'none',
@@ -23,6 +23,10 @@ class Wire {
     }
   }
 
+  get destination(){
+    return this.dest;
+  }
+
   set destination(port) {
     this.dest = port;
 
@@ -34,8 +38,8 @@ class Wire {
   }
 
   refresh() {
-    const origin = this.origin.positionAbsolute;
-    const dest = this.dest.positionAbsolute;
+    const origin = this.origin.center;
+    const dest = this.dest.center;
     this.element.setAttribute('d', `
       M ${origin.x} ${origin.y} 
       L ${dest.x} ${dest.y}

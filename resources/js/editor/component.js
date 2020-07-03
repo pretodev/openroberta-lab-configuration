@@ -1,4 +1,5 @@
 import ChangeNotifier from './change_notifier.js';
+import { getPositionRelative } from './utils.js';
 
 class Component extends ChangeNotifier {
   constructor({ editor, element, name, position, type }) {
@@ -21,7 +22,12 @@ class Component extends ChangeNotifier {
 
     const draggable = new PlainDraggable(this.element);
 
-    draggable.onMove = (_) => this.notifyListeners();
+    console.log(position);
+
+    draggable.onMove = (_) => {
+      this.position = getPositionRelative(this.editor.container, this.element);
+      this.notifyListeners();
+    };
   }
 
   addPort(port) {

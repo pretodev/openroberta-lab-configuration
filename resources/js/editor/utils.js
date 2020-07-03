@@ -4,9 +4,9 @@ export function getSVG(path) {
   });
 }
 
-export function getRelativeCenter(container, element) {
-  const x = element.getBoundingClientRect().left + 3 - container.getBoundingClientRect().left;
-  const y = element.getBoundingClientRect().top + 3 - container.getBoundingClientRect().top;
+export function getPositionRelative(container, element) {
+  const x = element.getBoundingClientRect().left - container.getBoundingClientRect().left;
+  const y = element.getBoundingClientRect().top - container.getBoundingClientRect().top;
   return { x, y };
 }
 
