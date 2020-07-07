@@ -1,4 +1,5 @@
 export default {
+  id: 'board_element',
   name: 'arduino',
   svgPath: '/resources/svg/boards/arduino.svg',
   type: 'robot_board',

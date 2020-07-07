@@ -1,48 +1,67 @@
-import Port from './port.js';
-import Component from './component.js';
 import { getSVG, svg } from './utils.js';
-import Wire from './wire.js';
+import Component from './component.js';
+import Port from './port.js';
 
-export default async function ({ editor, svgPath, name, position, ports, type }) {
-  let element;
+export default async function (properties) {
+
+  const { svgPath, name, position, ports, type } = properties;
+
+  let wrapper = svg('svg', {
+    'class': type,
+    'viewBox': '-1000 -1000 2000 2000',
+    'width': 2000,
+    'height': 2000,
+    'x': -1000,
+    'y': -1000,
+  });
+
+  const placeholderPosition = { x: (150 / ports.length) / 2, y: 40 };
+
   if (svgPath) {
-    element = await getSVG(svgPath);
+    const svg = await getSVG(svgPath);
+    wrapper.appendChild(svg);
   } else {
     const background = svg('path', { 'fill': 'lightgrey', 'd': 'm0,2 H 150 v 50 H 0 z' });
     const label = svg('text', {
-      'transform': 'translate(75, 25)',
+      'x': 75,
+      'y': 25,
       'dominant-baseline': 'middle',
       'text-anchor': 'middle'
     });
     label.innerHTML = name;
 
-    element = svg('g');
-    element.appendChild(background);
-    element.appendChild(label);
-  }
+    wrapper.appendChild(background);
+    wrapper.appendChild(label);
 
-  const component = new Component({ editor, element, name, position, type });
-
-  const placeholderPosition = { x: (150 / ports.length) / 2, y: 40 };
-  ports.forEach(({ name, position, connectedTo }) => {
-    const componentPort = new Port({
-      editor,
-      component,
-      name,
-      position: position ?? placeholderPosition,
-      connectedTo,
+    ports.forEach(() => {
+      if (!svgPath) {
+        wrapper.appendChild(svg('rect', {
+          'width': 5,
+          'height': 5,
+          'fill': 'black',
+          'x': placeholderPosition.x,
+          'y': placeholderPosition.y,
+          'r': 3,
+        }));
+      }
     });
 
-    component.addPort(componentPort);
+  }
 
-    if (connectedTo) {
-      const boardPort = editor.board.getPort(connectedTo);
-      editor.wires.push(new Wire({
-        editor,
-        origin: componentPort,
-        destination: boardPort,
-      }));
-    }
+  const element = svg('g', {
+    'transform': `translate(${position.x}, ${position.y}) rotate(0) scale(1,1)`,
+    'class': 'draggable',
+  });
+
+  element.appendChild(wrapper);
+
+  const component = new Component({ element , properties });
+
+  ports.forEach(({ position, ...others }) => {
+    component.addPort(new Port({
+      position: position ?? placeholderPosition,
+      ...others,
+    }));
   });
 
   return component;

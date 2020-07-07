@@ -2,14 +2,10 @@ import { svg, getPositionRelative } from './utils.js';
 import ChangeNotifier from './change_notifier.js';
 
 class Port extends ChangeNotifier {
-  constructor({ editor, component, name, position, connectedTo }) {
+  constructor({ name, position, connectedTo }) {
     super();
 
-    this.editor = editor;
-
     this.name = name;
-
-    this.component = component;
 
     this.position = position;
 
@@ -23,18 +19,18 @@ class Port extends ChangeNotifier {
       'stroke-width': 1,
       'x': position.x,
       'y': position.y,
-      'r': 3
+      'r': 3,
+      'opacity': 0,
     });
 
     this.element.addEventListener('mousedown', () => editor.wire.create(this));
 
-    component.element.appendChild(this.element);
+    this.element.addEventListener('mouseover', () => this.element.setAttribute('opacity', '1'));
 
+    this.element.addEventListener('mouseout', () => this.element.setAttribute('opacity', '0'));
+
+    //TODO: refactor to use vanilla js
     $(this.element).popover({ content: name, trigger: 'hover', placement: 'bottom' });
-
-    component.addListener(() => {
-      this.notifyListeners();
-    });
   }
 
   get center() {

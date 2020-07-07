@@ -1,10 +1,12 @@
 import ChangeNotifier from './change_notifier.js';
-import { getPositionRelative } from './utils.js';
 
 class Component extends ChangeNotifier {
-  constructor({ editor, element, name, position, type }) {
+  constructor({ id, element, name, position, type }) {
     super();
-    this.editor = editor;
+
+    this.id = id;
+
+    this.element = element;
 
     this.name = name;
 
@@ -13,22 +15,11 @@ class Component extends ChangeNotifier {
     this.type = type;
 
     this.ports = [];
-
-    this.element = element;
-
-    this.element.setAttribute('transform', `translate(${position.x}, ${position.y})`);
-
-    editor.container.appendChild(this.element);
-
-    const draggable = new PlainDraggable(this.element);
-
-    draggable.onMove = (_) => {
-      this.position = getPositionRelative(this.editor.container, this.element);
-      this.notifyListeners();
-    };
   }
 
   addPort(port) {
+    this.element.appendChild(port.element);
+
     this.ports.push(port);
   }
 
