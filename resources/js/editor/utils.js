@@ -4,7 +4,8 @@ export function getSVG(path) {
   });
 }
 
-export function getPositionRelative(container, element) {
+export function getPositionRelative(element) {
+  const container = document.querySelector('svg');
   const x = element.getBoundingClientRect().left - container.getBoundingClientRect().left;
   const y = element.getBoundingClientRect().top - container.getBoundingClientRect().top;
   return { x, y };

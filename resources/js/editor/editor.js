@@ -1,6 +1,6 @@
-import { configEnconde, configDecode } from './convert.js';
+import { configEncode, configDecode } from './convert.js';
 import arduino from '../components/arduino.js';
-import WireCreator from './wire_builder.js';
+import connector from './wire_builder.js';
 import { svg } from './utils.js';
 import makeComponent from './make_component.js';
 import DragContainer from './drag_container.js';
@@ -9,13 +9,17 @@ import DragContainer from './drag_container.js';
 class Editor {
   constructor(containerSelector) {
 
-    this.componentsContainer = svg('g');
+    const componentsContainer = svg('g');
 
-    this.wiresContainer = svg('g');
+    const wiresContainer = svg('g');
+
+    const portsContainer = svg('g');
 
     const wrapper = svg('g', { 'transform': 'scale(1, 1)', });
-    wrapper.appendChild(this.wiresContainer);
-    wrapper.appendChild(this.componentsContainer);
+
+    wrapper.appendChild(componentsContainer);
+    wrapper.appendChild(wiresContainer);
+    wrapper.appendChild(portsContainer);
 
     const svgContainer = svg('svg', {
       'xmlns': 'http://www.w3.org/2000/svg',
@@ -24,16 +28,10 @@ class Editor {
       'width': '100%',
       'height': '100%',
     });
+
     svgContainer.appendChild(wrapper);
 
-    this.draggable = new DragContainer(svgContainer)
-    this.draggable.bindElement(wrapper);
-
     document.querySelector(containerSelector).appendChild(svgContainer);
-
-    window.addEventListener('DOMMouseScroll', (evt) => {
-      evt.preventDefault();
-    });
 
     this.board = null;
 
@@ -41,22 +39,15 @@ class Editor {
 
     this.container = wrapper;
 
-    this.wires = [];
+    const draggable = new DragContainer(svgContainer);
+    draggable.bindElement(wrapper);
 
-    this.wire = new WireCreator(this);
-  }
-
-  addComponent(component) {
-    const { element } = component;
-
-    this.componentsContainer.appendChild(element);
-
-    this.draggable.bindElement(element);
-
-  }
-
-  addWire(wire) {
-    this.componentsContainer.appendChild(wire.element);
+    this.addComponent = makeComponent({
+      connector: connector(wiresContainer),
+      draggable: draggable,
+      portsContainer,
+      componentsContainer,
+    });
   }
 
   async load(file) {
@@ -64,20 +55,18 @@ class Editor {
     const { components } = configDecode(file);
 
     // create robot board
-    this.board = await makeComponent({ ...arduino, position: { x: 230, y: 230 } });
-    this.addComponent(this.board);
+    await this.addComponent({ ...arduino, position: { x: 230, y: 230 } });
 
     // create components
     for (let id in components) {
       const properties = components[id];
-      const component = await makeComponent({ id, ...properties });
-      this.addComponent(component);
+      this.addComponent({ id, ...properties });
     }
 
   }
 
   get xml() {
-    return configEnconde({
+    return configEncode({
       board: this.board,
       components: this.components
     });

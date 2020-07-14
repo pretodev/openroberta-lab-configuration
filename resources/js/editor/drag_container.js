@@ -8,6 +8,8 @@ class DragContainer {
 
     this.transform = null;
 
+    this.onMoved = null
+
     this.mousePosition = (evt) => {
       var CTM = container.getScreenCTM();
       return {
@@ -23,8 +25,10 @@ class DragContainer {
     this.container.addEventListener('mousemove', (evt) => {
       if (this.element) {
         evt.preventDefault();
-        const coord = this.mousePosition(evt);
-        this.transform.setTranslate(coord.x - this.offset.x, coord.y - this.offset.y);
+        const coords = this.mousePosition(evt);
+        this.transform.setTranslate(coords.x - this.offset.x, coords.y - this.offset.y);
+
+        if (this.onMoved) this.onMoved();
       }
     });
 
@@ -36,11 +40,12 @@ class DragContainer {
     this.container.addEventListener('mouseleave', endDrag);
   }
 
-  bindElement(element) {
+  bindElement(element, onMoved) {
     element.addEventListener('mousedown', (evt) => {
       if (element.classList.contains('draggable')) {
         this.element = element;
-
+        this.onMoved = onMoved;
+        
         const transforms = this.element.transform.baseVal;
         this.transform = transforms.getItem(0);
 

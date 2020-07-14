@@ -1,7 +1,8 @@
 import ChangeNotifier from './change_notifier.js';
+import { getPositionRelative } from './utils.js';
 
 class Component extends ChangeNotifier {
-  constructor({ id, element, name, position, type }) {
+  constructor({ id, element, name, type }) {
     super();
 
     this.id = id;
@@ -10,17 +11,17 @@ class Component extends ChangeNotifier {
 
     this.name = name;
 
-    this.position = position;
-
     this.type = type;
 
     this.ports = [];
   }
 
-  addPort(port) {
-    this.element.appendChild(port.element);
+  get position() {
 
-    this.ports.push(port);
+    const transforms = this.element.transform.baseVal;
+    const transform = transforms.getItem(0);
+
+    return { x: transform.matrix.e, y: transform.matrix.f };
   }
 
   getPort(name) {

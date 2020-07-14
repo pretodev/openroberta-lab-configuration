@@ -15,8 +15,8 @@ export function configDecode(data) {
   const components = {};
   const blocks = xmlConfig.querySelectorAll('instance');
   blocks.forEach((instance) => {
-    const x = instance.getAttribute('x');
-    const y = instance.getAttribute('y');
+    const x = parseFloat(instance.getAttribute('x'));
+    const y = parseFloat(instance.getAttribute('y'));
 
     const block = instance.querySelector('block');
     const id = block.getAttribute('id');
@@ -40,7 +40,7 @@ export function configDecode(data) {
  * @param {object} config 
  * @returns {string}
  */
-export function configEnconde({ board, components }) {
+export function configEncode({ board, components }) {
   let instances = '';
   for (let key in components) {
     const { name, position, ports, type } = components[key];

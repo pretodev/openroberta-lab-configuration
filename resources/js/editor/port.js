@@ -2,12 +2,12 @@ import { svg, getPositionRelative } from './utils.js';
 import ChangeNotifier from './change_notifier.js';
 
 class Port extends ChangeNotifier {
-  constructor({ name, position, connectedTo }) {
+  constructor({ name, position, connectedTo, onClick }) {
     super();
 
     this.name = name;
 
-    this.position = position;
+    this._position = position;
 
     this.connectedTo = connectedTo;
 
@@ -23,7 +23,7 @@ class Port extends ChangeNotifier {
       'opacity': 0,
     });
 
-    this.element.addEventListener('mousedown', () => editor.wire.create(this));
+    this.element.addEventListener('click', () => onClick(this));
 
     this.element.addEventListener('mouseover', () => this.element.setAttribute('opacity', '1'));
 
@@ -34,11 +34,21 @@ class Port extends ChangeNotifier {
   }
 
   get center() {
-    const position = getPositionRelative(this.editor.container, this.element)
+    const position = getPositionRelative(this.element)
     return {
       x: position.x + 3,
       y: position.y + 3,
     };
+  }
+
+  set position(position) {
+    this._position = position;
+    this.element.setAttribute('x', position.x);
+    this.element.setAttribute('y', position.y);
+  }
+
+  get position() {
+    return this._position;
   }
 
 }
