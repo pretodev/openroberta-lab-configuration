@@ -39,17 +39,53 @@ class Editor {
 
     this.container = wrapper;
 
+    this.wires = [];
+
+    this.selectedWire = null;
+
+    svgContainer.addEventListener('click', () => {
+      if (this.selectedWire) {
+        this.selectedWire = null;
+        this.wires.forEach(wire => wire.unselect());
+      }
+    });
+
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === "Escape" && this.selectedWire) {
+        this.wires.forEach(wire => wire.unselect());
+        this.selectedWire = null;
+      } else if (evt.keyCode == 46) {
+        this.selectedWire.dispose();
+        this.selectedWire = null;
+      }
+    });
+
     const draggable = new DragContainer(svgContainer);
     draggable.bindElement(wrapper);
 
     this.addComponent = makeComponent({
-      connector: connector(wiresContainer),
+      connector: connector(wiresContainer, this.addWire.bind(this)),
       draggable: draggable,
       portsContainer,
       componentsContainer,
     });
   }
 
+  addWire(wire) {
+
+    wire.element.addEventListener('mouseover', () => wire.showHighlight());
+
+    wire.element.addEventListener('mouseout', () => wire.hideHighlight());
+
+    wire.element.addEventListener('click', (evt) => {
+      evt.stopPropagation();
+      this.wires.forEach(wire => wire.unselect());
+      this.selectedWire = wire;
+      this.selectedWire.select();
+    });
+
+    this.wires.push(wire);
+  }
   async load(file) {
     // read configurations
     const { components } = configDecode(file);

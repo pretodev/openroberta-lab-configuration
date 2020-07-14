@@ -25,11 +25,13 @@ class Wire {
     this.element.appendChild(this.wireShadow);
     this.element.appendChild(this.wire);
 
-    this.drawPath = this.drawPath.bind(this);
-
     this.origin = origin;
 
     this.destination = destination;
+
+    this._selected = false;
+
+    this.drawPath = this.drawPath.bind(this);
   }
 
   get origin() {
@@ -43,7 +45,7 @@ class Wire {
       this.drawPath();
 
     if (port instanceof Port) {
-      this._origin.addListener(this.drawPath);
+      this._origin.addListener(() => this.drawPath());
     }
   }
 
@@ -58,8 +60,27 @@ class Wire {
       this.drawPath();
 
     if (port instanceof Port) {
-      this._destination.addListener(this.drawPath);
+      this._destination.addListener(() => this.drawPath());
     }
+  }
+
+  showHighlight() {
+    this.wireShadow.setAttribute('opacity', '0.5');
+  }
+
+  hideHighlight() {
+    if (!this._selected)
+      this.wireShadow.setAttribute('opacity', '0');
+  }
+
+  select() {
+    this._selected = true;
+    this.showHighlight.bind(this)();
+  }
+
+  unselect(){
+    this._selected = false;
+    this.hideHighlight.bind(this)();
   }
 
   drawPath() {

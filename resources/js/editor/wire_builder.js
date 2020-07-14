@@ -1,8 +1,6 @@
 import Wire from './wire.js';
 
-function connector(container) {
-
-  let fakeDest = {};
+function connector(container, onCreated) {
 
   let currentWire;
 
@@ -40,6 +38,8 @@ function connector(container) {
     }
 
     currentWire.destination = port;
+
+    onCreated(currentWire);
 
     connecting = false;
   }
