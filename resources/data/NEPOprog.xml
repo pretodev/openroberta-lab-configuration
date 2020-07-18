@@ -14,19 +14,19 @@
     <block_set xmlns="http://de.fhg.iais.roberta.blockly" robottype="arduino" xmlversion="2.0" description="" tags="">
       <instance x="97" y="106">
         <block type="robConf_led" id="1" intask="true">
-          <field name="NAME">moto2</field>
+          <field name="NAME">Led</field>
           <field name="INPUT" connectedTo="board">D13</field>
         </block>
       </instance>
       <instance x="266" y="162">
         <block type="robConf_servo" id="Yia}X2pPVU?eJt%99R0R" intask="true">
-          <field name="NAME">moto</field>
+          <field name="NAME">Motor</field>
           <field name="PULSE" connectedTo="board">D3</field>
         </block>
       </instance>
       <instance x="61" y="210">
         <block type="robConf_digitalin" id="Xd!f#ZYXdZoFvKHj?(wz" intask="true">
-          <field name="NAME">moto3</field>
+          <field name="NAME">Digital</field>
           <field name="INPUT" connectedTo="board">D7</field>
         </block>
       </instance>

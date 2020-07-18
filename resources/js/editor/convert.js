@@ -1,5 +1,17 @@
 /**
  * 
+ * @param {string} robot 
+ * @param {string} name 
+ * @returns {array}
+ */
+function getFixedPortsByComponentName(robot, name) {
+  const key = name.replace('robConf_', '');
+  const { fixedPorts } = confBlocks[key][robot];
+  return fixedPorts || [];
+}
+
+/**
+ * 
  * @param {string} data 
  * @returns {object}
  */
@@ -33,6 +45,15 @@ export function configDecode(data) {
         connectedTo: component !== '' ? { component, pin } : null,
       });
     });
+
+    const fixedPorts = getFixedPortsByComponentName(board.name, type);
+    fixedPorts.forEach(port => {
+      ports.push({
+        name: port[0],
+        connectedTo: { component: 'board', pin: port[1] },
+      });
+    });
+    
     components[id] = { name, type, position: { x, y }, ports };
   });
 

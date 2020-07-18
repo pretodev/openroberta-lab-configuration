@@ -34,13 +34,13 @@ export default function ({ connector, portsContainer, draggable, componentsConta
       wrapper.appendChild(background);
       wrapper.appendChild(label);
 
-      ports.forEach(() => {
+      ports.forEach((_, i) => {
         if (!svgPath) {
           wrapper.appendChild(svg('rect', {
             'width': 5,
             'height': 5,
             'fill': 'black',
-            'x': placeholderPosition.x,
+            'x': placeholderPosition.x * (i+1),
             'y': placeholderPosition.y,
             'r': 3,
           }));
@@ -58,13 +58,15 @@ export default function ({ connector, portsContainer, draggable, componentsConta
 
     const component = new Component({ element, ...properties });
 
-    ports.forEach(({ position, ...others }) => {
-      const portPosition = position ?? placeholderPosition;
+    ports.forEach(({ position, ...others }, i) => {
+      if (!position)
+        position = { x: placeholderPosition.x * (i+1), y: placeholderPosition.y };
+
       const port = new Port({
         component: properties.id,
         position: {
-          x: component.position.x + portPosition.x,
-          y: component.position.y + portPosition.y,
+          x: component.position.x + position.x,
+          y: component.position.y + position.y,
         },
         ...others,
         onClick: connector,
@@ -74,8 +76,8 @@ export default function ({ connector, portsContainer, draggable, componentsConta
 
       component.addListener(() => {
         port.position = {
-          x: component.position.x + portPosition.x,
-          y: component.position.y + portPosition.y,
+          x: component.position.x + position.x,
+          y: component.position.y + position.y,
         }
         port.notifyListeners();
       });
