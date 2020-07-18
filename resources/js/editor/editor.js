@@ -63,12 +63,23 @@ class Editor {
     const draggable = new DragContainer(svgContainer);
     draggable.bindElement(wrapper);
 
-    this.addComponent = makeComponent({
+    // TODO: inject
+    this.componentCreator = makeComponent({
       connector: connector(wiresContainer, this.addWire.bind(this)),
       draggable: draggable,
       portsContainer,
       componentsContainer,
     });
+
+    this.addComponent = async (properties) => {
+      const { id, component } = await this.componentCreator(properties);
+      this.components[id] = component;
+    };
+
+    this.setBoard = async (properties) => {
+      const { component } = await this.componentCreator(properties);
+      this.board = component;
+    };
   }
 
   addWire(wire) {
@@ -86,12 +97,13 @@ class Editor {
 
     this.wires.push(wire);
   }
+
   async load(file) {
     // read configurations
     const { components } = configDecode(file);
 
     // create robot board
-    await this.addComponent({ ...arduino, position: { x: 230, y: 230 } });
+    await this.setBoard({ ...arduino, position: { x: 230, y: 230 } });
 
     // create components
     for (let id in components) {
@@ -102,9 +114,10 @@ class Editor {
   }
 
   get xml() {
+    //return { components: this.components };
     return configEncode({
       board: this.board,
-      components: this.components
+      components: this.components,
     });
   }
 }

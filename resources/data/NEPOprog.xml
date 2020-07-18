@@ -15,19 +15,19 @@
       <instance x="97" y="106">
         <block type="robConf_led" id="1" intask="true">
           <field name="NAME">moto2</field>
-          <field name="INPUT">4</field>
+          <field name="INPUT" connectedTo="board">4</field>
         </block>
       </instance>
       <instance x="266" y="162">
         <block type="robConf_servo" id="Yia}X2pPVU?eJt%99R0R" intask="true">
           <field name="NAME">moto</field>
-          <field name="PULSE">8</field>
+          <field name="PULSE" connectedTo="board">8</field>
         </block>
       </instance>
       <instance x="61" y="210">
         <block type="robConf_digitalin" id="Xd!f#ZYXdZoFvKHj?(wz" intask="true">
           <field name="NAME">moto3</field>
-          <field name="INPUT">7</field>
+          <field name="INPUT" connectedTo="board">7</field>
         </block>
       </instance>
     </block_set>

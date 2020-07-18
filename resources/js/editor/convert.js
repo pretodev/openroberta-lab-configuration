@@ -26,8 +26,9 @@ export function configDecode(data) {
     const ports = [];
     block.querySelectorAll('field:not([name=NAME])').forEach(el => {
       const name = el.getAttribute('name');
-      const connectedTo = el.innerHTML;
-      ports.push({ name, connectedTo });
+      const connectedTo = el.getAttribute('connectedTo') ?? '';
+      const pin = el.innerHTML;
+      ports.push({ name, connectedTo, pin });
     });
     components[id] = { name, type, position: { x, y }, ports };
   });
@@ -48,10 +49,12 @@ export function configEncode({ board, components }) {
       <instance x="${position.x}" y="${position.y}">
         <block type="${type}" id="${key}" intask="true">
           <field name="NAME">${name}</field>
-          ${ports.map(port => `<field name="${port.name}">${port.connectedTo ?? ''}</field>`)}
+          ${ports.map(port => 
+            `<field name="${port.name}" connectedTo="${port.connectedTo ?? ''}">${port.pin ?? ''}</field>`
+          )}
         </block>
       </instance>
-    `);
+    `.trim());
   }
 
   return (`
@@ -60,5 +63,5 @@ export function configEncode({ board, components }) {
         ${instances}
       </block_set>
     </config>
-  `);
+  `.trim());
 }

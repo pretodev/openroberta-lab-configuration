@@ -2,7 +2,7 @@ import { getSVG, svg } from './utils.js';
 import Component from './component.js';
 import Port from './port.js';
 
-export default function ({ connector, portsContainer, draggable, componentsContainer, }) {
+export default function ({ connector, portsContainer, draggable, componentsContainer }) {
 
   return async function (properties) {
     const { svgPath, name, position, ports, type } = properties;
@@ -70,6 +70,8 @@ export default function ({ connector, portsContainer, draggable, componentsConta
         onClick: connector,
       });
 
+      component.addPort(port);
+
       component.addListener(() => {
         port.position = {
           x: component.position.x + portPosition.x,
@@ -88,6 +90,7 @@ export default function ({ connector, portsContainer, draggable, componentsConta
       component.notifyListeners();
     });
 
+    return { id: properties.id, component };
   }
 
 
