@@ -2,16 +2,16 @@ import { svg, getPositionRelative } from './utils.js';
 import ChangeNotifier from './change_notifier.js';
 
 class Port extends ChangeNotifier {
-  constructor({ name, position, connectedTo, pin, onClick }) {
+  constructor({ name, position, connectedTo, onClick, component}) {
     super();
 
     this.name = name;
 
+    this.component = component;
+
     this._position = position;
 
     this.connectedTo = connectedTo;
-
-    this.pin = pin;
 
     this.element = svg('rect', {
       'width': 5,

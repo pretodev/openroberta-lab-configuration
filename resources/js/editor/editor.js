@@ -4,7 +4,7 @@ import connector from './wire_builder.js';
 import { svg } from './utils.js';
 import makeComponent from './make_component.js';
 import DragContainer from './drag_container.js';
-
+import Wire from './wire.js';
 
 class Editor {
   constructor(containerSelector) {
@@ -70,19 +70,19 @@ class Editor {
       portsContainer,
       componentsContainer,
     });
-
-    this.addComponent = async (properties) => {
-      const { id, component } = await this.componentCreator(properties);
-      this.components[id] = component;
-    };
-
-    this.setBoard = async (properties) => {
-      const { component } = await this.componentCreator(properties);
-      this.board = component;
-    };
   }
 
-  addWire(wire) {
+  addComponent = async (properties) => {
+    const { id, component } = await this.componentCreator(properties);
+    this.components[id] = component;
+  };
+
+  setBoard = async (properties) => {
+    const { component } = await this.componentCreator({ id: 'board', ...properties });
+    this.board = component;
+  };
+
+  addWire = (wire) => {
 
     wire.element.addEventListener('mouseover', () => wire.showHighlight());
 
@@ -98,6 +98,22 @@ class Editor {
     this.wires.push(wire);
   }
 
+  _loadWires = () => {
+    for (let key in this.components) {
+      const { ports } = this.components[key];
+      ports.forEach(port => {
+        if (port.connectedTo) {
+          const { component, pin } = port.connectedTo;
+          const destComponent = component === 'board' ? this.board : this.components[component];
+          const destPort = destComponent.getPort(pin);
+          const wire = new Wire({ origin: port, destination: destPort });
+          this.container.children[1].appendChild(wire.element);
+          this.addWire(wire);
+        }
+      })
+    }
+  }
+
   async load(file) {
     // read configurations
     const { components } = configDecode(file);
@@ -108,9 +124,10 @@ class Editor {
     // create components
     for (let id in components) {
       const properties = components[id];
-      this.addComponent({ id, ...properties });
+      await this.addComponent({ id, ...properties });
     }
 
+    this._loadWires();
   }
 
   get xml() {

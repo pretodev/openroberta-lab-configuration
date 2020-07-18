@@ -59,9 +59,9 @@ export default function ({ connector, portsContainer, draggable, componentsConta
     const component = new Component({ element, ...properties });
 
     ports.forEach(({ position, ...others }) => {
-
       const portPosition = position ?? placeholderPosition;
       const port = new Port({
+        component: properties.id,
         position: {
           x: component.position.x + portPosition.x,
           y: component.position.y + portPosition.y,

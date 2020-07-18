@@ -3,7 +3,6 @@ import Port from './port.js';
 
 class Wire {
   constructor({ origin, destination }) {
-
     this.wireShadow = svg('path', {
       'fill': 'none',
       'stroke': '#3b8ed7',
@@ -41,8 +40,10 @@ class Wire {
   set origin(port) {
     this._origin = port;
 
-    if (this._destination)
+    if (this._destination) {
+      this._destination.connectedTo = { component: port.component, pin: port.name };
       this.drawPath();
+    }
 
     if (port instanceof Port) {
       this._origin.addListener(() => this.drawPath());
@@ -56,8 +57,10 @@ class Wire {
   set destination(port) {
     this._destination = port;
 
-    if (this._origin)
+    if (this._origin) {
+      this._origin.connectedTo = { component: port.component, pin: port.name };
       this.drawPath();
+    }
 
     if (port instanceof Port) {
       this._destination.addListener(() => this.drawPath());
@@ -78,7 +81,7 @@ class Wire {
     this.showHighlight.bind(this)();
   }
 
-  unselect(){
+  unselect() {
     this._selected = false;
     this.hideHighlight.bind(this)();
   }
@@ -94,6 +97,8 @@ class Wire {
   }
 
   dispose() {
+    this._origin.connectedTo = null;
+    this._destination.connectedTo = null;
     this.element.remove();
   }
 }
