@@ -1,5 +1,5 @@
 import { configEncode, configDecode } from './convert.js';
-import arduino from '../components/arduino.js';
+import arduino from '../robots/arduino.js';
 import connector from './wire_builder.js';
 import { svg } from './utils.js';
 import makeComponent from './make_component.js';
