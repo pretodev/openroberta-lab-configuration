@@ -2,10 +2,12 @@ import { svg, getPositionRelative } from './utils.js';
 import ChangeNotifier from './change_notifier.js';
 
 class Port extends ChangeNotifier {
-  constructor({ name, position, connectedTo, onClick, component}) {
+  constructor({ name, position, connectedTo, isFixed, onClick, component}) {
     super();
 
     this.name = name;
+
+    this.isFixed = isFixed;
 
     this.component = component;
 

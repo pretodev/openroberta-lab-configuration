@@ -19,7 +19,8 @@ async function start() {
   document.querySelector('#bntExport').addEventListener('click', () => {
     const xml = `<export xmlns="http://de.fhg.iais.roberta.blockly">${editor.xml}</export>`;
     const blob = new Blob(xml.split('\n'), { type: "text/xml;charset=utf-8" });
-    saveAs(blob, "robConfiguration.xml")
+    saveAs(blob, "robConfiguration.xml");
+    console.log(xml);
   });
 }
 

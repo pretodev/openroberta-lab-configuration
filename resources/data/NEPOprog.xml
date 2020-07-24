@@ -15,19 +15,40 @@
       <instance x="97" y="106">
         <block type="robConf_led" id="1" intask="true">
           <field name="NAME">Led</field>
-          <field name="INPUT" connectedTo="board">D13</field>
+          <field name="INPUT">13</field>
         </block>
       </instance>
       <instance x="266" y="162">
         <block type="robConf_servo" id="Yia}X2pPVU?eJt%99R0R" intask="true">
           <field name="NAME">Motor</field>
-          <field name="PULSE" connectedTo="board">D3</field>
+          <field name="PULSE">3</field>
         </block>
       </instance>
       <instance x="61" y="210">
         <block type="robConf_digitalin" id="Xd!f#ZYXdZoFvKHj?(wz" intask="true">
           <field name="NAME">Digital</field>
-          <field name="INPUT" connectedTo="board">D7</field>
+          <field name="INPUT">7</field>
+        </block>
+      </instance>
+      <instance x="142" y="217">
+        <block type="robConf_analogin" id="QP+ML+!c;t[|@raFtETQ" intask="true">
+          <field name="NAME">Analogic</field>
+          <field name="INPUT">3</field>
+        </block>
+      </instance>
+      <instance x="109" y="240">
+        <block type="robConf_light" id="i}K%z)YJDO:,k;{m,=Pl" intask="true">
+          <field name="NAME">SensorLinha</field>
+          <field name="OUTPUT">A0</field>
+        </block>
+      </instance>
+      <instance x="385" y="173">
+        <block type="robConf_stepmotor" id="U5qB:|^4X[m?`3/X%GNd" intask="true">
+          <field name="NAME">S</field>
+          <field name="IN1">6</field>
+          <field name="IN2">5</field>
+          <field name="IN3">4</field>
+          <field name="IN4">3</field>
         </block>
       </instance>
     </block_set>

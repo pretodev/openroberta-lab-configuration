@@ -38,11 +38,11 @@ export function configDecode(data) {
     const ports = [];
     block.querySelectorAll('field:not([name=NAME])').forEach(el => {
       const name = el.getAttribute('name');
-      const component = el.getAttribute('connectedTo') ?? '';
-      const pin = el.innerHTML;
+      const pinStr = el.innerHTML.trim();
       ports.push({
         name,
-        connectedTo: component !== '' ? { component, pin } : null,
+        isFixed: false,
+        connectedTo: { component: 'board', pin: pinStr === '' ? null : pinStr },
       });
     });
 
@@ -50,10 +50,11 @@ export function configDecode(data) {
     fixedPorts.forEach(port => {
       ports.push({
         name: port[0],
+        isFixed: true,
         connectedTo: { component: 'board', pin: port[1] },
       });
     });
-    
+
     components[id] = { name, type, position: { x, y }, ports };
   });
 
@@ -69,13 +70,15 @@ export function configEncode({ board, components }) {
   let instances = '';
   for (let key in components) {
     const { name, position, ports, type } = components[key];
+    console.log(ports);
     instances += (`
       <instance x="${position.x}" y="${position.y}">
         <block type="${type}" id="${key}" intask="true">
           <field name="NAME">${name}</field>
-          ${ports.map(({ name, connectedTo }) =>
-      `<field name="${name}" connectedTo="${connectedTo?.component ?? ''}">${connectedTo?.pin ?? ''}</field>`
-    )}
+          ${ports
+        .filter(({ isFixed }) => !isFixed)
+        .map(({ name, connectedTo }) => `<field name="${name}">${connectedTo?.pin ?? ''}</field>`).join('')
+      }
         </block>
       </instance>
     `.trim());
