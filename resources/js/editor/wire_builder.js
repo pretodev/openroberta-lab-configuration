@@ -15,7 +15,7 @@ function connector(container, onCreated) {
 
   document.addEventListener('mousemove', (evt) => {
     if (connecting) {
-      const CTM = container.parentNode.getScreenCTM();
+      const CTM = container.wiresContainer.parentNode.getScreenCTM();
       currentWire.destination = {
         center: {
           x: (evt.clientX - CTM.e) / CTM.a,
@@ -30,7 +30,7 @@ function connector(container, onCreated) {
     if (!connecting) {
       currentWire = new Wire({ origin: port, destination: { center: port.center } });
 
-      container.appendChild(currentWire.element);
+      container.wiresContainer.appendChild(currentWire.element);
 
       connecting = true;
 

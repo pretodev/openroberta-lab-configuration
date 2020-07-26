@@ -11,6 +11,13 @@ export function getPositionRelative(element) {
   return { x, y };
 }
 
+
+/**
+ * Create a new svg element
+ * @param {string} name 
+ * @param {Object<string, any>}} attrs
+ * @returns {SVGElement}
+ */
 export function svg(name, attrs) {
   const element = document.createElementNS('http://www.w3.org/2000/svg', name);
   if (attrs) {

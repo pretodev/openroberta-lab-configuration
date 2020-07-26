@@ -70,7 +70,6 @@ export function configEncode({ board, components }) {
   let instances = '';
   for (let key in components) {
     const { name, position, ports, type } = components[key];
-    console.log(ports);
     instances += (`
       <instance x="${position.x}" y="${position.y}">
         <block type="${type}" id="${key}" intask="true">

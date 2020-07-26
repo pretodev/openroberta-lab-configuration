@@ -38,10 +38,9 @@ class Port extends ChangeNotifier {
   }
 
   get center() {
-    const position = getPositionRelative(this.element)
     return {
-      x: position.x + 3,
-      y: position.y + 3,
+      x: this._position.x + 2.5,
+      y: this._position.y + 2.5,
     };
   }
 

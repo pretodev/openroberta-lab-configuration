@@ -2,7 +2,7 @@ import { getSVG, svg } from './utils.js';
 import Component from './component.js';
 import Port from './port.js';
 
-export default function ({ connector, portsContainer, draggable, componentsContainer }) {
+export default function ({ container, connector }) {
 
   return async function (properties) {
     const { svgPath, name, position, ports, type } = properties;
@@ -40,7 +40,7 @@ export default function ({ connector, portsContainer, draggable, componentsConta
             'width': 5,
             'height': 5,
             'fill': 'black',
-            'x': placeholderPosition.x * (i+1),
+            'x': placeholderPosition.x * (i + 1),
             'y': placeholderPosition.y,
             'r': 3,
           }));
@@ -60,7 +60,7 @@ export default function ({ connector, portsContainer, draggable, componentsConta
 
     ports.forEach(({ position, ...others }, i) => {
       if (!position)
-        position = { x: placeholderPosition.x * (i+1), y: placeholderPosition.y };
+        position = { x: placeholderPosition.x * (i + 1), y: placeholderPosition.y };
 
       const port = new Port({
         component: properties.id,
@@ -82,15 +82,10 @@ export default function ({ connector, portsContainer, draggable, componentsConta
         port.notifyListeners();
       });
 
-      portsContainer.appendChild(port.element);
+      container.portsContainer.appendChild(port.element);
     });
 
-
-    componentsContainer.appendChild(element);
-
-    draggable.bindElement(element, () => {
-      component.notifyListeners();
-    });
+    container.addComponent(component);
 
     return { id: properties.id, component };
   }

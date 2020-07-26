@@ -1,49 +1,24 @@
 import { configEncode, configDecode } from './convert.js';
 import arduino from '../robots/arduino.js';
-import connector from './wire_builder.js';
-import { svg } from './utils.js';
+import makeConnector from './wire_builder.js';
 import makeComponent from './make_component.js';
-import DragContainer from './drag_container.js';
+import EditorContainer from './editor_container.js';
 import Wire from './wire.js';
 
 class Editor {
   constructor(containerSelector) {
 
-    const componentsContainer = svg('g');
-
-    const wiresContainer = svg('g');
-
-    const portsContainer = svg('g');
-
-    const wrapper = svg('g', { 'transform': 'scale(1, 1)', });
-
-    wrapper.appendChild(componentsContainer);
-    wrapper.appendChild(wiresContainer);
-    wrapper.appendChild(portsContainer);
-
-    const svgContainer = svg('svg', {
-      'xmlns': 'http://www.w3.org/2000/svg',
-      'version': '1.1',
-      'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-      'width': '100%',
-      'height': '100%',
-    });
-
-    svgContainer.appendChild(wrapper);
-
-    document.querySelector(containerSelector).appendChild(svgContainer);
+    this.container = new EditorContainer(containerSelector);
 
     this.board = null;
 
     this.components = {};
 
-    this.container = wrapper;
-
     this.wires = [];
 
     this.selectedWire = null;
 
-    svgContainer.addEventListener('click', () => {
+    this.container.svg.addEventListener('click', () => {
       if (this.selectedWire) {
         this.selectedWire = null;
         this.wires.forEach(wire => wire.unselect());
@@ -58,18 +33,10 @@ class Editor {
         this.selectedWire.dispose();
         this.selectedWire = null;
       }
-    });
+    })
 
-    const draggable = new DragContainer(svgContainer);
-    draggable.bindElement(wrapper);
-
-    // TODO: inject
-    this.componentCreator = makeComponent({
-      connector: connector(wiresContainer, this.addWire.bind(this)),
-      draggable: draggable,
-      portsContainer,
-      componentsContainer,
-    });
+    const connector = makeConnector(this.container, this.addWire.bind(this));
+    this.componentCreator = makeComponent({ container: this.container, connector });
   }
 
   addComponent = async (properties) => {
@@ -107,8 +74,7 @@ class Editor {
           const destComponent = component === 'board' ? this.board : this.components[component];
           const destPort = destComponent.getPort(pin);
           const wire = new Wire({ origin: port, destination: destPort });
-          this.container.children[1].appendChild(wire.element);
-          this.addWire(wire);
+          this.container.addWire(wire);
         }
       })
     }

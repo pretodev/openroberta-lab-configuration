@@ -18,6 +18,7 @@
           <field name="INPUT">13</field>
         </block>
       </instance>
+      <!-- 
       <instance x="266" y="162">
         <block type="robConf_servo" id="Yia}X2pPVU?eJt%99R0R" intask="true">
           <field name="NAME">Motor</field>
@@ -51,6 +52,7 @@
           <field name="IN4">3</field>
         </block>
       </instance>
+      -->
     </block_set>
   </config>
 </export>
