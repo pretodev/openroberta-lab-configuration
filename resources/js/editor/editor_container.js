@@ -128,9 +128,6 @@ class EditorContainer extends ChangeNotifier {
   addWire(wire) {
     const { element } = wire;
     this.wiresContainer.appendChild(element);
-    this.addListener(() => {
-      wire.drawPath();
-    });
   }
 
 

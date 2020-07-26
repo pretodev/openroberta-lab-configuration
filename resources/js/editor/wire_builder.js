@@ -30,7 +30,7 @@ function connector(container, onCreated) {
     if (!connecting) {
       currentWire = new Wire({ origin: port, destination: { center: port.center } });
 
-      container.wiresContainer.appendChild(currentWire.element);
+      container.addWire(currentWire);
 
       connecting = true;
 

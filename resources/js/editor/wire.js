@@ -1,8 +1,11 @@
 import { svg } from './utils.js';
 import Port from './port.js';
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 class Wire {
   constructor({ origin, destination }) {
+    this.id = uuidv4();
+
     this.wireShadow = svg('path', {
       'fill': 'none',
       'stroke': '#3b8ed7',
@@ -31,6 +34,13 @@ class Wire {
     this._selected = false;
 
     this.drawPath = this.drawPath.bind(this);
+  }
+
+  onClicked(onClickEvent) {
+    this.element.addEventListener('click', (evt) => {
+      evt.stopPropagation();
+      onClickEvent(this);
+    });
   }
 
   get origin() {
@@ -86,7 +96,7 @@ class Wire {
     this.hideHighlight.bind(this)();
   }
 
-  drawPath() {
+  drawPath = () => {
     const origin = this._origin.center;
     const dest = this._destination.center;
 
@@ -94,12 +104,18 @@ class Wire {
 
     this.wire.setAttribute('d', path);
     this.wireShadow.setAttribute('d', path);
+
+    if (this._origin.connectedTo?.pin) {
+      this.element.addEventListener('mouseover', () => this.showHighlight());
+      this.element.addEventListener('mouseout', () => this.hideHighlight());
+    }
   }
 
   dispose() {
     this._origin.connectedTo = null;
     this._destination.connectedTo = null;
     this.element.remove();
+    delete this;
   }
 }
 

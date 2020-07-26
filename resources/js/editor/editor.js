@@ -31,11 +31,16 @@ class Editor {
         this.selectedWire = null;
       } else if (evt.keyCode == 46) {
         this.selectedWire.dispose();
+        this.wires = this.wires.filter(wire => wire.id !== this.selectedWire.id);
         this.selectedWire = null;
       }
     })
 
-    const connector = makeConnector(this.container, this.addWire.bind(this));
+    const connector = makeConnector(this.container, (wire) => {
+      wire.onClicked(this.wireClicked);
+      this.wires.push(wire);
+    });
+
     this.componentCreator = makeComponent({ container: this.container, connector });
   }
 
@@ -49,20 +54,10 @@ class Editor {
     this.board = component;
   };
 
-  addWire = (wire) => {
-
-    wire.element.addEventListener('mouseover', () => wire.showHighlight());
-
-    wire.element.addEventListener('mouseout', () => wire.hideHighlight());
-
-    wire.element.addEventListener('click', (evt) => {
-      evt.stopPropagation();
-      this.wires.forEach(wire => wire.unselect());
-      this.selectedWire = wire;
-      this.selectedWire.select();
-    });
-
-    this.wires.push(wire);
+  wireClicked = (wire) => {
+    this.wires.forEach(wire => wire.unselect());
+    this.selectedWire = wire;
+    this.selectedWire.select();
   }
 
   _loadWires = () => {
@@ -74,7 +69,9 @@ class Editor {
           const destComponent = component === 'board' ? this.board : this.components[component];
           const destPort = destComponent.getPort(pin);
           const wire = new Wire({ origin: port, destination: destPort });
+          wire.onClicked(this.wireClicked);
           this.container.addWire(wire);
+          this.wires.push(wire);
         }
       })
     }
