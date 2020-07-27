@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuration visualization</title>
+
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <div class="container">
+    <h3 class="text-center">Configuration visualization</h3>
+    <div class="menu">
+      <div class="custom-file menu-item">
+        <input type="file" class="custom-file-input" id="xmlFileInput">
+        <label class="custom-file-label" for="xmlFileInput">Upload program</label>
+      </div>
+      <button id="bntExport" type="button" class="btn btn-secondary menu-item">Export</button>
+    </div>
+    <div class="container-canva">
+      <!--
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
+        height="100%"></svg>
+      -->
+    </div>
+  </div>
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+  <script src="node_modules/file-saver/dist/FileSaver.min.js"></script>
+
+  <script src="blockly/blockly_compressed.js"></script>
+  <script src="blockly/blocks_compressed.js"></script>
+  <script src="../dist/open-roberta-configuration.js"></script>
+  <script>
+    async function start() {
+      bsCustomFileInput.init();
+      const config = configuration('.container-canva');
+      console.log(config);
+      document.querySelector('#xmlFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = evt => config.load(evt.target.result);
+          reader.onerror = error => reject(error);
+          reader.readAsText(file);
+        }
+      });
+
+      document.querySelector('#bntExport').addEventListener('click', () => {
+        const xml = `<export xmlns="http://de.fhg.iais.roberta.blockly">${config.xml}</export>`;
+        const blob = new Blob(xml.split('\n'), { type: "text/xml;charset=utf-8" });
+        saveAs(blob, "robConfiguration.xml");
+        console.log(xml);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', start);
+  </script>
+</body>
+
+</html>
