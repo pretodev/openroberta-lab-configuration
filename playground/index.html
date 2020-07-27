@@ -39,8 +39,7 @@
   <script>
     async function start() {
       bsCustomFileInput.init();
-      const config = configuration('.container-canva');
-      console.log(config);
+      const config =  configuration('.container-canva');
       document.querySelector('#xmlFileInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {

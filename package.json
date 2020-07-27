@@ -5,7 +5,9 @@
   "main": "dist/open-roberta-configuration.js",
   "module": "src/main.js",
   "scripts": {
-    "build": "npx rollup -c build/rollup.js"
+    "build": "npx rollup -c build/rollup.js",
+    "playground": "npx http-server ./ -d -c-1 -o /playground",
+    "watch": "npx rollup -c build/rollup.js -w"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "@rollup/plugin-node-resolve": "^8.4.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-async-to-module-method": "^6.24.1",
+    "http-server": "^0.12.3",
     "rollup": "^2.23.0",
     "rollup-plugin-filesize": "^9.0.2",
     "rollup-plugin-svg": "^2.0.0",
