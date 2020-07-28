@@ -5482,7 +5482,15 @@ var configuration = (function () {
 	  return Editor;
 	}();
 
+	var css = "\n.draggable {\n  cursor: default !important;\n}\n\n.draggable text {\n  user-select: none;\n  -moz-user-select: none;\n  -webkit-user-select: none;\n  cursor: inherit;\n}\n";
+	function injectCss() {
+	  var style = document.createElement('style');
+	  document.head.appendChild(style);
+	  style.textContent = css;
+	}
+
 	function main (selector) {
+	  injectCss();
 	  var editor = new Editor(selector);
 	  return editor;
 	}
