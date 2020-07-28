@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configuration visualization</title>
 
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="main.css">
 </head>
 
@@ -20,22 +20,17 @@
       </div>
       <button id="bntExport" type="button" class="btn btn-secondary menu-item">Export</button>
     </div>
-    <div class="container-canva">
-      <!--
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
-        height="100%"></svg>
-      -->
-    </div>
+    <div class="container-canva"></div>
   </div>
 
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-  <script src="node_modules/file-saver/dist/FileSaver.min.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+  <script src="../node_modules/file-saver/dist/FileSaver.min.js"></script>
 
-  <script src="blockly/blockly_compressed.js"></script>
-  <script src="blockly/blocks_compressed.js"></script>
-  <script src="../dist/open-roberta-configuration.js"></script>
+  <script src="../blockly/blockly_compressed.js"></script>
+  <script src="../blockly/blocks_compressed.js"></script>
+  <script src="../../dist/open-roberta-configuration.js"></script>
   <script>
     async function start() {
       bsCustomFileInput.init();

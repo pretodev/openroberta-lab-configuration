@@ -1,9 +1,4 @@
 
-.container {
-  padding: 16px 0; 
-  max-width: 540px;
-}
-
 .container-canva {
   margin: 16px 0; 
   height: 540px;
@@ -27,4 +22,22 @@
 
 .menu-item {
   margin: 0 8px;
+}
+
+#octaweb {
+  width: 100%;
+}
+
+#octaweb th {
+  padding-top: 1em;
+  width: 100vw/3;
+}
+
+#octaweb td {
+  width: 100vw/3;
+}
+
+#octaweb td>div {
+  height: 480px;
+  width: 100%;
 }

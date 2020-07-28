@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuration visualization</title>
+
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="main.css">
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+  <script src="../node_modules/file-saver/dist/FileSaver.min.js"></script>
+
+  <script src="../blockly/blockly_compressed.js"></script>
+  <script src="../blockly/blocks_compressed.js"></script>
+  <script src="../blockly/msg/js/en.js"></script>
+  <script src="../../dist/open-roberta-configuration.js"></script>
+  <script src="main.js"></script>
+</head>
+
+<body onload="start()">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <h1 class="navbar-brand">Blockly + Configuration </h1>
+  </nav>
+  <div class="container-fluid">
+    <div id="blocklyDiv" style="height: 480px; width: 100%;"></div>
+    <div id="confDiv" style="height: 480px; width: 100%;"></div>
+
+  </div>
+
+  <toolbox_set id="toolbox-Configuration" style="display: none">
+    <category name="TOOLBOX_ACTION" svg="true">
+      <block type="robConf_digitalin"></block>
+      <block type="robConf_analogin"></block>
+      <block type="robConf_lcd"></block>
+      <block type="robConf_lcdi2c"></block>
+      <block type="robConf_led"></block>
+      <block type="robConf_buzzer"></block>
+      <block type="robConf_relay"></block>
+      <block type="robConf_rgbled"></block>
+      <block type="robConf_stepmotor"></block>
+      <block type="robConf_servo"></block>
+    </category>
+    <category name="TOOLBOX_SENSOR" svg="true">
+      <block type="robConf_digitalout"></block>
+      <block type="robConf_analogout"></block>
+      <block type="robConf_ultrasonic"></block>
+      <block type="robConf_light"></block>
+      <block type="robConf_moisture"></block>
+      <block type="robConf_potentiometer"></block>
+      <block type="robConf_infrared"></block>
+      <block type="robConf_temperature"></block>
+      <block type="robConf_humidity"></block>
+      <block type="robConf_encoder"></block>
+      <block type="robConf_motion"></block>
+      <block type="robConf_pulse"></block>
+      <block type="robConf_drop"></block>
+      <block type="robConf_rfid"></block>
+      <block type="robConf_key"></block>
+      <block type="robConf_gyro"></block>
+      <block type="robConf_accelerometer"></block>
+    </category>
+  </toolbox_set>
+
+</body>
+
+</html>
