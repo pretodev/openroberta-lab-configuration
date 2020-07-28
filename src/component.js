@@ -1,5 +1,4 @@
 import ChangeNotifier from './change_notifier.js';
-import { getPositionRelative } from './utils.js';
 
 class Component extends ChangeNotifier {
   constructor({ id, element, name, type }) {
@@ -9,7 +8,7 @@ class Component extends ChangeNotifier {
 
     this.element = element;
 
-    this.name = name;
+    this._name = name;
 
     this.type = type;
 
@@ -24,7 +23,16 @@ class Component extends ChangeNotifier {
     return { x: transform.matrix.e, y: transform.matrix.f };
   }
 
-  addPort(port){
+  get name() {
+    return this._name;
+  }
+
+  set name(newName) {
+    this.element.querySelector('text').innerHTML = newName;
+    this._name = newName;
+  }
+
+  addPort(port) {
     this.ports.push(port);
   }
 
@@ -33,6 +41,10 @@ class Component extends ChangeNotifier {
     if (index > -1) {
       return this.ports[index];
     }
+  }
+
+  dispose = () => {
+    this.element.remove();
   }
 }
 

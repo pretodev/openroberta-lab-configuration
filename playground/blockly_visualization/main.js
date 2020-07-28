@@ -2,17 +2,17 @@
 
 let config, circuit;
 
-function onComponentCreated(data) {
-  console.log(data);
+function onComponentCreated(xml) {
+  circuit.addComponent(xml);
 }
 
-function onComponentDeleted(data) {
-  console.log(data);
+function onComponentChanged({ block, field, value }) {
+  field = field.toLowerCase();
+  circuit.components[block][field] = value;
 }
 
-function onComponentChanged(data) {
-  console.log('silas')
-  console.log(data);
+function onComponentDeleted(id) {
+  circuit.removeComponentById(id);
 }
 
 
@@ -25,10 +25,10 @@ function workspaceChangeListener(event) {
       onComponentDeleted(event.blockId);
       break;
     case Blockly.Events.CHANGE:
-      onComponentChanged({ 
-        block: event.blockId, 
-        field: event.name, 
-        value: event.newValue, 
+      onComponentChanged({
+        block: event.blockId,
+        field: event.name,
+        value: event.newValue,
       });
       break;
   }

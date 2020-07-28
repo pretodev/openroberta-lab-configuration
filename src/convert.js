@@ -18,10 +18,10 @@ function getFixedPortsByComponentName(robot, name) {
 export function configDecode(data) {
   const domParser = new DOMParser();
   const xmlConfig = domParser.parseFromString(data, "text/xml").querySelector('config');
-  const board = {};
+  const robot = {};
 
   const robotElement = xmlConfig.querySelector('block_set');
-  board['name'] = robotElement.getAttribute('robottype');
+  robot['name'] = robotElement.getAttribute('robottype');
 
   const components = {};
   const blocks = xmlConfig.querySelectorAll('instance');
@@ -45,7 +45,7 @@ export function configDecode(data) {
       });
     });
 
-    const fixedPorts = getFixedPortsByComponentName(board.name, type);
+    const fixedPorts = getFixedPortsByComponentName(robot.name, type);
     fixedPorts.forEach(port => {
       ports.push({
         name: port[0],
@@ -57,7 +57,7 @@ export function configDecode(data) {
     components[id] = { name, type, position: { x, y }, ports };
   });
 
-  return { board, components };
+  return { robot, components };
 }
 
 /**
@@ -89,4 +89,32 @@ export function configEncode({ board, components }) {
       </block_set>
     </config>
   `.trim());
+}
+
+export function blockDecode(block, robot) {
+  const id = block.getAttribute('id');
+  const type = block.getAttribute('type');
+  const name = block.querySelector('field[name=NAME]').innerHTML;
+
+  const ports = [];
+  block.querySelectorAll('field:not([name=NAME])').forEach(el => {
+    const name = el.getAttribute('name');
+    const pinStr = el.innerHTML.trim();
+    ports.push({
+      name,
+      isFixed: false,
+      connectedTo: { component: 'board', pin: pinStr === '' ? null : pinStr },
+    });
+  });
+
+  const fixedPorts = getFixedPortsByComponentName(robot, type);
+  fixedPorts.forEach(port => {
+    ports.push({
+      name: port[0],
+      isFixed: true,
+      connectedTo: { component: 'board', pin: port[1] },
+    });
+  });
+
+  return { id, name, type, ports };
 }

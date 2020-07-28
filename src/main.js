@@ -1,12 +1,14 @@
 import 'regenerator-runtime/runtime';
 
-import Editor from './editor.js'
+import CircuitView from './circuit_view.js'
 import injectCSS from './styles/inject_css.js';
 
-export default function(selector) {
+export default function(selector, robot) {
   injectCSS();
   
-  const editor = new Editor(selector);
+  const view = new CircuitView(selector);
 
-  return editor;
+  view.setRobot(robot);
+
+  return view;
 }

@@ -1,16 +1,16 @@
-import { configEncode, configDecode } from './convert.js';
-import arduino from './robots/arduino_uno/arduino_uno.js';
+import { configEncode, configDecode, blockDecode } from './convert.js';
 import makeConnector from './wire_builder.js';
 import makeComponent from './make_component.js';
 import EditorContainer from './editor_container.js';
 import Wire from './wire.js';
+import { getRobot } from './circuit_elements'
 
-export default class Editor {
+export default class CircuitView {
   constructor(containerSelector) {
 
     this.container = new EditorContainer(containerSelector);
 
-    this.board = null;
+    this.robot = null;
 
     this.components = {};
 
@@ -44,14 +44,30 @@ export default class Editor {
     this.componentCreator = makeComponent({ container: this.container, connector });
   }
 
-  addComponent = async (properties) => {
+  addComponent = async (blockXml) => {
+    const props = blockDecode(blockXml, this.robot._name);
+    return this.showComponent({ ...props, position: { x: 30, y: 30 } });
+  }
+
+  removeComponentById = (id) => {
+    const component = this.components[id];
+    component.dispose();
+    delete this.components[id];
+  }
+
+  showComponent = async (properties) => {
     const { id, component } = await this.componentCreator(properties);
     this.components[id] = component;
   };
 
-  setBoard = async (properties) => {
-    const { component } = await this.componentCreator({ id: 'board', ...properties });
-    this.board = component;
+  setRobot = async (props) => {
+    const device = getRobot(props);
+    const { component } = await this.componentCreator({
+      id: 'board',
+      position: { x: 230, y: 230 },
+      ...device
+    });
+    this.robot = component;
   };
 
   wireClicked = (wire) => {
@@ -66,7 +82,7 @@ export default class Editor {
       ports.forEach(port => {
         if (port.connectedTo) {
           const { component, pin } = port.connectedTo;
-          const destComponent = component === 'board' ? this.board : this.components[component];
+          const destComponent = component === 'board' ? this.robot : this.components[component];
           const destPort = destComponent.getPort(pin);
           const wire = new Wire({ origin: port, destination: destPort });
           wire.onClicked(this.wireClicked);
@@ -79,15 +95,15 @@ export default class Editor {
 
   async load(file) {
     // read configurations
-    const { components } = configDecode(file);
+    const { robot, components } = configDecode(file);
 
     // create robot board
-    await this.setBoard({ ...arduino, position: { x: 230, y: 230 } });
+    await this.setRobot(robot);
 
     // create components
     for (let id in components) {
       const properties = components[id];
-      await this.addComponent({ id, ...properties });
+      await this.showComponent({ id, ...properties });
     }
 
     this._loadWires();
@@ -96,7 +112,7 @@ export default class Editor {
   get xml() {
     //return { components: this.components };
     return configEncode({
-      board: this.board,
+      board: this.robot,
       components: this.components,
     });
   }
