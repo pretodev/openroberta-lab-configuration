@@ -20,7 +20,7 @@ const headerLong = `/*!
 */;`
 
 const babelConfig = () => {
-  
+
   let targets = pkg.browserslist
   const plugins = [
     ['@babel/plugin-proposal-class-properties', { 'loose': true }],
@@ -74,4 +74,7 @@ export default {
     babelConfig('maintained node versions'),
     filesize(),
   ],
+  watch: {
+    exclude: ['./dist', './playground'],
+  }
 };

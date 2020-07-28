@@ -11,6 +11,7 @@ function onComponentDeleted(data) {
 }
 
 function onComponentChanged(data) {
+  console.log('silas')
   console.log(data);
 }
 
