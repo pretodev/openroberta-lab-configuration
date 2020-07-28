@@ -4,15 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuration visualization</title>
+  <title>Blockly + Circuit Visualization</title>
 
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="main.css">
-
-  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="../node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-  <script src="../node_modules/file-saver/dist/FileSaver.min.js"></script>
 
   <script src="../blockly/blockly_compressed.js"></script>
   <script src="../blockly/blocks_compressed.js"></script>
@@ -22,14 +16,9 @@
 </head>
 
 <body onload="start()">
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <h1 class="navbar-brand">Blockly + Configuration </h1>
-  </nav>
-  <div class="container-fluid">
-    <div id="blocklyDiv" style="height: 480px; width: 100%;"></div>
-    <div id="confDiv" style="height: 480px; width: 100%;"></div>
-
-  </div>
+  <h3>Blockly + Circuit Visualization</h3>
+  <div id="blocklyDiv" style="height: 480px; width: 100%;"></div>
+  <div id="confDiv" style="height: 480px; width: 100%;"></div>
 
   <toolbox_set id="toolbox-Configuration" style="display: none">
     <category name="TOOLBOX_ACTION" svg="true">

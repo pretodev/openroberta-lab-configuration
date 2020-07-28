@@ -5,8 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configuration visualization</title>
-
-  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="main.css">
 </head>
 
@@ -23,17 +21,13 @@
     <div class="container-canva"></div>
   </div>
 
-  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="../node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-  <script src="../node_modules/file-saver/dist/FileSaver.min.js"></script>
+  <script src="filesaver.min.js"></script>
 
   <script src="../blockly/blockly_compressed.js"></script>
   <script src="../blockly/blocks_compressed.js"></script>
   <script src="../../dist/open-roberta-configuration.js"></script>
   <script>
     async function start() {
-      bsCustomFileInput.init();
       const config =  configuration('.container-canva');
       document.querySelector('#xmlFileInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
@@ -49,7 +43,6 @@
         const xml = `<export xmlns="http://de.fhg.iais.roberta.blockly">${config.xml}</export>`;
         const blob = new Blob(xml.split('\n'), { type: "text/xml;charset=utf-8" });
         saveAs(blob, "robConfiguration.xml");
-        console.log(xml);
       });
     }
 
