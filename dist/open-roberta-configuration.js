@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Tue Jul 28 2020 06:21:22 GMT-0300 (Brasilia Standard Time)
+* BUILT: Wed Jul 29 2020 12:35:22 GMT-0300 (Brasilia Standard Time)
 */;
 var configuration = (function () {
 	'use strict';

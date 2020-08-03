@@ -8,10 +8,13 @@
 
   <link rel="stylesheet" href="main.css">
 
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
   <script src="../blockly/blockly_compressed.js"></script>
   <script src="../blockly/blocks_compressed.js"></script>
   <script src="../blockly/msg/js/en.js"></script>
   <script src="../../dist/open-roberta-configuration.js"></script>
+  <script src="ports.js"></script>
   <script src="main.js"></script>
 </head>
 
@@ -19,6 +22,10 @@
   <h3>Blockly + Circuit Visualization</h3>
   <div id="blocklyDiv" style="height: 480px; width: 100%;"></div>
   <div id="confDiv" style="height: 480px; width: 100%;"></div>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="workspace-blocks" style="display: none">
+    <block type="robConf_digitalin"></block>
+  </xml>
 
   <toolbox_set id="toolbox-Configuration" style="display: none">
     <category name="TOOLBOX_ACTION" svg="true">

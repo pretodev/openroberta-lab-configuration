@@ -6,7 +6,7 @@
   "module": "src/main.js",
   "scripts": {
     "build": "npx rollup -c build/rollup.js",
-    "playground": "npx http-server ./ -d -c-1 -o /playground",
+    "playground": "npx http-server ./ -d -c-1 -o /test",
     "watch": "npx rollup -c build/rollup.js -w"
   },
   "repository": {

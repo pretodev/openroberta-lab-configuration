@@ -30,3 +30,7 @@
   height: 480px;
   width: 100%;
 }
+
+.port {
+  cursor: default !important;
+}
