@@ -3,7 +3,9 @@ import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import filesize from 'rollup-plugin-filesize';
-import svg from 'rollup-plugin-svg'
+import svg from 'rollup-plugin-svg';
+import replace from '@rollup/plugin-replace';
+import postcss from 'rollup-plugin-postcss';
 
 
 const buildDate = Date()
@@ -53,11 +55,11 @@ const babelConfig = () => {
 }
 
 export default {
-  input: './src/main.js',
+  input: './src/circuit_visualization.js',
   output: {
     file: './dist/open-roberta-configuration.js',
     format: 'iife',
-    name: 'configuration',
+    name: 'CircuitVisualization',
     sourcemap: true,
     banner: headerLong,
     // remove Object.freeze
@@ -68,7 +70,12 @@ export default {
     propertyReadSideEffects: false
   },
   plugins: [
+    // Production config
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
     svg(),
+    postcss({ plugins: [] }),
     resolve({ browser: true }),
     commonjs(),
     babelConfig('maintained node versions'),
