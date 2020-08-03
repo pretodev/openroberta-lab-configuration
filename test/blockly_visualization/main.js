@@ -140,6 +140,8 @@ class CircuitVisualization {
       return;
     }
     const block = this.workspace_.getBlockById(event.blockId);
+    this.renderBlockBackground_(block);
+
     switch (event.type) {
       case Blockly.Events.CREATE:
         this.createPortView_(block);
@@ -172,7 +174,7 @@ class CircuitVisualization {
       }
 
       const robotConnection = this.robot_.getPortByName(connectedTo)
-      if(!robotConnection) return;
+      if (!robotConnection) return;
 
       const destination = {
         x: robotPosition.x + robotConnection.position.x + matrix.e + 2.5,
@@ -192,16 +194,14 @@ class CircuitVisualization {
 
       if (index === 0) return;
 
-      console.log(input);
-
       input.fieldRow.forEach(({ fieldGroup_, name, value_ }) => {
         name = name ?? value_
-        
+
         if (name) {
           const { matrix } = fieldGroup_.transform.baseVal.getItem(0);
-          const margin = width - matrix.e - 5;
+          const margin = width - matrix.e - 22;
           const position = { x: (matrix.e + margin), y: matrix.f + 6 };
-          
+
           createPortSvg(block.getSvgRoot(), name, position);
 
           const wireSvg = Blockly.createSvgElement('path', {
@@ -239,12 +239,25 @@ class CircuitVisualization {
   deleteConnections_ = (blockId) => {
     this.connections_ = this.connections_
       .filter(connection => {
-        if(connection.blockId === blockId){
+        if (connection.blockId === blockId) {
           connection.wireSvg.remove();
           return false;
         }
         return true;
       });
+  }
+
+  renderBlockBackground_ = (block) => {
+    if (!block) return;
+
+    let path = block.svgPath_.getAttribute('d');
+    const width = parseFloat(path.substring(
+      path.indexOf("H") + 2,
+      path.indexOf("v") - 1
+    ));
+    const newWidth = width + 16
+    path = path.replace(width.toString(), newWidth.toString());
+    block.svgPath_.setAttribute('d', path);
   }
 }
 
