@@ -172,6 +172,8 @@ class CircuitVisualization {
       }
 
       const robotConnection = this.robot_.getPortByName(connectedTo)
+      if(!robotConnection) return;
+
       const destination = {
         x: robotPosition.x + robotConnection.position.x + matrix.e + 2.5,
         y: robotPosition.y + robotConnection.position.y + matrix.f + 2.5,
@@ -190,7 +192,11 @@ class CircuitVisualization {
 
       if (index === 0) return;
 
-      input.fieldRow.forEach(({ fieldGroup_, name }) => {
+      console.log(input);
+
+      input.fieldRow.forEach(({ fieldGroup_, name, value_ }) => {
+        name = name ?? value_
+        
         if (name) {
           const { matrix } = fieldGroup_.transform.baseVal.getItem(0);
           const margin = width - matrix.e - 5;
@@ -208,7 +214,7 @@ class CircuitVisualization {
 
           this.connections_.push({
             blockId: block.id,
-            connectedTo: block.getFieldValue(name),
+            connectedTo: block.getFieldValue(name) ?? value_,
             name,
             position,
             wireSvg,
@@ -233,8 +239,11 @@ class CircuitVisualization {
   deleteConnections_ = (blockId) => {
     this.connections_ = this.connections_
       .filter(connection => {
-        connection.wireSvg.remove();
-        return connection.blockId !== blockId;
+        if(connection.blockId === blockId){
+          connection.wireSvg.remove();
+          return false;
+        }
+        return true;
       });
   }
 }
