@@ -1,5 +1,6 @@
 import { createPortSvg } from './utils';
 import { createRobotBlock } from './robot_block';
+import WireDrawer from './wires';
 
 export default class CircuitVisualization {
   constructor() {
@@ -22,7 +23,7 @@ export default class CircuitVisualization {
 
     this.injectRobotBoard_();
 
-    Blockly.bindEvent_(document, 'mousemove', this, this.renderConnections_);
+    //Blockly.bindEvent_(document, 'mousemove', this, this.renderConnections_);
   }
 
   injectRobotBoard_() {
@@ -38,6 +39,7 @@ export default class CircuitVisualization {
   }
 
   onChangeListener_ = (event) => {
+    this.renderConnections_();
     if (!event.blockId) {
       return;
     }
@@ -83,8 +85,9 @@ export default class CircuitVisualization {
         y: robotPosition.y + robotConnection.position.y + matrix.f + 2.5,
       }
 
-      const path = `M ${origin.x} ${origin.y} L ${destination.x} ${destination.y}`;
-      wireSvg.setAttribute('d', path);
+      const drawer = new WireDrawer(origin, destination);
+
+      wireSvg.setAttribute('d', drawer.path);
     });
   }
 
