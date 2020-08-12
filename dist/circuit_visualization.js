@@ -23359,6 +23359,11 @@ var CircuitVisualization = (function () {
 	                matrix = _fieldGroup_$transfor.matrix;
 
 	            var margin = width - matrix.e - 22;
+
+	            if (/Google Inc/.test(navigator.vendor)) {
+	              margin += 8;
+	            }
+
 	            var position = {
 	              x: matrix.e + margin,
 	              y: matrix.f + 6

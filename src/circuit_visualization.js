@@ -111,7 +111,12 @@ export default class CircuitVisualization {
 
         if (name) {
           const { matrix } = fieldGroup_.transform.baseVal.getItem(0);
-          const margin = width - matrix.e - 22;
+          let margin = width - matrix.e - 22;
+
+          if(/Google Inc/.test(navigator.vendor)){
+            margin += 8;
+          }
+
           const position = { x: (matrix.e + margin), y: matrix.f + 6 };
 
           createPortSvg(block.getSvgRoot(), name, position);
