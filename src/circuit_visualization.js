@@ -26,7 +26,11 @@ export default class CircuitVisualization {
 
     this.injectRobotBoard_();
 
-    //Blockly.bindEvent_(document, 'mousemove', this, this.renderConnections_);
+    document.addEventListener('mousemove', () => {
+      if(Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling){
+        this.renderConnections_();
+      }
+    });  
   }
 
   injectRobotBoard_() {

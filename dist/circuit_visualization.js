@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Wed Aug 12 2020 17:19:10 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Wed Aug 12 2020 19:46:13 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -23259,8 +23259,13 @@ var CircuitVisualization = (function () {
 
 	      _this.wireGroup_ = Blockly.createSvgElement('g', {}, _this.workspace_.svgGroup_);
 
-	      _this.injectRobotBoard_(); //Blockly.bindEvent_(document, 'mousemove', this, this.renderConnections_);
+	      _this.injectRobotBoard_();
 
+	      document.addEventListener('mousemove', function () {
+	        if (Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling) {
+	          _this.renderConnections_();
+	        }
+	      });
 	    };
 
 	    this.onChangeListener_ = function (event) {
