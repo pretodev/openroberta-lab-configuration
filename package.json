@@ -5,9 +5,9 @@
   "main": "dist/open-roberta-configuration.js",
   "module": "src/main.js",
   "scripts": {
-    "build": "npx rollup -c build/rollup.js",
-    "playground": "npx http-server ./ -d -c-1 -o /test",
-    "watch": "npx rollup -c build/rollup.js -w"
+    "build": "npx rollup -c scripts/build.js",
+    "serve": "npx http-server ./ -d -c-1 -o /test",
+    "watch": "npx rollup -c scripts/build.js -w"
   },
   "repository": {
     "type": "git",

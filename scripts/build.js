@@ -57,7 +57,7 @@ const babelConfig = () => {
 export default {
   input: './src/circuit_visualization.js',
   output: {
-    file: './dist/open-roberta-configuration.js',
+    file: './dist/circuit_visualization.js',
     format: 'iife',
     name: 'CircuitVisualization',
     sourcemap: true,

@@ -1,4 +1,5 @@
 import { createPortSvg } from './utils';
+import ports from './robots/arduino_uno';
 
 class RobotViewField extends Blockly.Field {
   static EDITABLE = false;

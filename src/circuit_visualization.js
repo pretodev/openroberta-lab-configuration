@@ -1,12 +1,15 @@
 import { createPortSvg } from './utils';
 import { createRobotBlock } from './robot_block';
 import WireDrawer from './wires';
+import injectCSS from './css';
 
 export default class CircuitVisualization {
   constructor() {
     if (!Blockly) {
       throw new Error('Blockly required');
     }
+
+    injectCSS();
 
     Blockly.Blocks['robot'] = createRobotBlock();
 

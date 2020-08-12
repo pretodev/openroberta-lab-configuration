@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Sun Aug 09 2020 22:49:38 GMT-0300 (Brasilia Standard Time)
+* BUILT: Wed Aug 12 2020 17:19:10 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -5728,6 +5728,200 @@ var CircuitVisualization = (function () {
 	    return _possibleConstructorReturn(this, result);
 	  };
 	}
+
+	var ports = [{
+	  name: 'SCL',
+	  position: {
+	    x: 93,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'SDA',
+	  position: {
+	    x: 102.6,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'AREF',
+	  position: {
+	    x: 112.2,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 121.9,
+	    y: 7.8
+	  }
+	}, {
+	  name: '13',
+	  position: {
+	    x: 131.5,
+	    y: 7.8
+	  }
+	}, {
+	  name: '12',
+	  position: {
+	    x: 141.1,
+	    y: 7.8
+	  }
+	}, {
+	  name: '11',
+	  position: {
+	    x: 150.7,
+	    y: 7.8
+	  }
+	}, {
+	  name: '10',
+	  position: {
+	    x: 160.3,
+	    y: 7.8
+	  }
+	}, {
+	  name: '9',
+	  position: {
+	    x: 169.9,
+	    y: 7.8
+	  }
+	}, {
+	  name: '8',
+	  position: {
+	    x: 179.6,
+	    y: 7.8
+	  }
+	}, {
+	  name: '7',
+	  position: {
+	    x: 195,
+	    y: 7.8
+	  }
+	}, {
+	  name: '6',
+	  position: {
+	    x: 204.7,
+	    y: 7.8
+	  }
+	}, {
+	  name: '5',
+	  position: {
+	    x: 214.3,
+	    y: 7.8
+	  }
+	}, {
+	  name: '4',
+	  position: {
+	    x: 223.9,
+	    y: 7.8
+	  }
+	}, {
+	  name: '3',
+	  position: {
+	    x: 233.5,
+	    y: 7.8
+	  }
+	}, {
+	  name: '2',
+	  position: {
+	    x: 243.1,
+	    y: 7.8
+	  }
+	}, {
+	  name: '1',
+	  position: {
+	    x: 252.8,
+	    y: 7.8
+	  }
+	}, {
+	  name: '0',
+	  position: {
+	    x: 262.4,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'NOTUSER',
+	  position: {
+	    x: 127.7,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'IOREF',
+	  position: {
+	    x: 137.3,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 146.9,
+	    y: 190.5
+	  }
+	}, {
+	  name: '3,3V',
+	  position: {
+	    x: 156.6,
+	    y: 190.5
+	  }
+	}, {
+	  name: '5V',
+	  position: {
+	    x: 166.2,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 175.8,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 185.4,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'Vin',
+	  position: {
+	    x: 195,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A0',
+	  position: {
+	    x: 214.3,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A1',
+	  position: {
+	    x: 223.9,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A2',
+	  position: {
+	    x: 233.5,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A3',
+	  position: {
+	    x: 243.1,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A4',
+	  position: {
+	    x: 252.8,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A5',
+	  position: {
+	    x: 262.4,
+	    y: 190.5
+	  }
+	}];
 
 	var RobotViewField = /*#__PURE__*/function (_Blockly$Field) {
 	  _inherits(RobotViewField, _Blockly$Field);
@@ -23018,16 +23212,6 @@ var CircuitVisualization = (function () {
 	        x: x,
 	        y: y
 	      });
-	      console.log({
-	        x: x,
-	        y: y
-	      }, {
-	        x1: x1,
-	        y1: y1
-	      }, {
-	        x2: x2,
-	        y2: y2
-	      });
 	    }
 	  }, {
 	    key: "path",
@@ -23054,6 +23238,13 @@ var CircuitVisualization = (function () {
 
 	  return WireDrawer;
 	}();
+
+	var css = "\n.port {\n    cursor: default !important;\n}\n";
+	function injectCSS() {
+	  var style = document.createElement('style');
+	  document.head.appendChild(style);
+	  style.textContent = css;
+	}
 
 	var CircuitVisualization = /*#__PURE__*/function () {
 	  function CircuitVisualization() {
@@ -23236,6 +23427,7 @@ var CircuitVisualization = (function () {
 	      throw new Error('Blockly required');
 	    }
 
+	    injectCSS();
 	    Blockly.Blocks['robot'] = createRobotBlock();
 	    this.components_ = {};
 	    this.connections_ = [];
@@ -23257,4 +23449,4 @@ var CircuitVisualization = (function () {
 	return CircuitVisualization;
 
 }());
-//# sourceMappingURL=open-roberta-configuration.js.map
+//# sourceMappingURL=circuit_visualization.js.map

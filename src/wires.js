@@ -35,8 +35,6 @@ export default class WireDrawer {
     const y = y1 < y2 ? _.min([y1, y2]) : _.max([y1, y2]);
 
     this.addPoint_(this.head_, {x, y});
-
-    console.log({x, y}, {x1, y1}, {x2, y2});
   }
 
   get path() {

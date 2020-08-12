@@ -1,0 +1,31 @@
+.container-canva {
+  margin: 16px 0; 
+  height: 540px;
+  background-color: rgb(244, 245, 246);
+}
+
+.menu {
+  display: flex;
+}
+
+.menu-item {
+  margin: 0 8px;
+}
+
+#octaweb {
+  width: 100%;
+}
+
+#octaweb th {
+  padding-top: 1em;
+  width: 100vw/3;
+}
+
+#octaweb td {
+  width: 100vw/3;
+}
+
+#octaweb td>div {
+  height: 480px;
+  width: 100%;
+}
