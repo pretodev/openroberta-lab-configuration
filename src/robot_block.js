@@ -1,5 +1,6 @@
 import { createPortSvg } from './utils';
 import ports from './robots/arduino_uno';
+import robotMapper from './robots/robot_mapper';
 
 class RobotViewField extends Blockly.Field {
   static EDITABLE = false;
@@ -42,7 +43,7 @@ class RobotViewField extends Blockly.Field {
 
   initPorts_() {
     const portsGroupSvg = Blockly.createSvgElement('g', {}, this.element_);
-    this.ports_ = ports.map((props) => {
+    this.ports_ = robotMapper[this.robot].map((props) => {
       const { name, position } = props;
       const portSvg = createPortSvg(portsGroupSvg, name, position);
       return { portSvg, ...props };
@@ -62,12 +63,12 @@ class RobotViewField extends Blockly.Field {
 
 }
 
-export function createRobotBlock() {
+export function createRobotBlock(robotName) {
   return {
     init() {
       this.type_ = 'robot';
       this.svgPath_.remove();
-      this.robot_ = new RobotViewField();
+      this.robot_ = new RobotViewField(robotName);
       this
         .appendDummyInput()
         .setAlign(Blockly.ALIGN_CENTRE)

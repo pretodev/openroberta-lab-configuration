@@ -5729,7 +5729,7 @@ var CircuitVisualization = (function () {
 	  };
 	}
 
-	var ports = [{
+	var arduinoUno = [{
 	  name: 'SCL',
 	  position: {
 	    x: 93,
@@ -5923,6 +5923,193 @@ var CircuitVisualization = (function () {
 	  }
 	}];
 
+	var arduinoNano = [{
+	  name: 'TX1',
+	  position: {
+	    x: 228.9,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'RX0',
+	  position: {
+	    x: 214.6,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 200.3,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 186.1,
+	    y: 5.6
+	  }
+	}, {
+	  name: '2',
+	  position: {
+	    x: 171.8,
+	    y: 5.6
+	  }
+	}, {
+	  name: '3',
+	  position: {
+	    x: 157.5,
+	    y: 5.6
+	  }
+	}, {
+	  name: '4',
+	  position: {
+	    x: 143.2,
+	    y: 5.6
+	  }
+	}, {
+	  name: '5',
+	  position: {
+	    x: 128.9,
+	    y: 5.6
+	  }
+	}, {
+	  name: '6',
+	  position: {
+	    x: 114.6,
+	    y: 5.6
+	  }
+	}, {
+	  name: '7',
+	  position: {
+	    x: 100.3,
+	    y: 5.6
+	  }
+	}, {
+	  name: '8',
+	  position: {
+	    x: 86.1,
+	    y: 5.6
+	  }
+	}, {
+	  name: '9',
+	  position: {
+	    x: 71.8,
+	    y: 5.6
+	  }
+	}, {
+	  name: '10',
+	  position: {
+	    x: 57.5,
+	    y: 5.6
+	  }
+	}, {
+	  name: '11',
+	  position: {
+	    x: 43.2,
+	    y: 5.6
+	  }
+	}, {
+	  name: '12',
+	  position: {
+	    x: 28.9,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'VIN',
+	  position: {
+	    x: 228.9,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 214.6,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 200.3,
+	    y: 91.4
+	  }
+	}, {
+	  name: '5V',
+	  position: {
+	    x: 186.1,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A7',
+	  position: {
+	    x: 171.8,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A6',
+	  position: {
+	    x: 157.5,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A5',
+	  position: {
+	    x: 143.2,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A4',
+	  position: {
+	    x: 128.9,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A3',
+	  position: {
+	    x: 114.6,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A2',
+	  position: {
+	    x: 100.3,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A1',
+	  position: {
+	    x: 86.1,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A0',
+	  position: {
+	    x: 71.8,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'REF',
+	  position: {
+	    x: 57.5,
+	    y: 91.4
+	  }
+	}, {
+	  name: '3V3',
+	  position: {
+	    x: 43.2,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'D13',
+	  position: {
+	    x: 28.9,
+	    y: 91.4
+	  }
+	}];
+
+	var robotMapper = {
+	  'arduino_nano': arduinoNano,
+	  'arduino_uno': arduinoUno
+	};
+
 	var RobotViewField = /*#__PURE__*/function (_Blockly$Field) {
 	  _inherits(RobotViewField, _Blockly$Field);
 
@@ -5968,8 +6155,10 @@ var CircuitVisualization = (function () {
 	  }, {
 	    key: "initPorts_",
 	    value: function initPorts_() {
+	      var _context;
+
 	      var portsGroupSvg = Blockly.createSvgElement('g', {}, this.element_);
-	      this.ports_ = map$2(ports).call(ports, function (props) {
+	      this.ports_ = map$2(_context = robotMapper[this.robot]).call(_context, function (props) {
 	        var name = props.name,
 	            position = props.position;
 	        var portSvg = createPortSvg(portsGroupSvg, name, position);
@@ -5981,9 +6170,9 @@ var CircuitVisualization = (function () {
 	  }, {
 	    key: "getPortByName",
 	    value: function getPortByName(portName) {
-	      var _context;
+	      var _context2;
 
-	      var index = findIndex$2(_context = this.ports_).call(_context, function (port) {
+	      var index = findIndex$2(_context2 = this.ports_).call(_context2, function (port) {
 	        return port.name === portName;
 	      });
 
@@ -6003,14 +6192,14 @@ var CircuitVisualization = (function () {
 
 	RobotViewField.EDITABLE = false;
 	RobotViewField.rectElement_ = null;
-	function createRobotBlock() {
+	function createRobotBlock(robotName) {
 	  return {
 	    init: function init() {
 	      var _this2 = this;
 
 	      this.type_ = 'robot';
 	      this.svgPath_.remove();
-	      this.robot_ = new RobotViewField();
+	      this.robot_ = new RobotViewField(robotName);
 	      this.appendDummyInput().setAlign(Blockly.ALIGN_CENTRE).appendField(this.robot_, 'ROBOT');
 
 	      this.getPortByName = function (portName) {
@@ -23255,7 +23444,8 @@ var CircuitVisualization = (function () {
 	  }]);
 
 	  function CircuitVisualization(workspace) {
-	    var _this = this;
+	    var _this = this,
+	        _context7;
 
 	    _classCallCheck(this, CircuitVisualization);
 
@@ -23429,10 +23619,13 @@ var CircuitVisualization = (function () {
 	    }
 
 	    injectCSS();
-	    Blockly.Blocks['robot'] = createRobotBlock();
 	    this.components_ = {};
 	    this.connections_ = [];
 	    this.workspace_ = workspace;
+
+	    var robotName = concat$2(_context7 = "".concat(workspace.device, "_")).call(_context7, workspace.subDevice);
+
+	    Blockly.Blocks['robot'] = createRobotBlock(robotName);
 	    this.workspace_.addChangeListener(this.onChangeListener_);
 	    this.wireGroup_ = Blockly.createSvgElement('g', {}, this.workspace_.svgGroup_);
 	    this.injectRobotBoard_();

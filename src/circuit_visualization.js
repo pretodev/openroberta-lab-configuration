@@ -16,13 +16,16 @@ export default class CircuitVisualization {
 
     injectCSS();
 
-    Blockly.Blocks['robot'] = createRobotBlock();
-
     this.components_ = {};
 
     this.connections_ = [];
 
     this.workspace_ = workspace;
+
+    const robotName = `${workspace.device}_${workspace.subDevice}`;
+
+    Blockly.Blocks['robot'] = createRobotBlock(robotName);
+
     this.workspace_.addChangeListener(this.onChangeListener_);
 
     this.wireGroup_ = Blockly.createSvgElement('g', {}, this.workspace_.svgGroup_);
