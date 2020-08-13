@@ -37,7 +37,7 @@ class RobotViewField extends Blockly.Field {
 
   initBoardView_() {
     this.board_ = Blockly.createSvgElement('image', {}, this.element_);
-    this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '../../src/assets/arduino.svg');
+    this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `../../src/assets/${this.robot}.svg`);
   }
 
   initPorts_() {

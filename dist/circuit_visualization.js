@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Wed Aug 12 2020 19:46:13 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Thu Aug 13 2020 14:17:54 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -5963,7 +5963,7 @@ var CircuitVisualization = (function () {
 	    key: "initBoardView_",
 	    value: function initBoardView_() {
 	      this.board_ = Blockly.createSvgElement('image', {}, this.element_);
-	      this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '../../src/assets/arduino.svg');
+	      this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', "../../src/assets/".concat(this.robot, ".svg"));
 	    }
 	  }, {
 	    key: "initPorts_",
@@ -23247,26 +23247,17 @@ var CircuitVisualization = (function () {
 	}
 
 	var CircuitVisualization = /*#__PURE__*/function () {
-	  function CircuitVisualization() {
+	  _createClass(CircuitVisualization, null, [{
+	    key: "init",
+	    value: function init(workspace) {
+	      return new CircuitVisualization(workspace);
+	    }
+	  }]);
+
+	  function CircuitVisualization(workspace) {
 	    var _this = this;
 
 	    _classCallCheck(this, CircuitVisualization);
-
-	    this.setWorkspace = function (workspace) {
-	      _this.workspace_ = workspace;
-
-	      _this.workspace_.addChangeListener(_this.onChangeListener_);
-
-	      _this.wireGroup_ = Blockly.createSvgElement('g', {}, _this.workspace_.svgGroup_);
-
-	      _this.injectRobotBoard_();
-
-	      document.addEventListener('mousemove', function () {
-	        if (Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling) {
-	          _this.renderConnections_();
-	        }
-	      });
-	    };
 
 	    this.onChangeListener_ = function (event) {
 	      _this.renderConnections_();
@@ -23441,6 +23432,15 @@ var CircuitVisualization = (function () {
 	    Blockly.Blocks['robot'] = createRobotBlock();
 	    this.components_ = {};
 	    this.connections_ = [];
+	    this.workspace_ = workspace;
+	    this.workspace_.addChangeListener(this.onChangeListener_);
+	    this.wireGroup_ = Blockly.createSvgElement('g', {}, this.workspace_.svgGroup_);
+	    this.injectRobotBoard_();
+	    document.addEventListener('mousemove', function () {
+	      if (Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling) {
+	        _this.renderConnections_();
+	      }
+	    });
 	  }
 
 	  _createClass(CircuitVisualization, [{

@@ -4,7 +4,12 @@ import WireDrawer from './wires';
 import injectCSS from './css';
 
 export default class CircuitVisualization {
-  constructor() {
+
+  static init(workspace){
+    return new CircuitVisualization(workspace);
+  }
+
+  constructor(workspace) {
     if (!Blockly) {
       throw new Error('Blockly required');
     }
@@ -16,9 +21,7 @@ export default class CircuitVisualization {
     this.components_ = {};
 
     this.connections_ = [];
-  }
 
-  setWorkspace = (workspace) => {
     this.workspace_ = workspace;
     this.workspace_.addChangeListener(this.onChangeListener_);
 
@@ -30,7 +33,7 @@ export default class CircuitVisualization {
       if(Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling){
         this.renderConnections_();
       }
-    });  
+    }); 
   }
 
   injectRobotBoard_() {
