@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Thu Aug 13 2020 14:17:54 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Thu Aug 13 2020 21:02:25 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -5729,6 +5729,188 @@ var CircuitVisualization = (function () {
 	  };
 	}
 
+	var arduinoNano = [{
+	  name: 'TX1',
+	  position: {
+	    x: 228.9,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'RX0',
+	  position: {
+	    x: 214.6,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 200.3,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 186.1,
+	    y: 5.6
+	  }
+	}, {
+	  name: '2',
+	  position: {
+	    x: 171.8,
+	    y: 5.6
+	  }
+	}, {
+	  name: '3',
+	  position: {
+	    x: 157.5,
+	    y: 5.6
+	  }
+	}, {
+	  name: '4',
+	  position: {
+	    x: 143.2,
+	    y: 5.6
+	  }
+	}, {
+	  name: '5',
+	  position: {
+	    x: 128.9,
+	    y: 5.6
+	  }
+	}, {
+	  name: '6',
+	  position: {
+	    x: 114.6,
+	    y: 5.6
+	  }
+	}, {
+	  name: '7',
+	  position: {
+	    x: 100.3,
+	    y: 5.6
+	  }
+	}, {
+	  name: '8',
+	  position: {
+	    x: 86.1,
+	    y: 5.6
+	  }
+	}, {
+	  name: '9',
+	  position: {
+	    x: 71.8,
+	    y: 5.6
+	  }
+	}, {
+	  name: '10',
+	  position: {
+	    x: 57.5,
+	    y: 5.6
+	  }
+	}, {
+	  name: '11',
+	  position: {
+	    x: 43.2,
+	    y: 5.6
+	  }
+	}, {
+	  name: '12',
+	  position: {
+	    x: 28.9,
+	    y: 5.6
+	  }
+	}, {
+	  name: 'VIN',
+	  position: {
+	    x: 228.9,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 214.6,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 200.3,
+	    y: 91.4
+	  }
+	}, {
+	  name: '5V',
+	  position: {
+	    x: 186.1,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A7',
+	  position: {
+	    x: 171.8,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A6',
+	  position: {
+	    x: 157.5,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A5',
+	  position: {
+	    x: 143.2,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A4',
+	  position: {
+	    x: 128.9,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A3',
+	  position: {
+	    x: 114.6,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A2',
+	  position: {
+	    x: 100.3,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A1',
+	  position: {
+	    x: 86.1,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'A0',
+	  position: {
+	    x: 71.8,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'REF',
+	  position: {
+	    x: 57.5,
+	    y: 91.4
+	  }
+	}, {
+	  name: '3V3',
+	  position: {
+	    x: 43.2,
+	    y: 91.4
+	  }
+	}, {
+	  name: 'D13',
+	  position: {
+	    x: 28.9,
+	    y: 91.4
+	  }
+	}];
+
 	var arduinoUno = [{
 	  name: 'SCL',
 	  position: {
@@ -5923,188 +6105,6 @@ var CircuitVisualization = (function () {
 	  }
 	}];
 
-	var arduinoNano = [{
-	  name: 'TX1',
-	  position: {
-	    x: 228.9,
-	    y: 5.6
-	  }
-	}, {
-	  name: 'RX0',
-	  position: {
-	    x: 214.6,
-	    y: 5.6
-	  }
-	}, {
-	  name: 'RESET',
-	  position: {
-	    x: 200.3,
-	    y: 5.6
-	  }
-	}, {
-	  name: 'GND',
-	  position: {
-	    x: 186.1,
-	    y: 5.6
-	  }
-	}, {
-	  name: '2',
-	  position: {
-	    x: 171.8,
-	    y: 5.6
-	  }
-	}, {
-	  name: '3',
-	  position: {
-	    x: 157.5,
-	    y: 5.6
-	  }
-	}, {
-	  name: '4',
-	  position: {
-	    x: 143.2,
-	    y: 5.6
-	  }
-	}, {
-	  name: '5',
-	  position: {
-	    x: 128.9,
-	    y: 5.6
-	  }
-	}, {
-	  name: '6',
-	  position: {
-	    x: 114.6,
-	    y: 5.6
-	  }
-	}, {
-	  name: '7',
-	  position: {
-	    x: 100.3,
-	    y: 5.6
-	  }
-	}, {
-	  name: '8',
-	  position: {
-	    x: 86.1,
-	    y: 5.6
-	  }
-	}, {
-	  name: '9',
-	  position: {
-	    x: 71.8,
-	    y: 5.6
-	  }
-	}, {
-	  name: '10',
-	  position: {
-	    x: 57.5,
-	    y: 5.6
-	  }
-	}, {
-	  name: '11',
-	  position: {
-	    x: 43.2,
-	    y: 5.6
-	  }
-	}, {
-	  name: '12',
-	  position: {
-	    x: 28.9,
-	    y: 5.6
-	  }
-	}, {
-	  name: 'VIN',
-	  position: {
-	    x: 228.9,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'GND',
-	  position: {
-	    x: 214.6,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'RESET',
-	  position: {
-	    x: 200.3,
-	    y: 91.4
-	  }
-	}, {
-	  name: '5V',
-	  position: {
-	    x: 186.1,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A7',
-	  position: {
-	    x: 171.8,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A6',
-	  position: {
-	    x: 157.5,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A5',
-	  position: {
-	    x: 143.2,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A4',
-	  position: {
-	    x: 128.9,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A3',
-	  position: {
-	    x: 114.6,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A2',
-	  position: {
-	    x: 100.3,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A1',
-	  position: {
-	    x: 86.1,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'A0',
-	  position: {
-	    x: 71.8,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'REF',
-	  position: {
-	    x: 57.5,
-	    y: 91.4
-	  }
-	}, {
-	  name: '3V3',
-	  position: {
-	    x: 43.2,
-	    y: 91.4
-	  }
-	}, {
-	  name: 'D13',
-	  position: {
-	    x: 28.9,
-	    y: 91.4
-	  }
-	}];
-
 	var robotMapper = {
 	  'arduino_nano': arduinoNano,
 	  'arduino_uno': arduinoUno
@@ -6149,16 +6149,20 @@ var CircuitVisualization = (function () {
 	  }, {
 	    key: "initBoardView_",
 	    value: function initBoardView_() {
+	      var _context;
+
+	      var workspace = Blockly.getMainWorkspace();
+	      console.log();
 	      this.board_ = Blockly.createSvgElement('image', {}, this.element_);
-	      this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', "../../src/assets/".concat(this.robot, ".svg"));
+	      this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', concat$2(_context = "".concat(workspace.options.pathToMedia, "/robots/")).call(_context, this.robot, ".svg"));
 	    }
 	  }, {
 	    key: "initPorts_",
 	    value: function initPorts_() {
-	      var _context;
+	      var _context2;
 
 	      var portsGroupSvg = Blockly.createSvgElement('g', {}, this.element_);
-	      this.ports_ = map$2(_context = robotMapper[this.robot]).call(_context, function (props) {
+	      this.ports_ = map$2(_context2 = robotMapper[this.robot]).call(_context2, function (props) {
 	        var name = props.name,
 	            position = props.position;
 	        var portSvg = createPortSvg(portsGroupSvg, name, position);
@@ -6170,9 +6174,9 @@ var CircuitVisualization = (function () {
 	  }, {
 	    key: "getPortByName",
 	    value: function getPortByName(portName) {
-	      var _context2;
+	      var _context3;
 
-	      var index = findIndex$2(_context2 = this.ports_).call(_context2, function (port) {
+	      var index = findIndex$2(_context3 = this.ports_).call(_context3, function (port) {
 	        return port.name === portName;
 	      });
 

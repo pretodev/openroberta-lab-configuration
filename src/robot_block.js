@@ -1,5 +1,4 @@
 import { createPortSvg } from './utils';
-import ports from './robots/arduino_uno';
 import robotMapper from './robots/robot_mapper';
 
 class RobotViewField extends Blockly.Field {
@@ -37,8 +36,16 @@ class RobotViewField extends Blockly.Field {
   }
 
   initBoardView_() {
+    const workspace = Blockly.getMainWorkspace();
+
+    console.log();
+
     this.board_ = Blockly.createSvgElement('image', {}, this.element_);
-    this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `../../src/assets/${this.robot}.svg`);
+    this.board_.setAttributeNS(
+      'http://www.w3.org/1999/xlink', 
+      'xlink:href', 
+      `${workspace.options.pathToMedia}/robots/${this.robot}.svg`
+    );
   }
 
   initPorts_() {
