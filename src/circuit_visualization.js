@@ -5,22 +5,29 @@ import injectCSS from './css';
 
 export default class CircuitVisualization {
 
-  static init(workspace){
-    return new CircuitVisualization(workspace);
-  }
-
-  constructor(workspace) {
-    if (!Blockly) {
-      throw new Error('Blockly required');
+  static domToWorkspace(dom, workspace){
+    if(workspace.device !== 'arduino'){
+      throw Error('Not device suported');
     }
 
     injectCSS();
+
+    
+    new CircuitVisualization(workspace, dom);
+  }
+
+  constructor(workspace, dom) {
+    if (!Blockly) {
+      throw new Error('Blockly required');
+    }
 
     this.components_ = {};
 
     this.connections_ = [];
 
     this.workspace_ = workspace;
+
+    this.dom_ = dom;
 
     const robotName = `${workspace.device}_${workspace.subDevice}`;
 
@@ -40,14 +47,13 @@ export default class CircuitVisualization {
   }
 
   injectRobotBoard_() {
-    const xml = `
-      <block_set>
-        <instance x="150" y="150">
-          <block type="robot" id="robot"></block>
-        </instance>
-      </block_set>`;
-    const dom = Blockly.Xml.textToDom(xml, this.workspace_)
-    Blockly.Xml.domToWorkspace(dom, this.workspace_);
+    const robotXml = `<instance x="250" y="250"><block type="robot" id="robot"></block></instance>`;
+    const oParser = new DOMParser();
+    const robotElement = oParser.parseFromString(robotXml, 'text/xml').firstChild;
+
+    this.dom_.appendChild(robotElement);
+    Blockly.Xml.domToWorkspace(this.dom_, this.workspace_);
+
     this.robot_ = this.workspace_.getBlockById('robot');
   }
 

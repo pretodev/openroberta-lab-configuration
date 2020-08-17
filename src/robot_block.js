@@ -38,13 +38,11 @@ class RobotViewField extends Blockly.Field {
   initBoardView_() {
     const workspace = Blockly.getMainWorkspace();
 
-    console.log();
-
     this.board_ = Blockly.createSvgElement('image', {}, this.element_);
     this.board_.setAttributeNS(
       'http://www.w3.org/1999/xlink', 
       'xlink:href', 
-      `${workspace.options.pathToMedia}/robots/${this.robot}.svg`
+      `${workspace.options.pathToMedia}robots/${this.robot}.svg`
     );
   }
 

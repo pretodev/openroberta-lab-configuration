@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Thu Aug 13 2020 21:02:25 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Mon Aug 17 2020 10:55:51 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -6152,9 +6152,8 @@ var CircuitVisualization = (function () {
 	      var _context;
 
 	      var workspace = Blockly.getMainWorkspace();
-	      console.log();
 	      this.board_ = Blockly.createSvgElement('image', {}, this.element_);
-	      this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', concat$2(_context = "".concat(workspace.options.pathToMedia, "/robots/")).call(_context, this.robot, ".svg"));
+	      this.board_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', concat$2(_context = "".concat(workspace.options.pathToMedia, "robots/")).call(_context, this.robot, ".svg"));
 	    }
 	  }, {
 	    key: "initPorts_",
@@ -23441,13 +23440,18 @@ var CircuitVisualization = (function () {
 
 	var CircuitVisualization = /*#__PURE__*/function () {
 	  _createClass(CircuitVisualization, null, [{
-	    key: "init",
-	    value: function init(workspace) {
-	      return new CircuitVisualization(workspace);
+	    key: "domToWorkspace",
+	    value: function domToWorkspace(dom, workspace) {
+	      if (workspace.device !== 'arduino') {
+	        throw Error('Not device suported');
+	      }
+
+	      injectCSS();
+	      new CircuitVisualization(workspace, dom);
 	    }
 	  }]);
 
-	  function CircuitVisualization(workspace) {
+	  function CircuitVisualization(workspace, dom) {
 	    var _this = this,
 	        _context7;
 
@@ -23622,10 +23626,10 @@ var CircuitVisualization = (function () {
 	      throw new Error('Blockly required');
 	    }
 
-	    injectCSS();
 	    this.components_ = {};
 	    this.connections_ = [];
 	    this.workspace_ = workspace;
+	    this.dom_ = dom;
 
 	    var robotName = concat$2(_context7 = "".concat(workspace.device, "_")).call(_context7, workspace.subDevice);
 
@@ -23643,9 +23647,11 @@ var CircuitVisualization = (function () {
 	  _createClass(CircuitVisualization, [{
 	    key: "injectRobotBoard_",
 	    value: function injectRobotBoard_() {
-	      var xml = "\n      <block_set>\n        <instance x=\"150\" y=\"150\">\n          <block type=\"robot\" id=\"robot\"></block>\n        </instance>\n      </block_set>";
-	      var dom = Blockly.Xml.textToDom(xml, this.workspace_);
-	      Blockly.Xml.domToWorkspace(dom, this.workspace_);
+	      var robotXml = "<instance x=\"250\" y=\"250\"><block type=\"robot\" id=\"robot\"></block></instance>";
+	      var oParser = new DOMParser();
+	      var robotElement = oParser.parseFromString(robotXml, 'text/xml').firstChild;
+	      this.dom_.appendChild(robotElement);
+	      Blockly.Xml.domToWorkspace(this.dom_, this.workspace_);
 	      this.robot_ = this.workspace_.getBlockById('robot');
 	    }
 	  }]);
