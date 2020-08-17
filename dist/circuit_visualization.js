@@ -23462,11 +23462,13 @@ var CircuitVisualization = (function () {
 
 	  function CircuitVisualization(workspace, dom) {
 	    var _this = this,
-	        _context7;
+	        _context8;
 
 	    _classCallCheck(this, CircuitVisualization);
 
 	    this.onChangeListener_ = function (event) {
+	      console.log(_this.connections_);
+
 	      _this.renderConnections_();
 
 	      if (!event.blockId) {
@@ -23588,7 +23590,7 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.updateConnections_ = function (block) {
-	      var _context4, _context5;
+	      var _context4, _context5, _context6;
 
 	      var connections = filter$4(_context4 = _this.connections_).call(_context4, function (connection) {
 	        return connection.blockId === block.id;
@@ -23604,13 +23606,16 @@ var CircuitVisualization = (function () {
 	          connectedTo: block.getFieldValue(name)
 	        });
 	      });
-	      _this.connections_ = concat$2(_context5 = []).call(_context5, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
+	      _this.connections_ = filter$4(_context5 = _this.connections_).call(_context5, function (connection) {
+	        return connection.blockId !== block.id;
+	      });
+	      _this.connections_ = concat$2(_context6 = []).call(_context6, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
 	    };
 
 	    this.deleteConnections_ = function (blockId) {
-	      var _context6;
+	      var _context7;
 
-	      _this.connections_ = filter$4(_context6 = _this.connections_).call(_context6, function (connection) {
+	      _this.connections_ = filter$4(_context7 = _this.connections_).call(_context7, function (connection) {
 	        if (connection.blockId === blockId) {
 	          connection.wireSvg.remove();
 	          return false;
@@ -23640,7 +23645,7 @@ var CircuitVisualization = (function () {
 	    this.workspace_ = workspace;
 	    this.dom_ = dom;
 
-	    var robotName = concat$2(_context7 = "".concat(workspace.device, "_")).call(_context7, workspace.subDevice);
+	    var robotName = concat$2(_context8 = "".concat(workspace.device, "_")).call(_context8, workspace.subDevice);
 
 	    Blockly.Blocks['robot'] = createRobotBlock(robotName);
 	    this.workspace_.addChangeListener(this.onChangeListener_);

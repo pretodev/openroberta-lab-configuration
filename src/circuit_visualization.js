@@ -59,6 +59,7 @@ export default class CircuitVisualization {
   }
 
   onChangeListener_ = (event) => {
+    console.log(this.connections_);
     this.renderConnections_();
     if (!event.blockId) {
       return;
@@ -158,11 +159,16 @@ export default class CircuitVisualization {
   updateConnections_ = (block) => {
     let connections = this.connections_
       .filter(connection => connection.blockId === block.id);
+
     connections = connections.map(({ name, ...others }) => ({
       name,
       ...others,
       connectedTo: block.getFieldValue(name),
     }));
+
+    this.connections_ = this.connections_
+      .filter(connection => connection.blockId !== block.id);
+
     this.connections_ = [...this.connections_, ...connections];
   }
 
