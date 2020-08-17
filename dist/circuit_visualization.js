@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Mon Aug 17 2020 10:55:51 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Mon Aug 17 2020 18:18:12 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -1995,6 +1995,128 @@ var CircuitVisualization = (function () {
 	  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 	}
 
+	var $filter = arrayIteration.filter;
+
+
+
+	var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('filter');
+	// Edge 14- issue
+	var USES_TO_LENGTH$2 = arrayMethodUsesToLength('filter');
+
+	// `Array.prototype.filter` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.filter
+	// with adding support of @@species
+	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$2 }, {
+	  filter: function filter(callbackfn /* , thisArg */) {
+	    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+	  }
+	});
+
+	var filter = entryVirtual('Array').filter;
+
+	var ArrayPrototype$4 = Array.prototype;
+
+	var filter_1 = function (it) {
+	  var own = it.filter;
+	  return it === ArrayPrototype$4 || (it instanceof Array && own === ArrayPrototype$4.filter) ? filter : own;
+	};
+
+	var filter$1 = filter_1;
+
+	var filter$2 = filter$1;
+
+	var indexOf$4 = indexOf_1;
+
+	var indexOf$5 = indexOf$4;
+
+	var getOwnPropertySymbols = path.Object.getOwnPropertySymbols;
+
+	var getOwnPropertySymbols$1 = getOwnPropertySymbols;
+
+	var getOwnPropertySymbols$2 = getOwnPropertySymbols$1;
+
+	var FAILS_ON_PRIMITIVES = fails(function () { objectKeys(1); });
+
+	// `Object.keys` method
+	// https://tc39.github.io/ecma262/#sec-object.keys
+	_export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
+	  keys: function keys(it) {
+	    return objectKeys(toObject(it));
+	  }
+	});
+
+	var keys$1 = path.Object.keys;
+
+	var keys$2 = keys$1;
+
+	var keys$3 = keys$2;
+
+	function _objectWithoutPropertiesLoose(source, excluded) {
+	  if (source == null) return {};
+	  var target = {};
+
+	  var sourceKeys = keys$3(source);
+
+	  var key, i;
+
+	  for (i = 0; i < sourceKeys.length; i++) {
+	    key = sourceKeys[i];
+	    if (indexOf$5(excluded).call(excluded, key) >= 0) continue;
+	    target[key] = source[key];
+	  }
+
+	  return target;
+	}
+
+	function _objectWithoutProperties(source, excluded) {
+	  if (source == null) return {};
+	  var target = _objectWithoutPropertiesLoose(source, excluded);
+	  var key, i;
+
+	  if (getOwnPropertySymbols$2) {
+	    var sourceSymbolKeys = getOwnPropertySymbols$2(source);
+
+	    for (i = 0; i < sourceSymbolKeys.length; i++) {
+	      key = sourceSymbolKeys[i];
+	      if (indexOf$5(excluded).call(excluded, key) >= 0) continue;
+	      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+	      target[key] = source[key];
+	    }
+	  }
+
+	  return target;
+	}
+
+	var $map = arrayIteration.map;
+
+
+
+	var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('map');
+	// FF49- issue
+	var USES_TO_LENGTH$3 = arrayMethodUsesToLength('map');
+
+	// `Array.prototype.map` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.map
+	// with adding support of @@species
+	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$3 }, {
+	  map: function map(callbackfn /* , thisArg */) {
+	    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+	  }
+	});
+
+	var map = entryVirtual('Array').map;
+
+	var ArrayPrototype$5 = Array.prototype;
+
+	var map_1 = function (it) {
+	  var own = it.map;
+	  return it === ArrayPrototype$5 || (it instanceof Array && own === ArrayPrototype$5.map) ? map : own;
+	};
+
+	var map$1 = map_1;
+
+	var map$2 = map$1;
+
 	// `Object.defineProperty` method
 	// https://tc39.github.io/ecma262/#sec-object.defineproperty
 	_export({ target: 'Object', stat: true, forced: !descriptors, sham: !descriptors }, {
@@ -2071,11 +2193,11 @@ var CircuitVisualization = (function () {
 
 
 	var STRICT_METHOD$1 = arrayMethodIsStrict('forEach');
-	var USES_TO_LENGTH$2 = arrayMethodUsesToLength('forEach');
+	var USES_TO_LENGTH$4 = arrayMethodUsesToLength('forEach');
 
 	// `Array.prototype.forEach` method implementation
 	// https://tc39.github.io/ecma262/#sec-array.prototype.foreach
-	var arrayForEach = (!STRICT_METHOD$1 || !USES_TO_LENGTH$2) ? function forEach(callbackfn /* , thisArg */) {
+	var arrayForEach = (!STRICT_METHOD$1 || !USES_TO_LENGTH$4) ? function forEach(callbackfn /* , thisArg */) {
 	  return $forEach$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	} : [].forEach;
 
@@ -2089,7 +2211,7 @@ var CircuitVisualization = (function () {
 
 	var forEach$1 = forEach;
 
-	var ArrayPrototype$4 = Array.prototype;
+	var ArrayPrototype$6 = Array.prototype;
 
 	var DOMIterables = {
 	  DOMTokenList: true,
@@ -2098,7 +2220,7 @@ var CircuitVisualization = (function () {
 
 	var forEach_1 = function (it) {
 	  var own = it.forEach;
-	  return it === ArrayPrototype$4 || (it instanceof Array && own === ArrayPrototype$4.forEach)
+	  return it === ArrayPrototype$6 || (it instanceof Array && own === ArrayPrototype$6.forEach)
 	    // eslint-disable-next-line no-prototype-builtins
 	    || DOMIterables.hasOwnProperty(classof(it)) ? forEach$1 : own;
 	};
@@ -2110,8 +2232,8 @@ var CircuitVisualization = (function () {
 	var nativeGetOwnPropertyDescriptor$2 = objectGetOwnPropertyDescriptor.f;
 
 
-	var FAILS_ON_PRIMITIVES = fails(function () { nativeGetOwnPropertyDescriptor$2(1); });
-	var FORCED$2 = !descriptors || FAILS_ON_PRIMITIVES;
+	var FAILS_ON_PRIMITIVES$1 = fails(function () { nativeGetOwnPropertyDescriptor$2(1); });
+	var FORCED$2 = !descriptors || FAILS_ON_PRIMITIVES$1;
 
 	// `Object.getOwnPropertyDescriptor` method
 	// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
@@ -2135,57 +2257,9 @@ var CircuitVisualization = (function () {
 
 	var getOwnPropertyDescriptor$3 = getOwnPropertyDescriptor$2;
 
-	var $filter = arrayIteration.filter;
+	var filter$3 = filter_1;
 
-
-
-	var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('filter');
-	// Edge 14- issue
-	var USES_TO_LENGTH$3 = arrayMethodUsesToLength('filter');
-
-	// `Array.prototype.filter` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.filter
-	// with adding support of @@species
-	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$3 }, {
-	  filter: function filter(callbackfn /* , thisArg */) {
-	    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-	  }
-	});
-
-	var filter = entryVirtual('Array').filter;
-
-	var ArrayPrototype$5 = Array.prototype;
-
-	var filter_1 = function (it) {
-	  var own = it.filter;
-	  return it === ArrayPrototype$5 || (it instanceof Array && own === ArrayPrototype$5.filter) ? filter : own;
-	};
-
-	var filter$1 = filter_1;
-
-	var filter$2 = filter$1;
-
-	var getOwnPropertySymbols = path.Object.getOwnPropertySymbols;
-
-	var getOwnPropertySymbols$1 = getOwnPropertySymbols;
-
-	var getOwnPropertySymbols$2 = getOwnPropertySymbols$1;
-
-	var FAILS_ON_PRIMITIVES$1 = fails(function () { objectKeys(1); });
-
-	// `Object.keys` method
-	// https://tc39.github.io/ecma262/#sec-object.keys
-	_export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES$1 }, {
-	  keys: function keys(it) {
-	    return objectKeys(toObject(it));
-	  }
-	});
-
-	var keys$1 = path.Object.keys;
-
-	var keys$2 = keys$1;
-
-	var keys$3 = keys$2;
+	var filter$4 = filter$3;
 
 	function _defineProperty(obj, key, value) {
 	  if (key in obj) {
@@ -2208,7 +2282,7 @@ var CircuitVisualization = (function () {
 	  if (getOwnPropertySymbols$2) {
 	    var symbols = getOwnPropertySymbols$2(object);
 
-	    if (enumerableOnly) symbols = filter$2(symbols).call(symbols, function (sym) {
+	    if (enumerableOnly) symbols = filter$4(symbols).call(symbols, function (sym) {
 	      return getOwnPropertyDescriptor$3(object, sym).enumerable;
 	    });
 	    keys.push.apply(keys, symbols);
@@ -2240,80 +2314,6 @@ var CircuitVisualization = (function () {
 
 	  return target;
 	}
-
-	var indexOf$4 = indexOf_1;
-
-	var indexOf$5 = indexOf$4;
-
-	function _objectWithoutPropertiesLoose(source, excluded) {
-	  if (source == null) return {};
-	  var target = {};
-
-	  var sourceKeys = keys$3(source);
-
-	  var key, i;
-
-	  for (i = 0; i < sourceKeys.length; i++) {
-	    key = sourceKeys[i];
-	    if (indexOf$5(excluded).call(excluded, key) >= 0) continue;
-	    target[key] = source[key];
-	  }
-
-	  return target;
-	}
-
-	function _objectWithoutProperties(source, excluded) {
-	  if (source == null) return {};
-	  var target = _objectWithoutPropertiesLoose(source, excluded);
-	  var key, i;
-
-	  if (getOwnPropertySymbols$2) {
-	    var sourceSymbolKeys = getOwnPropertySymbols$2(source);
-
-	    for (i = 0; i < sourceSymbolKeys.length; i++) {
-	      key = sourceSymbolKeys[i];
-	      if (indexOf$5(excluded).call(excluded, key) >= 0) continue;
-	      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-	      target[key] = source[key];
-	    }
-	  }
-
-	  return target;
-	}
-
-	var $map = arrayIteration.map;
-
-
-
-	var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('map');
-	// FF49- issue
-	var USES_TO_LENGTH$4 = arrayMethodUsesToLength('map');
-
-	// `Array.prototype.map` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.map
-	// with adding support of @@species
-	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$4 }, {
-	  map: function map(callbackfn /* , thisArg */) {
-	    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-	  }
-	});
-
-	var map = entryVirtual('Array').map;
-
-	var ArrayPrototype$6 = Array.prototype;
-
-	var map_1 = function (it) {
-	  var own = it.map;
-	  return it === ArrayPrototype$6 || (it instanceof Array && own === ArrayPrototype$6.map) ? map : own;
-	};
-
-	var map$1 = map_1;
-
-	var map$2 = map$1;
-
-	var filter$3 = filter_1;
-
-	var filter$4 = filter$3;
 
 	var forEach$4 = forEach_1;
 
@@ -5462,23 +5462,50 @@ var CircuitVisualization = (function () {
 	var css_248z = ".tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:\"\";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}";
 	styleInject(css_248z);
 
-	function createPortSvg(parent, name, position) {
-	  var portSvg = Blockly.createSvgElement('rect', {
-	    'class': 'port',
-	    'width': 5,
-	    'height': 5,
-	    'fill': 'red',
-	    'stroke': 'black',
-	    'stroke-width': 1,
-	    'x': position.x,
-	    'y': position.y,
-	    'r': 3
-	  }, parent);
-	  tippy(portSvg, {
-	    content: name
-	  });
-	  return portSvg;
-	}
+	var Port = /*#__PURE__*/function () {
+	  function Port(parent, name, position) {
+	    var _context;
+
+	    _classCallCheck(this, Port);
+
+	    this.position_ = position;
+	    this.element_ = Blockly.createSvgElement('rect', {
+	      'class': 'port',
+	      'width': 5,
+	      'height': 5,
+	      'fill': 'red',
+	      'stroke': 'black',
+	      'stroke-width': 1,
+	      'transform': concat$2(_context = "translate(".concat(position.x, ", ")).call(_context, position.y, ")"),
+	      'r': 3
+	    }, parent);
+	    tippy(this.element_, {
+	      content: name
+	    });
+	  }
+
+	  _createClass(Port, [{
+	    key: "moveTo",
+	    value: function moveTo(position) {
+	      var _context2;
+
+	      this.position_ = position;
+	      this.element_.setAttribute('transform', concat$2(_context2 = "translate(".concat(position.x, ", ")).call(_context2, position.y, ")"));
+	    }
+	  }, {
+	    key: "element",
+	    get: function get() {
+	      return this.element_;
+	    }
+	  }, {
+	    key: "position",
+	    get: function get() {
+	      return this.position_;
+	    }
+	  }]);
+
+	  return Port;
+	}();
 
 	var $findIndex = arrayIteration.findIndex;
 
@@ -6164,9 +6191,9 @@ var CircuitVisualization = (function () {
 	      this.ports_ = map$2(_context2 = robotMapper[this.robot]).call(_context2, function (props) {
 	        var name = props.name,
 	            position = props.position;
-	        var portSvg = createPortSvg(portsGroupSvg, name, position);
+	        var port = new Port(portsGroupSvg, name, position);
 	        return _objectSpread2({
-	          portSvg: portSvg
+	          portSvg: port.element
 	        }, props);
 	      });
 	    }
@@ -23462,7 +23489,7 @@ var CircuitVisualization = (function () {
 
 	  function CircuitVisualization(workspace, dom) {
 	    var _this = this,
-	        _context8;
+	        _context10;
 
 	    _classCallCheck(this, CircuitVisualization);
 
@@ -23479,12 +23506,12 @@ var CircuitVisualization = (function () {
 
 	      switch (event.type) {
 	        case Blockly.Events.CREATE:
-	          _this.createPortView_(block);
+	          _this.createBlockPorts_(block);
 
 	          break;
 
 	        case Blockly.Events.CHANGE:
-	          console.log(_this.connections_);
+	          _this.updateBlockPorts_(block);
 
 	          _this.updateConnections_(block);
 
@@ -23534,22 +23561,48 @@ var CircuitVisualization = (function () {
 	      });
 	    };
 
-	    this.createPortView_ = function (block) {
-	      var _context2;
+	    this.updateBlockPorts_ = function (block) {
+	      var _context2, _context3;
+
+	      var blockSvg = block.getSvgRoot();
+	      var blockWidth = blockSvg.firstChild.getBoundingClientRect().width;
+
+	      forEach$4(_context2 = block.ports).call(_context2, function (port) {
+	        var position = port.position;
+	        port.moveTo(_objectSpread2(_objectSpread2({}, position), {}, {
+	          x: blockWidth - 14
+	        }));
+	      });
+
+	      _this.connections_ = map$2(_context3 = _this.connections_).call(_context3, function (_ref2) {
+	        var position = _ref2.position,
+	            others = _objectWithoutProperties(_ref2, ["position"]);
+
+	        return _objectSpread2({
+	          position: _objectSpread2(_objectSpread2({}, position), {}, {
+	            x: blockWidth - 14
+	          })
+	        }, others);
+	      });
+	    };
+
+	    this.createBlockPorts_ = function (block) {
+	      var _context4;
 
 	      var width = block.svgGroup_.getBoundingClientRect().width;
+	      var ports = [];
 
-	      forEach$4(_context2 = block.inputList).call(_context2, function (input, index) {
-	        var _context3;
+	      forEach$4(_context4 = block.inputList).call(_context4, function (input, index) {
+	        var _context5;
 
 	        if (index === 0) return;
 
-	        forEach$4(_context3 = input.fieldRow).call(_context3, function (_ref2) {
+	        forEach$4(_context5 = input.fieldRow).call(_context5, function (_ref3) {
 	          var _name;
 
-	          var fieldGroup_ = _ref2.fieldGroup_,
-	              name = _ref2.name,
-	              value_ = _ref2.value_;
+	          var fieldGroup_ = _ref3.fieldGroup_,
+	              name = _ref3.name,
+	              value_ = _ref3.value_;
 	          name = (_name = name) !== null && _name !== void 0 ? _name : value_;
 
 	          if (name) {
@@ -23558,17 +23611,12 @@ var CircuitVisualization = (function () {
 	            var _fieldGroup_$transfor = fieldGroup_.transform.baseVal.getItem(0),
 	                matrix = _fieldGroup_$transfor.matrix;
 
-	            var margin = width - matrix.e - 22;
-
-	            if (/Google Inc/.test(navigator.vendor)) {
-	              margin += 8;
-	            }
-
 	            var position = {
-	              x: matrix.e + margin,
+	              x: width - 14,
 	              y: matrix.f + 6
 	            };
-	            createPortSvg(block.getSvgRoot(), name, position);
+	            var port = new Port(block.getSvgRoot(), name, position);
+	            ports.push(port);
 	            var wireSvg = Blockly.createSvgElement('path', {
 	              'fill': 'none',
 	              'stroke': '#40B942',
@@ -23587,20 +23635,22 @@ var CircuitVisualization = (function () {
 	          }
 	        });
 	      });
+
+	      block.ports = ports;
 	    };
 
 	    this.updateConnections_ = function (block) {
-	      var _context4, _context5, _context6;
+	      var _context6, _context7, _context8;
 
-	      var connections = filter$4(_context4 = _this.connections_).call(_context4, function (connection) {
+	      var connections = filter$2(_context6 = _this.connections_).call(_context6, function (connection) {
 	        return connection.blockId === block.id;
 	      });
 
-	      connections = map$2(connections).call(connections, function (_ref3) {
+	      connections = map$2(connections).call(connections, function (_ref4) {
 	        var _block$getFieldValue2;
 
-	        var name = _ref3.name,
-	            others = _objectWithoutProperties(_ref3, ["name"]);
+	        var name = _ref4.name,
+	            others = _objectWithoutProperties(_ref4, ["name"]);
 
 	        return _objectSpread2(_objectSpread2({
 	          name: name
@@ -23608,18 +23658,18 @@ var CircuitVisualization = (function () {
 	          connectedTo: fixPortValue((_block$getFieldValue2 = block.getFieldValue(name)) !== null && _block$getFieldValue2 !== void 0 ? _block$getFieldValue2 : others.connectedTo)
 	        });
 	      });
-	      _this.connections_ = filter$4(_context5 = _this.connections_).call(_context5, function (connection) {
+	      _this.connections_ = filter$2(_context7 = _this.connections_).call(_context7, function (connection) {
 	        return connection.blockId !== block.id;
 	      });
-	      _this.connections_ = concat$2(_context6 = []).call(_context6, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
+	      _this.connections_ = concat$2(_context8 = []).call(_context8, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
 
 	      _this.renderConnections_();
 	    };
 
 	    this.deleteConnections_ = function (blockId) {
-	      var _context7;
+	      var _context9;
 
-	      _this.connections_ = filter$4(_context7 = _this.connections_).call(_context7, function (connection) {
+	      _this.connections_ = filter$2(_context9 = _this.connections_).call(_context9, function (connection) {
 	        if (connection.blockId === blockId) {
 	          connection.wireSvg.remove();
 	          return false;
@@ -23649,7 +23699,7 @@ var CircuitVisualization = (function () {
 	    this.workspace_ = workspace;
 	    this.dom_ = dom;
 
-	    var robotName = concat$2(_context8 = "".concat(workspace.device, "_")).call(_context8, workspace.subDevice);
+	    var robotName = concat$2(_context10 = "".concat(workspace.device, "_")).call(_context10, workspace.subDevice);
 
 	    Blockly.Blocks['robot'] = createRobotBlock(robotName);
 	    this.workspace_.addChangeListener(this.onChangeListener_);

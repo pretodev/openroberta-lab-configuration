@@ -1,4 +1,4 @@
-import { createPortSvg } from './utils';
+import Port from './port';
 import { createRobotBlock } from './robot_block';
 import WireDrawer from './wires';
 import injectCSS from './css';
@@ -70,10 +70,10 @@ export default class CircuitVisualization {
 
     switch (event.type) {
       case Blockly.Events.CREATE:
-        this.createPortView_(block);
+        this.createBlockPorts_(block);
         break;
       case Blockly.Events.CHANGE:
-        console.log(this.connections_);
+        this.updateBlockPorts_(block);
         this.updateConnections_(block);
         break;
       case Blockly.Events.DELETE:
@@ -114,9 +114,27 @@ export default class CircuitVisualization {
     });
   }
 
-  createPortView_ = (block) => {
+  updateBlockPorts_ = (block) => {
+    const blockSvg = block.getSvgRoot();
+
+    const blockWidth = blockSvg.firstChild.getBoundingClientRect().width;
+
+    block.ports.forEach(port => {
+      const position = port.position;
+      port.moveTo({...position, x: blockWidth - 14});
+    }); 
+
+    this.connections_ = this.connections_.map(({position, ...others}) => ({
+      position: {...position, x: blockWidth - 14},
+      ...others,
+    }));
+  }
+
+  createBlockPorts_ = (block) => {
 
     const width = block.svgGroup_.getBoundingClientRect().width;
+
+    const ports = [];
 
     block.inputList.forEach((input, index) => {
 
@@ -127,15 +145,12 @@ export default class CircuitVisualization {
 
         if (name) {
           const { matrix } = fieldGroup_.transform.baseVal.getItem(0);
-          let margin = width - matrix.e - 22;
 
-          if(/Google Inc/.test(navigator.vendor)){
-            margin += 8;
-          }
+          const position = { x: width - 14, y: matrix.f + 6 };
 
-          const position = { x: (matrix.e + margin), y: matrix.f + 6 };
+          const port = new Port(block.getSvgRoot(), name, position);
 
-          createPortSvg(block.getSvgRoot(), name, position);
+          ports.push(port);
 
           const wireSvg = Blockly.createSvgElement('path', {
             'fill': 'none',
@@ -156,6 +171,8 @@ export default class CircuitVisualization {
         };
       });
     });
+
+    block.ports = ports;
   }
 
   updateConnections_ = (block) => {

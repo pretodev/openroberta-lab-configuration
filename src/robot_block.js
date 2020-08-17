@@ -1,4 +1,4 @@
-import { createPortSvg } from './utils';
+import Port from './port';
 import robotMapper from './robots/robot_mapper';
 
 class RobotViewField extends Blockly.Field {
@@ -50,8 +50,8 @@ class RobotViewField extends Blockly.Field {
     const portsGroupSvg = Blockly.createSvgElement('g', {}, this.element_);
     this.ports_ = robotMapper[this.robot].map((props) => {
       const { name, position } = props;
-      const portSvg = createPortSvg(portsGroupSvg, name, position);
-      return { portSvg, ...props };
+      const port = new Port(portsGroupSvg, name, position);
+      return { portSvg: port.element, ...props };
     });
   }
 
