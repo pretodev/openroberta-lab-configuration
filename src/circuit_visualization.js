@@ -2,6 +2,7 @@ import { createPortSvg } from './utils';
 import { createRobotBlock } from './robot_block';
 import WireDrawer from './wires';
 import injectCSS from './css';
+import fixPortValue from './fix_port_value';
 
 export default class CircuitVisualization {
 
@@ -143,7 +144,7 @@ export default class CircuitVisualization {
 
           this.connections_.push({
             blockId: block.id,
-            connectedTo: block.getFieldValue(name) ?? value_,
+            connectedTo: fixPortValue(block.getFieldValue(name) ?? value_),
             name,
             position,
             wireSvg,

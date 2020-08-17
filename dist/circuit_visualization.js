@@ -23438,6 +23438,15 @@ var CircuitVisualization = (function () {
 	  style.textContent = css;
 	}
 
+	var ports = {
+	  'LED_BUILTIN': '13'
+	};
+	function fixPortValue (portValue) {
+	  var _ports$portValue;
+
+	  return (_ports$portValue = ports[portValue]) !== null && _ports$portValue !== void 0 ? _ports$portValue : portValue;
+	}
+
 	var CircuitVisualization = /*#__PURE__*/function () {
 	  _createClass(CircuitVisualization, null, [{
 	    key: "domToWorkspace",
@@ -23568,7 +23577,7 @@ var CircuitVisualization = (function () {
 
 	            _this.connections_.push({
 	              blockId: block.id,
-	              connectedTo: (_block$getFieldValue = block.getFieldValue(name)) !== null && _block$getFieldValue !== void 0 ? _block$getFieldValue : value_,
+	              connectedTo: fixPortValue((_block$getFieldValue = block.getFieldValue(name)) !== null && _block$getFieldValue !== void 0 ? _block$getFieldValue : value_),
 	              name: name,
 	              position: position,
 	              wireSvg: wireSvg
