@@ -23467,8 +23467,6 @@ var CircuitVisualization = (function () {
 	    _classCallCheck(this, CircuitVisualization);
 
 	    this.onChangeListener_ = function (event) {
-	      console.log(_this.connections_);
-
 	      _this.renderConnections_();
 
 	      if (!event.blockId) {
@@ -23477,7 +23475,7 @@ var CircuitVisualization = (function () {
 
 	      var block = _this.workspace_.getBlockById(event.blockId);
 
-	      _this.renderBlockBackground_(block);
+	      if (event.type !== Blockly.Events.UI) _this.renderBlockBackground_(block);
 
 	      switch (event.type) {
 	        case Blockly.Events.CREATE:
@@ -23486,6 +23484,8 @@ var CircuitVisualization = (function () {
 	          break;
 
 	        case Blockly.Events.CHANGE:
+	          console.log(_this.connections_);
+
 	          _this.updateConnections_(block);
 
 	          break;
@@ -23597,19 +23597,23 @@ var CircuitVisualization = (function () {
 	      });
 
 	      connections = map$2(connections).call(connections, function (_ref3) {
+	        var _block$getFieldValue2;
+
 	        var name = _ref3.name,
 	            others = _objectWithoutProperties(_ref3, ["name"]);
 
 	        return _objectSpread2(_objectSpread2({
 	          name: name
 	        }, others), {}, {
-	          connectedTo: block.getFieldValue(name)
+	          connectedTo: fixPortValue((_block$getFieldValue2 = block.getFieldValue(name)) !== null && _block$getFieldValue2 !== void 0 ? _block$getFieldValue2 : others.connectedTo)
 	        });
 	      });
 	      _this.connections_ = filter$4(_context5 = _this.connections_).call(_context5, function (connection) {
 	        return connection.blockId !== block.id;
 	      });
 	      _this.connections_ = concat$2(_context6 = []).call(_context6, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
+
+	      _this.renderConnections_();
 	    };
 
 	    this.deleteConnections_ = function (blockId) {

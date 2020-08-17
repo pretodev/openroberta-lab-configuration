@@ -59,19 +59,21 @@ export default class CircuitVisualization {
   }
 
   onChangeListener_ = (event) => {
-    console.log(this.connections_);
     this.renderConnections_();
     if (!event.blockId) {
       return;
     }
     const block = this.workspace_.getBlockById(event.blockId);
-    this.renderBlockBackground_(block);
+
+    if(event.type !== Blockly.Events.UI)
+      this.renderBlockBackground_(block);
 
     switch (event.type) {
       case Blockly.Events.CREATE:
         this.createPortView_(block);
         break;
       case Blockly.Events.CHANGE:
+        console.log(this.connections_);
         this.updateConnections_(block);
         break;
       case Blockly.Events.DELETE:
@@ -163,13 +165,15 @@ export default class CircuitVisualization {
     connections = connections.map(({ name, ...others }) => ({
       name,
       ...others,
-      connectedTo: block.getFieldValue(name),
+      connectedTo: fixPortValue(block.getFieldValue(name) ?? others.connectedTo),
     }));
 
     this.connections_ = this.connections_
       .filter(connection => connection.blockId !== block.id);
 
     this.connections_ = [...this.connections_, ...connections];
+
+    this.renderConnections_();
   }
 
   deleteConnections_ = (blockId) => {
