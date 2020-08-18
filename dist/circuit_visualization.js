@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Mon Aug 17 2020 18:18:12 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Mon Aug 17 2020 20:16:58 GMT-0300 (Horário Padrão de Brasília)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -348,6 +348,18 @@ var CircuitVisualization = (function () {
 	  }
 	};
 
+	// `IsArray` abstract operation
+	// https://tc39.github.io/ecma262/#sec-isarray
+	var isArray = Array.isArray || function isArray(arg) {
+	  return classofRaw(arg) == 'Array';
+	};
+
+	// `ToObject` abstract operation
+	// https://tc39.github.io/ecma262/#sec-toobject
+	var toObject = function (argument) {
+	  return Object(requireObjectCoercible(argument));
+	};
+
 	var ceil = Math.ceil;
 	var floor = Math.floor;
 
@@ -363,184 +375,6 @@ var CircuitVisualization = (function () {
 	// https://tc39.github.io/ecma262/#sec-tolength
 	var toLength = function (argument) {
 	  return argument > 0 ? min(toInteger(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
-	};
-
-	var max = Math.max;
-	var min$1 = Math.min;
-
-	// Helper for a popular repeating case of the spec:
-	// Let integer be ? ToInteger(index).
-	// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
-	var toAbsoluteIndex = function (index, length) {
-	  var integer = toInteger(index);
-	  return integer < 0 ? max(integer + length, 0) : min$1(integer, length);
-	};
-
-	// `Array.prototype.{ indexOf, includes }` methods implementation
-	var createMethod = function (IS_INCLUDES) {
-	  return function ($this, el, fromIndex) {
-	    var O = toIndexedObject($this);
-	    var length = toLength(O.length);
-	    var index = toAbsoluteIndex(fromIndex, length);
-	    var value;
-	    // Array#includes uses SameValueZero equality algorithm
-	    // eslint-disable-next-line no-self-compare
-	    if (IS_INCLUDES && el != el) while (length > index) {
-	      value = O[index++];
-	      // eslint-disable-next-line no-self-compare
-	      if (value != value) return true;
-	    // Array#indexOf ignores holes, Array#includes - not
-	    } else for (;length > index; index++) {
-	      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
-	    } return !IS_INCLUDES && -1;
-	  };
-	};
-
-	var arrayIncludes = {
-	  // `Array.prototype.includes` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.includes
-	  includes: createMethod(true),
-	  // `Array.prototype.indexOf` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.indexof
-	  indexOf: createMethod(false)
-	};
-
-	var arrayMethodIsStrict = function (METHOD_NAME, argument) {
-	  var method = [][METHOD_NAME];
-	  return !!method && fails(function () {
-	    // eslint-disable-next-line no-useless-call,no-throw-literal
-	    method.call(null, argument || function () { throw 1; }, 1);
-	  });
-	};
-
-	var defineProperty = Object.defineProperty;
-	var cache = {};
-
-	var thrower = function (it) { throw it; };
-
-	var arrayMethodUsesToLength = function (METHOD_NAME, options) {
-	  if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];
-	  if (!options) options = {};
-	  var method = [][METHOD_NAME];
-	  var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;
-	  var argument0 = has(options, 0) ? options[0] : thrower;
-	  var argument1 = has(options, 1) ? options[1] : undefined;
-
-	  return cache[METHOD_NAME] = !!method && !fails(function () {
-	    if (ACCESSORS && !descriptors) return true;
-	    var O = { length: -1 };
-
-	    if (ACCESSORS) defineProperty(O, 1, { enumerable: true, get: thrower });
-	    else O[1] = 1;
-
-	    method.call(O, argument0, argument1);
-	  });
-	};
-
-	var $indexOf = arrayIncludes.indexOf;
-
-
-
-	var nativeIndexOf = [].indexOf;
-
-	var NEGATIVE_ZERO = !!nativeIndexOf && 1 / [1].indexOf(1, -0) < 0;
-	var STRICT_METHOD = arrayMethodIsStrict('indexOf');
-	var USES_TO_LENGTH = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
-
-	// `Array.prototype.indexOf` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.indexof
-	_export({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD || !USES_TO_LENGTH }, {
-	  indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
-	    return NEGATIVE_ZERO
-	      // convert -0 to +0
-	      ? nativeIndexOf.apply(this, arguments) || 0
-	      : $indexOf(this, searchElement, arguments.length > 1 ? arguments[1] : undefined);
-	  }
-	});
-
-	var entryVirtual = function (CONSTRUCTOR) {
-	  return path[CONSTRUCTOR + 'Prototype'];
-	};
-
-	var indexOf = entryVirtual('Array').indexOf;
-
-	var ArrayPrototype = Array.prototype;
-
-	var indexOf_1 = function (it) {
-	  var own = it.indexOf;
-	  return it === ArrayPrototype || (it instanceof Array && own === ArrayPrototype.indexOf) ? indexOf : own;
-	};
-
-	var indexOf$1 = indexOf_1;
-
-	var indexOf$2 = indexOf$1;
-
-	// a string of all valid unicode whitespaces
-	// eslint-disable-next-line max-len
-	var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-	var whitespace = '[' + whitespaces + ']';
-	var ltrim = RegExp('^' + whitespace + whitespace + '*');
-	var rtrim = RegExp(whitespace + whitespace + '*$');
-
-	// `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-	var createMethod$1 = function (TYPE) {
-	  return function ($this) {
-	    var string = String(requireObjectCoercible($this));
-	    if (TYPE & 1) string = string.replace(ltrim, '');
-	    if (TYPE & 2) string = string.replace(rtrim, '');
-	    return string;
-	  };
-	};
-
-	var stringTrim = {
-	  // `String.prototype.{ trimLeft, trimStart }` methods
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.trimstart
-	  start: createMethod$1(1),
-	  // `String.prototype.{ trimRight, trimEnd }` methods
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.trimend
-	  end: createMethod$1(2),
-	  // `String.prototype.trim` method
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.trim
-	  trim: createMethod$1(3)
-	};
-
-	var trim = stringTrim.trim;
-
-
-	var $parseFloat = global_1.parseFloat;
-	var FORCED = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
-
-	// `parseFloat` method
-	// https://tc39.github.io/ecma262/#sec-parsefloat-string
-	var numberParseFloat = FORCED ? function parseFloat(string) {
-	  var trimmedString = trim(String(string));
-	  var result = $parseFloat(trimmedString);
-	  return result === 0 && trimmedString.charAt(0) == '-' ? -0 : result;
-	} : $parseFloat;
-
-	// `parseFloat` method
-	// https://tc39.github.io/ecma262/#sec-parsefloat-string
-	_export({ global: true, forced: parseFloat != numberParseFloat }, {
-	  parseFloat: numberParseFloat
-	});
-
-	var _parseFloat = path.parseFloat;
-
-	var _parseFloat$1 = _parseFloat;
-
-	var _parseFloat$2 = _parseFloat$1;
-
-	// `IsArray` abstract operation
-	// https://tc39.github.io/ecma262/#sec-isarray
-	var isArray = Array.isArray || function isArray(arg) {
-	  return classofRaw(arg) == 'Array';
-	};
-
-	// `ToObject` abstract operation
-	// https://tc39.github.io/ecma262/#sec-toobject
-	var toObject = function (argument) {
-	  return Object(requireObjectCoercible(argument));
 	};
 
 	var createProperty = function (object, key, value) {
@@ -685,12 +519,12 @@ var CircuitVisualization = (function () {
 	  return spreadable !== undefined ? !!spreadable : isArray(O);
 	};
 
-	var FORCED$1 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
+	var FORCED = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
 
 	// `Array.prototype.concat` method
 	// https://tc39.github.io/ecma262/#sec-array.prototype.concat
 	// with adding support of @@isConcatSpreadable and @@species
-	_export({ target: 'Array', proto: true, forced: FORCED$1 }, {
+	_export({ target: 'Array', proto: true, forced: FORCED }, {
 	  concat: function concat(arg) { // eslint-disable-line no-unused-vars
 	    var O = toObject(this);
 	    var A = arraySpeciesCreate(O, 0);
@@ -712,13 +546,17 @@ var CircuitVisualization = (function () {
 	  }
 	});
 
+	var entryVirtual = function (CONSTRUCTOR) {
+	  return path[CONSTRUCTOR + 'Prototype'];
+	};
+
 	var concat = entryVirtual('Array').concat;
 
-	var ArrayPrototype$1 = Array.prototype;
+	var ArrayPrototype = Array.prototype;
 
 	var concat_1 = function (it) {
 	  var own = it.concat;
-	  return it === ArrayPrototype$1 || (it instanceof Array && own === ArrayPrototype$1.concat) ? concat : own;
+	  return it === ArrayPrototype || (it instanceof Array && own === ArrayPrototype.concat) ? concat : own;
 	};
 
 	var concat$1 = concat_1;
@@ -752,7 +590,7 @@ var CircuitVisualization = (function () {
 	}
 
 	// `String.prototype.{ codePointAt, at }` methods implementation
-	var createMethod$2 = function (CONVERT_TO_STRING) {
+	var createMethod = function (CONVERT_TO_STRING) {
 	  return function ($this, pos) {
 	    var S = String(requireObjectCoercible($this));
 	    var position = toInteger(pos);
@@ -770,10 +608,10 @@ var CircuitVisualization = (function () {
 	var stringMultibyte = {
 	  // `String.prototype.codePointAt` method
 	  // https://tc39.github.io/ecma262/#sec-string.prototype.codepointat
-	  codeAt: createMethod$2(false),
+	  codeAt: createMethod(false),
 	  // `String.prototype.at` method
 	  // https://github.com/mathiasbynens/String.prototype.at
-	  charAt: createMethod$2(true)
+	  charAt: createMethod(true)
 	};
 
 	var functionToString = Function.toString;
@@ -896,7 +734,47 @@ var CircuitVisualization = (function () {
 	  BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS
 	};
 
-	var indexOf$3 = arrayIncludes.indexOf;
+	var max = Math.max;
+	var min$1 = Math.min;
+
+	// Helper for a popular repeating case of the spec:
+	// Let integer be ? ToInteger(index).
+	// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
+	var toAbsoluteIndex = function (index, length) {
+	  var integer = toInteger(index);
+	  return integer < 0 ? max(integer + length, 0) : min$1(integer, length);
+	};
+
+	// `Array.prototype.{ indexOf, includes }` methods implementation
+	var createMethod$1 = function (IS_INCLUDES) {
+	  return function ($this, el, fromIndex) {
+	    var O = toIndexedObject($this);
+	    var length = toLength(O.length);
+	    var index = toAbsoluteIndex(fromIndex, length);
+	    var value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    // eslint-disable-next-line no-self-compare
+	    if (IS_INCLUDES && el != el) while (length > index) {
+	      value = O[index++];
+	      // eslint-disable-next-line no-self-compare
+	      if (value != value) return true;
+	    // Array#indexOf ignores holes, Array#includes - not
+	    } else for (;length > index; index++) {
+	      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+	var arrayIncludes = {
+	  // `Array.prototype.includes` method
+	  // https://tc39.github.io/ecma262/#sec-array.prototype.includes
+	  includes: createMethod$1(true),
+	  // `Array.prototype.indexOf` method
+	  // https://tc39.github.io/ecma262/#sec-array.prototype.indexof
+	  indexOf: createMethod$1(false)
+	};
+
+	var indexOf = arrayIncludes.indexOf;
 
 
 	var objectKeysInternal = function (object, names) {
@@ -907,7 +785,7 @@ var CircuitVisualization = (function () {
 	  for (key in O) !has(hiddenKeys, key) && has(O, key) && result.push(key);
 	  // Don't enum bug & hidden keys
 	  while (names.length > i) if (has(O, key = names[i++])) {
-	    ~indexOf$3(result, key) || result.push(key);
+	    ~indexOf(result, key) || result.push(key);
 	  }
 	  return result;
 	};
@@ -1050,7 +928,7 @@ var CircuitVisualization = (function () {
 	  return '[object ' + classof(this) + ']';
 	};
 
-	var defineProperty$1 = objectDefineProperty.f;
+	var defineProperty = objectDefineProperty.f;
 
 
 
@@ -1062,7 +940,7 @@ var CircuitVisualization = (function () {
 	  if (it) {
 	    var target = STATIC ? it : it.prototype;
 	    if (!has(target, TO_STRING_TAG$2)) {
-	      defineProperty$1(target, TO_STRING_TAG$2, { configurable: true, value: TAG });
+	      defineProperty(target, TO_STRING_TAG$2, { configurable: true, value: TAG });
 	    }
 	    if (SET_METHOD && !toStringTagSupport) {
 	      createNonEnumerableProperty(target, 'toString', objectToString);
@@ -1234,11 +1112,11 @@ var CircuitVisualization = (function () {
 	};
 
 	var ITERATOR$2 = wellKnownSymbol('iterator');
-	var ArrayPrototype$2 = Array.prototype;
+	var ArrayPrototype$1 = Array.prototype;
 
 	// check on default Array iterator
 	var isArrayIteratorMethod = function (it) {
-	  return it !== undefined && (iterators.Array === it || ArrayPrototype$2[ITERATOR$2] === it);
+	  return it !== undefined && (iterators.Array === it || ArrayPrototype$1[ITERATOR$2] === it);
 	};
 
 	var ITERATOR$3 = wellKnownSymbol('iterator');
@@ -1488,11 +1366,11 @@ var CircuitVisualization = (function () {
 		f: f$6
 	};
 
-	var defineProperty$2 = objectDefineProperty.f;
+	var defineProperty$1 = objectDefineProperty.f;
 
 	var defineWellKnownSymbol = function (NAME) {
 	  var Symbol = path.Symbol || (path.Symbol = {});
-	  if (!has(Symbol, NAME)) defineProperty$2(Symbol, NAME, {
+	  if (!has(Symbol, NAME)) defineProperty$1(Symbol, NAME, {
 	    value: wellKnownSymbolWrapped.f(NAME)
 	  });
 	};
@@ -1500,7 +1378,7 @@ var CircuitVisualization = (function () {
 	var push = [].push;
 
 	// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
-	var createMethod$3 = function (TYPE) {
+	var createMethod$2 = function (TYPE) {
 	  var IS_MAP = TYPE == 1;
 	  var IS_FILTER = TYPE == 2;
 	  var IS_SOME = TYPE == 3;
@@ -1536,25 +1414,25 @@ var CircuitVisualization = (function () {
 	var arrayIteration = {
 	  // `Array.prototype.forEach` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
-	  forEach: createMethod$3(0),
+	  forEach: createMethod$2(0),
 	  // `Array.prototype.map` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.map
-	  map: createMethod$3(1),
+	  map: createMethod$2(1),
 	  // `Array.prototype.filter` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
-	  filter: createMethod$3(2),
+	  filter: createMethod$2(2),
 	  // `Array.prototype.some` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.some
-	  some: createMethod$3(3),
+	  some: createMethod$2(3),
 	  // `Array.prototype.every` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.every
-	  every: createMethod$3(4),
+	  every: createMethod$2(4),
 	  // `Array.prototype.find` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.find
-	  find: createMethod$3(5),
+	  find: createMethod$2(5),
 	  // `Array.prototype.findIndex` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
-	  findIndex: createMethod$3(6)
+	  findIndex: createMethod$2(6)
 	};
 
 	var $forEach = arrayIteration.forEach;
@@ -1923,8 +1801,32 @@ var CircuitVisualization = (function () {
 	  if (typeof symbol$2 !== "undefined" && isIterable$1(Object(iter))) return from_1$2(iter);
 	}
 
+	var defineProperty$2 = Object.defineProperty;
+	var cache = {};
+
+	var thrower = function (it) { throw it; };
+
+	var arrayMethodUsesToLength = function (METHOD_NAME, options) {
+	  if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];
+	  if (!options) options = {};
+	  var method = [][METHOD_NAME];
+	  var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;
+	  var argument0 = has(options, 0) ? options[0] : thrower;
+	  var argument1 = has(options, 1) ? options[1] : undefined;
+
+	  return cache[METHOD_NAME] = !!method && !fails(function () {
+	    if (ACCESSORS && !descriptors) return true;
+	    var O = { length: -1 };
+
+	    if (ACCESSORS) defineProperty$2(O, 1, { enumerable: true, get: thrower });
+	    else O[1] = 1;
+
+	    method.call(O, argument0, argument1);
+	  });
+	};
+
 	var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('slice');
-	var USES_TO_LENGTH$1 = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
+	var USES_TO_LENGTH = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
 
 	var SPECIES$2 = wellKnownSymbol('species');
 	var nativeSlice = [].slice;
@@ -1933,7 +1835,7 @@ var CircuitVisualization = (function () {
 	// `Array.prototype.slice` method
 	// https://tc39.github.io/ecma262/#sec-array.prototype.slice
 	// fallback for not array-like ES3 strings and DOM objects
-	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH$1 }, {
+	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {
 	  slice: function slice(start, end) {
 	    var O = toIndexedObject(this);
 	    var length = toLength(O.length);
@@ -1963,11 +1865,11 @@ var CircuitVisualization = (function () {
 
 	var slice = entryVirtual('Array').slice;
 
-	var ArrayPrototype$3 = Array.prototype;
+	var ArrayPrototype$2 = Array.prototype;
 
 	var slice_1 = function (it) {
 	  var own = it.slice;
-	  return it === ArrayPrototype$3 || (it instanceof Array && own === ArrayPrototype$3.slice) ? slice : own;
+	  return it === ArrayPrototype$2 || (it instanceof Array && own === ArrayPrototype$2.slice) ? slice : own;
 	};
 
 	var slice$1 = slice_1;
@@ -2001,12 +1903,12 @@ var CircuitVisualization = (function () {
 
 	var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('filter');
 	// Edge 14- issue
-	var USES_TO_LENGTH$2 = arrayMethodUsesToLength('filter');
+	var USES_TO_LENGTH$1 = arrayMethodUsesToLength('filter');
 
 	// `Array.prototype.filter` method
 	// https://tc39.github.io/ecma262/#sec-array.prototype.filter
 	// with adding support of @@species
-	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$2 }, {
+	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$1 }, {
 	  filter: function filter(callbackfn /* , thisArg */) {
 	    return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	  }
@@ -2014,20 +1916,58 @@ var CircuitVisualization = (function () {
 
 	var filter = entryVirtual('Array').filter;
 
-	var ArrayPrototype$4 = Array.prototype;
+	var ArrayPrototype$3 = Array.prototype;
 
 	var filter_1 = function (it) {
 	  var own = it.filter;
-	  return it === ArrayPrototype$4 || (it instanceof Array && own === ArrayPrototype$4.filter) ? filter : own;
+	  return it === ArrayPrototype$3 || (it instanceof Array && own === ArrayPrototype$3.filter) ? filter : own;
 	};
 
 	var filter$1 = filter_1;
 
 	var filter$2 = filter$1;
 
-	var indexOf$4 = indexOf_1;
+	var arrayMethodIsStrict = function (METHOD_NAME, argument) {
+	  var method = [][METHOD_NAME];
+	  return !!method && fails(function () {
+	    // eslint-disable-next-line no-useless-call,no-throw-literal
+	    method.call(null, argument || function () { throw 1; }, 1);
+	  });
+	};
 
-	var indexOf$5 = indexOf$4;
+	var $indexOf = arrayIncludes.indexOf;
+
+
+
+	var nativeIndexOf = [].indexOf;
+
+	var NEGATIVE_ZERO = !!nativeIndexOf && 1 / [1].indexOf(1, -0) < 0;
+	var STRICT_METHOD = arrayMethodIsStrict('indexOf');
+	var USES_TO_LENGTH$2 = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
+
+	// `Array.prototype.indexOf` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.indexof
+	_export({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD || !USES_TO_LENGTH$2 }, {
+	  indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
+	    return NEGATIVE_ZERO
+	      // convert -0 to +0
+	      ? nativeIndexOf.apply(this, arguments) || 0
+	      : $indexOf(this, searchElement, arguments.length > 1 ? arguments[1] : undefined);
+	  }
+	});
+
+	var indexOf$1 = entryVirtual('Array').indexOf;
+
+	var ArrayPrototype$4 = Array.prototype;
+
+	var indexOf_1 = function (it) {
+	  var own = it.indexOf;
+	  return it === ArrayPrototype$4 || (it instanceof Array && own === ArrayPrototype$4.indexOf) ? indexOf$1 : own;
+	};
+
+	var indexOf$2 = indexOf_1;
+
+	var indexOf$3 = indexOf$2;
 
 	var getOwnPropertySymbols = path.Object.getOwnPropertySymbols;
 
@@ -2061,7 +2001,7 @@ var CircuitVisualization = (function () {
 
 	  for (i = 0; i < sourceKeys.length; i++) {
 	    key = sourceKeys[i];
-	    if (indexOf$5(excluded).call(excluded, key) >= 0) continue;
+	    if (indexOf$3(excluded).call(excluded, key) >= 0) continue;
 	    target[key] = source[key];
 	  }
 
@@ -2078,7 +2018,7 @@ var CircuitVisualization = (function () {
 
 	    for (i = 0; i < sourceSymbolKeys.length; i++) {
 	      key = sourceSymbolKeys[i];
-	      if (indexOf$5(excluded).call(excluded, key) >= 0) continue;
+	      if (indexOf$3(excluded).call(excluded, key) >= 0) continue;
 	      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
 	      target[key] = source[key];
 	    }
@@ -2233,11 +2173,11 @@ var CircuitVisualization = (function () {
 
 
 	var FAILS_ON_PRIMITIVES$1 = fails(function () { nativeGetOwnPropertyDescriptor$2(1); });
-	var FORCED$2 = !descriptors || FAILS_ON_PRIMITIVES$1;
+	var FORCED$1 = !descriptors || FAILS_ON_PRIMITIVES$1;
 
 	// `Object.getOwnPropertyDescriptor` method
 	// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
-	_export({ target: 'Object', stat: true, forced: FORCED$2, sham: !descriptors }, {
+	_export({ target: 'Object', stat: true, forced: FORCED$1, sham: !descriptors }, {
 	  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
 	    return nativeGetOwnPropertyDescriptor$2(toIndexedObject(it), key);
 	  }
@@ -5629,9 +5569,9 @@ var CircuitVisualization = (function () {
 	var ARGS_BUG = !fails(function () {
 	  nativeConstruct(function () { /* empty */ });
 	});
-	var FORCED$3 = NEW_TARGET_BUG || ARGS_BUG;
+	var FORCED$2 = NEW_TARGET_BUG || ARGS_BUG;
 
-	_export({ target: 'Reflect', stat: true, forced: FORCED$3, sham: FORCED$3 }, {
+	_export({ target: 'Reflect', stat: true, forced: FORCED$2, sham: FORCED$2 }, {
 	  construct: function construct(Target, args /* , newTarget */) {
 	    aFunction(Target);
 	    anObject(args);
@@ -23564,13 +23504,12 @@ var CircuitVisualization = (function () {
 	    this.updateBlockPorts_ = function (block) {
 	      var _context2, _context3;
 
-	      var blockSvg = block.getSvgRoot();
-	      var blockWidth = blockSvg.firstChild.getBoundingClientRect().width;
+	      var positionX = block.width + 4;
 
 	      forEach$4(_context2 = block.ports).call(_context2, function (port) {
 	        var position = port.position;
 	        port.moveTo(_objectSpread2(_objectSpread2({}, position), {}, {
-	          x: blockWidth - 14
+	          x: positionX
 	        }));
 	      });
 
@@ -23580,7 +23519,7 @@ var CircuitVisualization = (function () {
 
 	        return _objectSpread2({
 	          position: _objectSpread2(_objectSpread2({}, position), {}, {
-	            x: blockWidth - 14
+	            x: positionX
 	          })
 	        }, others);
 	      });
@@ -23589,7 +23528,7 @@ var CircuitVisualization = (function () {
 	    this.createBlockPorts_ = function (block) {
 	      var _context4;
 
-	      var width = block.svgGroup_.getBoundingClientRect().width;
+	      var positionX = block.width + 4;
 	      var ports = [];
 
 	      forEach$4(_context4 = block.inputList).call(_context4, function (input, index) {
@@ -23612,7 +23551,7 @@ var CircuitVisualization = (function () {
 	                matrix = _fieldGroup_$transfor.matrix;
 
 	            var position = {
-	              x: width - 14,
+	              x: positionX,
 	              y: matrix.f + 6
 	            };
 	            var port = new Port(block.getSvgRoot(), name, position);
@@ -23681,12 +23620,9 @@ var CircuitVisualization = (function () {
 
 	    this.renderBlockBackground_ = function (block) {
 	      if (!block) return;
+	      var newWidth = block.width + 16;
 	      var path = block.svgPath_.getAttribute('d');
-
-	      var width = _parseFloat$2(path.substring(indexOf$2(path).call(path, "H") + 2, indexOf$2(path).call(path, "v") - 1));
-
-	      var newWidth = width + 16;
-	      path = path.replace(width.toString(), newWidth.toString());
+	      path = path.replace(block.width.toString(), newWidth.toString());
 	      block.svgPath_.setAttribute('d', path);
 	    };
 

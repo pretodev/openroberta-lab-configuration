@@ -115,24 +115,22 @@ export default class CircuitVisualization {
   }
 
   updateBlockPorts_ = (block) => {
-    const blockSvg = block.getSvgRoot();
-
-    const blockWidth = blockSvg.firstChild.getBoundingClientRect().width;
+    const positionX = block.width + 4;
 
     block.ports.forEach(port => {
       const position = port.position;
-      port.moveTo({...position, x: blockWidth - 14});
+      port.moveTo({...position, x: positionX});
     }); 
 
     this.connections_ = this.connections_.map(({position, ...others}) => ({
-      position: {...position, x: blockWidth - 14},
+      position: {...position, x: positionX},
       ...others,
     }));
   }
 
   createBlockPorts_ = (block) => {
 
-    const width = block.svgGroup_.getBoundingClientRect().width;
+    const positionX = block.width + 4;
 
     const ports = [];
 
@@ -146,7 +144,7 @@ export default class CircuitVisualization {
         if (name) {
           const { matrix } = fieldGroup_.transform.baseVal.getItem(0);
 
-          const position = { x: width - 14, y: matrix.f + 6 };
+          const position = { x: positionX, y: matrix.f + 6 };
 
           const port = new Port(block.getSvgRoot(), name, position);
 
@@ -207,13 +205,9 @@ export default class CircuitVisualization {
   renderBlockBackground_ = (block) => {
     if (!block) return;
 
+    const newWidth = block.width + 16;
     let path = block.svgPath_.getAttribute('d');
-    const width = parseFloat(path.substring(
-      path.indexOf("H") + 2,
-      path.indexOf("v") - 1
-    ));
-    const newWidth = width + 16
-    path = path.replace(width.toString(), newWidth.toString());
+    path = path.replace(block.width.toString(), newWidth.toString());
     block.svgPath_.setAttribute('d', path);
   }
 }
