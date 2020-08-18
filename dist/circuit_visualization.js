@@ -23429,11 +23429,13 @@ var CircuitVisualization = (function () {
 
 	  function CircuitVisualization(workspace, dom) {
 	    var _this = this,
-	        _context10;
+	        _context11;
 
 	    _classCallCheck(this, CircuitVisualization);
 
 	    this.onChangeListener_ = function (event) {
+	      var _context;
+
 	      _this.renderConnections_();
 
 	      if (!event.blockId) {
@@ -23460,12 +23462,15 @@ var CircuitVisualization = (function () {
 	        case Blockly.Events.DELETE:
 	          _this.deleteConnections_(event.blockId);
 
+	          block === null || block === void 0 ? void 0 : forEach$4(_context = block.ports).call(_context, function (port) {
+	            return port.element.remove();
+	          });
 	          break;
 	      }
 	    };
 
 	    this.renderConnections_ = function () {
-	      var _context;
+	      var _context2;
 
 	      if (_this.connections_.length === 0) return;
 
@@ -23474,7 +23479,7 @@ var CircuitVisualization = (function () {
 	      var _this$workspace_$getC = _this.workspace_.getCanvas().transform.baseVal.getItem(0),
 	          matrix = _this$workspace_$getC.matrix;
 
-	      forEach$4(_context = _this.connections_).call(_context, function (_ref) {
+	      forEach$4(_context2 = _this.connections_).call(_context2, function (_ref) {
 	        var blockId = _ref.blockId,
 	            position = _ref.position,
 	            connectedTo = _ref.connectedTo,
@@ -23502,18 +23507,18 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.updateBlockPorts_ = function (block) {
-	      var _context2, _context3;
+	      var _context3, _context4;
 
 	      var positionX = block.width + 4;
 
-	      forEach$4(_context2 = block.ports).call(_context2, function (port) {
+	      forEach$4(_context3 = block.ports).call(_context3, function (port) {
 	        var position = port.position;
 	        port.moveTo(_objectSpread2(_objectSpread2({}, position), {}, {
 	          x: positionX
 	        }));
 	      });
 
-	      _this.connections_ = map$2(_context3 = _this.connections_).call(_context3, function (_ref2) {
+	      _this.connections_ = map$2(_context4 = _this.connections_).call(_context4, function (_ref2) {
 	        var position = _ref2.position,
 	            others = _objectWithoutProperties(_ref2, ["position"]);
 
@@ -23526,17 +23531,17 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.createBlockPorts_ = function (block) {
-	      var _context4;
+	      var _context5;
 
 	      var positionX = block.width + 4;
 	      var ports = [];
 
-	      forEach$4(_context4 = block.inputList).call(_context4, function (input, index) {
-	        var _context5;
+	      forEach$4(_context5 = block.inputList).call(_context5, function (input, index) {
+	        var _context6;
 
 	        if (index === 0) return;
 
-	        forEach$4(_context5 = input.fieldRow).call(_context5, function (_ref3) {
+	        forEach$4(_context6 = input.fieldRow).call(_context6, function (_ref3) {
 	          var _name;
 
 	          var fieldGroup_ = _ref3.fieldGroup_,
@@ -23579,9 +23584,9 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.updateConnections_ = function (block) {
-	      var _context6, _context7, _context8;
+	      var _context7, _context8, _context9;
 
-	      var connections = filter$2(_context6 = _this.connections_).call(_context6, function (connection) {
+	      var connections = filter$2(_context7 = _this.connections_).call(_context7, function (connection) {
 	        return connection.blockId === block.id;
 	      });
 
@@ -23597,18 +23602,18 @@ var CircuitVisualization = (function () {
 	          connectedTo: fixPortValue((_block$getFieldValue2 = block.getFieldValue(name)) !== null && _block$getFieldValue2 !== void 0 ? _block$getFieldValue2 : others.connectedTo)
 	        });
 	      });
-	      _this.connections_ = filter$2(_context7 = _this.connections_).call(_context7, function (connection) {
+	      _this.connections_ = filter$2(_context8 = _this.connections_).call(_context8, function (connection) {
 	        return connection.blockId !== block.id;
 	      });
-	      _this.connections_ = concat$2(_context8 = []).call(_context8, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
+	      _this.connections_ = concat$2(_context9 = []).call(_context9, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
 
 	      _this.renderConnections_();
 	    };
 
 	    this.deleteConnections_ = function (blockId) {
-	      var _context9;
+	      var _context10;
 
-	      _this.connections_ = filter$2(_context9 = _this.connections_).call(_context9, function (connection) {
+	      _this.connections_ = filter$2(_context10 = _this.connections_).call(_context10, function (connection) {
 	        if (connection.blockId === blockId) {
 	          connection.wireSvg.remove();
 	          return false;
@@ -23635,7 +23640,7 @@ var CircuitVisualization = (function () {
 	    this.workspace_ = workspace;
 	    this.dom_ = dom;
 
-	    var robotName = concat$2(_context10 = "".concat(workspace.device, "_")).call(_context10, workspace.subDevice);
+	    var robotName = concat$2(_context11 = "".concat(workspace.device, "_")).call(_context11, workspace.subDevice);
 
 	    Blockly.Blocks['robot'] = createRobotBlock(robotName);
 	    this.workspace_.addChangeListener(this.onChangeListener_);

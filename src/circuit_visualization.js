@@ -78,6 +78,7 @@ export default class CircuitVisualization {
         break;
       case Blockly.Events.DELETE:
         this.deleteConnections_(event.blockId);
+        block?.ports.forEach(port => port.element.remove());
         break;
     }
   }
