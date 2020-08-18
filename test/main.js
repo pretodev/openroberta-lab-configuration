@@ -1,5 +1,7 @@
 'use strict';
 
+let workspace;
+
 function start() {
 
   const xml = `
@@ -17,7 +19,7 @@ function start() {
   const media = 'blockly/media/';
   const device = { group: 'arduino', robot: 'uno' };
 
-  const workspace = Blockly.inject('blocklyDiv', { media, toolbox });
+  workspace = Blockly.inject('blocklyDiv', { media, toolbox });
   workspace.setDevice(device);
 
   const dom = Blockly.Xml.textToDom(xml, workspace);

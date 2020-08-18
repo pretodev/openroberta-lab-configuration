@@ -45,6 +45,14 @@ export default class CircuitVisualization {
         this.renderConnections_();
       }
     }); 
+
+    workspace.refresh = () => {
+      workspace.getAllBlocks().forEach(block => {
+        this.renderBlockBackground_(block);
+        this.updateBlockPorts_(block);
+        this.renderConnections_();
+      });
+    }
   }
 
   injectRobotBoard_() {
@@ -123,10 +131,16 @@ export default class CircuitVisualization {
       port.moveTo({...position, x: positionX});
     }); 
 
-    this.connections_ = this.connections_.map(({position, ...others}) => ({
-      position: {...position, x: positionX},
-      ...others,
-    }));
+    this.connections_ = this.connections_.map(({position, ...others}) => {
+      if(others.blockId !== block.id){
+        return {position, ...others};
+      }
+
+      return {
+        position: {...position, x: positionX},
+        ...others,
+      };
+    });
   }
 
   createBlockPorts_ = (block) => {

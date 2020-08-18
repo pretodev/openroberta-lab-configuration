@@ -23522,6 +23522,12 @@ var CircuitVisualization = (function () {
 	        var position = _ref2.position,
 	            others = _objectWithoutProperties(_ref2, ["position"]);
 
+	        if (others.blockId !== block.id) {
+	          return _objectSpread2({
+	            position: position
+	          }, others);
+	        }
+
 	        return _objectSpread2({
 	          position: _objectSpread2(_objectSpread2({}, position), {}, {
 	            x: positionX
@@ -23651,6 +23657,18 @@ var CircuitVisualization = (function () {
 	        _this.renderConnections_();
 	      }
 	    });
+
+	    workspace.refresh = function () {
+	      var _context12;
+
+	      forEach$4(_context12 = workspace.getAllBlocks()).call(_context12, function (block) {
+	        _this.renderBlockBackground_(block);
+
+	        _this.updateBlockPorts_(block);
+
+	        _this.renderConnections_();
+	      });
+	    };
 	  }
 
 	  _createClass(CircuitVisualization, [{
