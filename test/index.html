@@ -17,6 +17,19 @@
 
 <body onload="start()">
   <h3>Circuit Visualization</h3>
+  <div style="margin: 16px 0">
+    <label for="selectRobot">Select your robot:</label>
+    <select id="selectRobot">
+      <option value="uno">Arduino Uno</option>
+      <option value="unowifirev2">Arduino Uno Wi-Fi</option>
+      <option value="nano">Arduino Nano</option>
+      <option value="mega">Arduino Mega</option>
+    </select>
+
+    <button id="btnRefresh">Refresh</button>
+  </div>
+  
+  
   <div id="blocklyDiv" style="height: 480px; width: 100%;"></div>
   <div id="confDiv" style="height: 480px; width: 100%;"></div>
 

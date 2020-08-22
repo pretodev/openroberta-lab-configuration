@@ -3,6 +3,7 @@ import { createRobotBlock } from './robot_block';
 import WireDrawer from './wires';
 import injectCSS from './css';
 import fixPortValue from './fix_port_value';
+import _ from 'lodash';
 
 export default class CircuitVisualization {
 
@@ -12,9 +13,14 @@ export default class CircuitVisualization {
     }
 
     injectCSS();
-
     
-    new CircuitVisualization(workspace, dom);
+    const confVis = new CircuitVisualization(workspace, dom);
+
+    return {
+      dispose: confVis.dispose.bind(confVis),
+      refresh: confVis.refresh.bind(confVis),
+      resetRobot: confVis.reset.bind(confVis),
+    };
   }
 
   constructor(workspace, dom) {
@@ -30,40 +36,61 @@ export default class CircuitVisualization {
 
     this.dom_ = dom;
 
-    const robotName = `${workspace.device}_${workspace.subDevice}`;
+    this.currentRobot_ = `${this.workspace_.device}_${this.workspace_.subDevice}`;
 
-    Blockly.Blocks['robot'] = createRobotBlock(robotName);
+    this.injectRobotBoard_();
 
     this.workspace_.addChangeListener(this.onChangeListener_);
 
     this.wireGroup_ = Blockly.createSvgElement('g', {}, this.workspace_.svgGroup_);
-
-    this.injectRobotBoard_();
 
     document.addEventListener('mousemove', () => {
       if(Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling){
         this.renderConnections_();
       }
     }); 
+  }
 
-    workspace.refresh = () => {
-      workspace.getAllBlocks().forEach(block => {
-        this.renderBlockBackground_(block);
-        this.updateBlockPorts_(block);
-        this.renderConnections_();
-      });
+  reset(){
+    const currentRobot = `${this.workspace_.device}_${this.workspace_.subDevice}`;;
+    if(currentRobot !== this.currentRobot_){
+      this.currentRobot_ = currentRobot;
+      this.clear_();
+      this.injectRobotBoard_();
     }
   }
 
+  refresh() {
+    this.workspace_.getAllBlocks().forEach(block => {
+      this.renderBlockBackground_(block);
+      this.updateBlockPorts_(block);
+      this.renderConnections_();
+    });
+  }
+
+  dispose(){
+    this.workspace_.removeChangeListener(this.onChangeListener_);
+    this.wireGroup_.remove();
+  }
+
   injectRobotBoard_() {
+    this.robotXml_?.remove();
+
+    Blockly.Blocks['robot'] = createRobotBlock(this.currentRobot_);
     const robotXml = `<instance x="250" y="250"><block type="robot" id="robot"></block></instance>`;
     const oParser = new DOMParser();
-    const robotElement = oParser.parseFromString(robotXml, 'text/xml').firstChild;
+    this.robotXml_ = oParser.parseFromString(robotXml, 'text/xml').firstChild;
 
-    this.dom_.appendChild(robotElement);
+    this.dom_.appendChild(this.robotXml_);
     Blockly.Xml.domToWorkspace(this.dom_, this.workspace_);
 
     this.robot_ = this.workspace_.getBlockById('robot');
+  }
+
+  clear_ = () => {
+    while (this.workspace_.getAllBlocks().length) {
+      this.workspace_.getAllBlocks()[0].dispose();
+    }
   }
 
   onChangeListener_ = (event) => {
@@ -75,7 +102,6 @@ export default class CircuitVisualization {
 
     if(event.type !== Blockly.Events.UI)
       this.renderBlockBackground_(block);
-
     switch (event.type) {
       case Blockly.Events.CREATE:
         this.createBlockPorts_(block);
@@ -86,7 +112,9 @@ export default class CircuitVisualization {
         break;
       case Blockly.Events.DELETE:
         this.deleteConnections_(event.blockId);
-        block?.ports.forEach(port => port.element.remove());
+        if(block.ports){
+          block.ports.forEach(port => port.element.remove());
+        }
         break;
     }
   }

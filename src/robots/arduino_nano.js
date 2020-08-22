@@ -29,6 +29,6 @@ export default [
   { name: 'A0',     position: { x: 71.8,  y: 91.4 } },
   { name: 'REF',    position: { x: 57.5,  y: 91.4 } },
   { name: '3V3',    position: { x: 43.2,  y: 91.4 } },
-  { name: 'D13',    position: { x: 28.9,  y: 91.4 } },
+  { name: '13',    position: { x: 28.9,  y: 91.4 } },
   
 ]

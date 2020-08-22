@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Mon Aug 17 2020 20:16:58 GMT-0300 (Horário Padrão de Brasília)
+* BUILT: Sat Aug 22 2020 02:02:09 GMT-0300 (Brasilia Standard Time)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -2256,6 +2256,49 @@ var CircuitVisualization = (function () {
 	}
 
 	var forEach$4 = forEach_1;
+
+	var slice$3 = [].slice;
+	var factories = {};
+
+	var construct = function (C, argsLength, args) {
+	  if (!(argsLength in factories)) {
+	    for (var list = [], i = 0; i < argsLength; i++) list[i] = 'a[' + i + ']';
+	    // eslint-disable-next-line no-new-func
+	    factories[argsLength] = Function('C,a', 'return new C(' + list.join(',') + ')');
+	  } return factories[argsLength](C, args);
+	};
+
+	// `Function.prototype.bind` method implementation
+	// https://tc39.github.io/ecma262/#sec-function.prototype.bind
+	var functionBind = Function.bind || function bind(that /* , ...args */) {
+	  var fn = aFunction(this);
+	  var partArgs = slice$3.call(arguments, 1);
+	  var boundFunction = function bound(/* args... */) {
+	    var args = partArgs.concat(slice$3.call(arguments));
+	    return this instanceof boundFunction ? construct(fn, args.length, args) : fn.apply(that, args);
+	  };
+	  if (isObject(fn.prototype)) boundFunction.prototype = fn.prototype;
+	  return boundFunction;
+	};
+
+	// `Function.prototype.bind` method
+	// https://tc39.github.io/ecma262/#sec-function.prototype.bind
+	_export({ target: 'Function', proto: true }, {
+	  bind: functionBind
+	});
+
+	var bind = entryVirtual('Function').bind;
+
+	var FunctionPrototype = Function.prototype;
+
+	var bind_1 = function (it) {
+	  var own = it.bind;
+	  return it === FunctionPrototype || (it instanceof Function && own === FunctionPrototype.bind) ? bind : own;
+	};
+
+	var bind$1 = bind_1;
+
+	var bind$2 = bind$1;
 
 	function _classCallCheck(instance, Constructor) {
 	  if (!(instance instanceof Constructor)) {
@@ -5532,30 +5575,6 @@ var CircuitVisualization = (function () {
 	  if (superClass) _setPrototypeOf(subClass, superClass);
 	}
 
-	var slice$3 = [].slice;
-	var factories = {};
-
-	var construct = function (C, argsLength, args) {
-	  if (!(argsLength in factories)) {
-	    for (var list = [], i = 0; i < argsLength; i++) list[i] = 'a[' + i + ']';
-	    // eslint-disable-next-line no-new-func
-	    factories[argsLength] = Function('C,a', 'return new C(' + list.join(',') + ')');
-	  } return factories[argsLength](C, args);
-	};
-
-	// `Function.prototype.bind` method implementation
-	// https://tc39.github.io/ecma262/#sec-function.prototype.bind
-	var functionBind = Function.bind || function bind(that /* , ...args */) {
-	  var fn = aFunction(this);
-	  var partArgs = slice$3.call(arguments, 1);
-	  var boundFunction = function bound(/* args... */) {
-	    var args = partArgs.concat(slice$3.call(arguments));
-	    return this instanceof boundFunction ? construct(fn, args.length, args) : fn.apply(that, args);
-	  };
-	  if (isObject(fn.prototype)) boundFunction.prototype = fn.prototype;
-	  return boundFunction;
-	};
-
 	var nativeConstruct = getBuiltIn('Reflect', 'construct');
 
 	// `Reflect.construct` method
@@ -5871,7 +5890,7 @@ var CircuitVisualization = (function () {
 	    y: 91.4
 	  }
 	}, {
-	  name: 'D13',
+	  name: '13',
 	  position: {
 	    x: 28.9,
 	    y: 91.4
@@ -6072,9 +6091,507 @@ var CircuitVisualization = (function () {
 	  }
 	}];
 
+	var arduinoMega = [{
+	  name: 'SCL',
+	  position: {
+	    x: 114.1,
+	    y: 9.5
+	  }
+	}, {
+	  name: 'SDA',
+	  position: {
+	    x: 125.9,
+	    y: 9.5
+	  }
+	}, {
+	  name: 'AREF',
+	  position: {
+	    x: 137.7,
+	    y: 9.5
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 149.4,
+	    y: 9.5
+	  }
+	}, {
+	  name: '13',
+	  position: {
+	    x: 161.2,
+	    y: 9.5
+	  }
+	}, {
+	  name: '12',
+	  position: {
+	    x: 173,
+	    y: 9.5
+	  }
+	}, {
+	  name: '11',
+	  position: {
+	    x: 184.7,
+	    y: 9.5
+	  }
+	}, {
+	  name: '10',
+	  position: {
+	    x: 196.5,
+	    y: 9.5
+	  }
+	}, {
+	  name: '9',
+	  position: {
+	    x: 208.3,
+	    y: 9.5
+	  }
+	}, {
+	  name: '8',
+	  position: {
+	    x: 220,
+	    y: 9.5
+	  }
+	}, {
+	  name: '7',
+	  position: {
+	    x: 238.9,
+	    y: 9.5
+	  }
+	}, {
+	  name: '6',
+	  position: {
+	    x: 250.7,
+	    y: 9.5
+	  }
+	}, {
+	  name: '5',
+	  position: {
+	    x: 262.4,
+	    y: 9.5
+	  }
+	}, {
+	  name: '4',
+	  position: {
+	    x: 274.2,
+	    y: 9.5
+	  }
+	}, {
+	  name: '3',
+	  position: {
+	    x: 286,
+	    y: 9.5
+	  }
+	}, {
+	  name: '2',
+	  position: {
+	    x: 297.7,
+	    y: 9.5
+	  }
+	}, {
+	  name: '1',
+	  position: {
+	    x: 309.5,
+	    y: 9.5
+	  }
+	}, {
+	  name: '0',
+	  position: {
+	    x: 321.3,
+	    y: 9.5
+	  }
+	}, {
+	  name: '14',
+	  position: {
+	    x: 344.8,
+	    y: 9.5
+	  }
+	}, {
+	  name: '15',
+	  position: {
+	    x: 356.6,
+	    y: 9.5
+	  }
+	}, {
+	  name: '16',
+	  position: {
+	    x: 368.3,
+	    y: 9.5
+	  }
+	}, {
+	  name: '17',
+	  position: {
+	    x: 380.1,
+	    y: 9.5
+	  }
+	}, {
+	  name: '18',
+	  position: {
+	    x: 391.8,
+	    y: 9.5
+	  }
+	}, {
+	  name: '19',
+	  position: {
+	    x: 403.6,
+	    y: 9.5
+	  }
+	}, {
+	  name: '20',
+	  position: {
+	    x: 415.4,
+	    y: 9.5
+	  }
+	}, {
+	  name: '21',
+	  position: {
+	    x: 427.2,
+	    y: 9.5
+	  }
+	}, {
+	  name: 'NOTUSER',
+	  position: {
+	    x: 156.5,
+	    y: 233
+	  }
+	}, {
+	  name: 'IOREF',
+	  position: {
+	    x: 168.3,
+	    y: 233
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 180,
+	    y: 233
+	  }
+	}, {
+	  name: '3,3V',
+	  position: {
+	    x: 191.8,
+	    y: 233
+	  }
+	}, {
+	  name: '5V',
+	  position: {
+	    x: 203.6,
+	    y: 233
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 215.3,
+	    y: 233
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 227.1,
+	    y: 233
+	  }
+	}, {
+	  name: 'Vin',
+	  position: {
+	    x: 238.9,
+	    y: 233
+	  }
+	}, {
+	  name: 'A0',
+	  position: {
+	    x: 262.4,
+	    y: 233
+	  }
+	}, {
+	  name: 'A1',
+	  position: {
+	    x: 274.2,
+	    y: 233
+	  }
+	}, {
+	  name: 'A2',
+	  position: {
+	    x: 285.9,
+	    y: 233
+	  }
+	}, {
+	  name: 'A3',
+	  position: {
+	    x: 297.7,
+	    y: 233
+	  }
+	}, {
+	  name: 'A4',
+	  position: {
+	    x: 309.5,
+	    y: 233
+	  }
+	}, {
+	  name: 'A5',
+	  position: {
+	    x: 321.2,
+	    y: 233
+	  }
+	}, {
+	  name: 'A6',
+	  position: {
+	    x: 333,
+	    y: 233
+	  }
+	}, {
+	  name: 'A7',
+	  position: {
+	    x: 344.8,
+	    y: 233
+	  }
+	}, {
+	  name: 'A8',
+	  position: {
+	    x: 368.3,
+	    y: 233
+	  }
+	}, {
+	  name: 'A9',
+	  position: {
+	    x: 380,
+	    y: 233
+	  }
+	}, {
+	  name: 'A10',
+	  position: {
+	    x: 391.8,
+	    y: 233
+	  }
+	}, {
+	  name: 'A11',
+	  position: {
+	    x: 403.6,
+	    y: 233
+	  }
+	}, {
+	  name: 'A12',
+	  position: {
+	    x: 415.3,
+	    y: 233
+	  }
+	}, {
+	  name: 'A13',
+	  position: {
+	    x: 427.1,
+	    y: 233
+	  }
+	}, {
+	  name: 'A14',
+	  position: {
+	    x: 438.9,
+	    y: 233
+	  }
+	}, {
+	  name: 'A15',
+	  position: {
+	    x: 450.6,
+	    y: 233
+	  }
+	}];
+
+	var arduinoWifi = [{
+	  name: 'SCL',
+	  position: {
+	    x: 93,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'SDA',
+	  position: {
+	    x: 102.6,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'AREF',
+	  position: {
+	    x: 112.2,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 121.9,
+	    y: 7.8
+	  }
+	}, {
+	  name: '13',
+	  position: {
+	    x: 131.5,
+	    y: 7.8
+	  }
+	}, {
+	  name: '12',
+	  position: {
+	    x: 141.1,
+	    y: 7.8
+	  }
+	}, {
+	  name: '11',
+	  position: {
+	    x: 150.7,
+	    y: 7.8
+	  }
+	}, {
+	  name: '10',
+	  position: {
+	    x: 160.3,
+	    y: 7.8
+	  }
+	}, {
+	  name: '9',
+	  position: {
+	    x: 169.9,
+	    y: 7.8
+	  }
+	}, {
+	  name: '8',
+	  position: {
+	    x: 179.6,
+	    y: 7.8
+	  }
+	}, {
+	  name: '7',
+	  position: {
+	    x: 195,
+	    y: 7.8
+	  }
+	}, {
+	  name: '6',
+	  position: {
+	    x: 204.7,
+	    y: 7.8
+	  }
+	}, {
+	  name: '5',
+	  position: {
+	    x: 214.3,
+	    y: 7.8
+	  }
+	}, {
+	  name: '4',
+	  position: {
+	    x: 223.9,
+	    y: 7.8
+	  }
+	}, {
+	  name: '3',
+	  position: {
+	    x: 233.5,
+	    y: 7.8
+	  }
+	}, {
+	  name: '2',
+	  position: {
+	    x: 243.1,
+	    y: 7.8
+	  }
+	}, {
+	  name: '1',
+	  position: {
+	    x: 252.8,
+	    y: 7.8
+	  }
+	}, {
+	  name: '0',
+	  position: {
+	    x: 262.4,
+	    y: 7.8
+	  }
+	}, {
+	  name: 'NOTUSER',
+	  position: {
+	    x: 127.7,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'IOREF',
+	  position: {
+	    x: 137.3,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'RESET',
+	  position: {
+	    x: 146.9,
+	    y: 190.5
+	  }
+	}, {
+	  name: '3,3V',
+	  position: {
+	    x: 156.6,
+	    y: 190.5
+	  }
+	}, {
+	  name: '5V',
+	  position: {
+	    x: 166.2,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 175.8,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 185.4,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'Vin',
+	  position: {
+	    x: 195,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A0',
+	  position: {
+	    x: 214.3,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A1',
+	  position: {
+	    x: 223.9,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A2',
+	  position: {
+	    x: 233.5,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A3',
+	  position: {
+	    x: 243.1,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A4',
+	  position: {
+	    x: 252.8,
+	    y: 190.5
+	  }
+	}, {
+	  name: 'A5',
+	  position: {
+	    x: 262.4,
+	    y: 190.5
+	  }
+	}];
+
 	var robotMapper = {
 	  'arduino_nano': arduinoNano,
-	  'arduino_uno': arduinoUno
+	  'arduino_uno': arduinoUno,
+	  'arduino_mega': arduinoMega,
+	  'arduino_unowifirev2': arduinoWifi
 	};
 
 	var RobotViewField = /*#__PURE__*/function (_Blockly$Field) {
@@ -23418,24 +23935,35 @@ var CircuitVisualization = (function () {
 	  _createClass(CircuitVisualization, null, [{
 	    key: "domToWorkspace",
 	    value: function domToWorkspace(dom, workspace) {
+	      var _context, _context2, _context3;
+
 	      if (workspace.device !== 'arduino') {
 	        throw Error('Not device suported');
 	      }
 
 	      injectCSS();
-	      new CircuitVisualization(workspace, dom);
+	      var confVis = new CircuitVisualization(workspace, dom);
+	      return {
+	        dispose: bind$2(_context = confVis.dispose).call(_context, confVis),
+	        refresh: bind$2(_context2 = confVis.refresh).call(_context2, confVis),
+	        resetRobot: bind$2(_context3 = confVis.reset).call(_context3, confVis)
+	      };
 	    }
 	  }]);
 
 	  function CircuitVisualization(workspace, dom) {
 	    var _this = this,
-	        _context11;
+	        _context14;
 
 	    _classCallCheck(this, CircuitVisualization);
 
-	    this.onChangeListener_ = function (event) {
-	      var _context;
+	    this.clear_ = function () {
+	      while (_this.workspace_.getAllBlocks().length) {
+	        _this.workspace_.getAllBlocks()[0].dispose();
+	      }
+	    };
 
+	    this.onChangeListener_ = function (event) {
 	      _this.renderConnections_();
 
 	      if (!event.blockId) {
@@ -23462,15 +23990,20 @@ var CircuitVisualization = (function () {
 	        case Blockly.Events.DELETE:
 	          _this.deleteConnections_(event.blockId);
 
-	          block === null || block === void 0 ? void 0 : forEach$4(_context = block.ports).call(_context, function (port) {
-	            return port.element.remove();
-	          });
+	          if (block.ports) {
+	            var _context4;
+
+	            forEach$4(_context4 = block.ports).call(_context4, function (port) {
+	              return port.element.remove();
+	            });
+	          }
+
 	          break;
 	      }
 	    };
 
 	    this.renderConnections_ = function () {
-	      var _context2;
+	      var _context5;
 
 	      if (_this.connections_.length === 0) return;
 
@@ -23479,7 +24012,7 @@ var CircuitVisualization = (function () {
 	      var _this$workspace_$getC = _this.workspace_.getCanvas().transform.baseVal.getItem(0),
 	          matrix = _this$workspace_$getC.matrix;
 
-	      forEach$4(_context2 = _this.connections_).call(_context2, function (_ref) {
+	      forEach$4(_context5 = _this.connections_).call(_context5, function (_ref) {
 	        var blockId = _ref.blockId,
 	            position = _ref.position,
 	            connectedTo = _ref.connectedTo,
@@ -23507,18 +24040,18 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.updateBlockPorts_ = function (block) {
-	      var _context3, _context4;
+	      var _context6, _context7;
 
 	      var positionX = block.width + 4;
 
-	      forEach$4(_context3 = block.ports).call(_context3, function (port) {
+	      forEach$4(_context6 = block.ports).call(_context6, function (port) {
 	        var position = port.position;
 	        port.moveTo(_objectSpread2(_objectSpread2({}, position), {}, {
 	          x: positionX
 	        }));
 	      });
 
-	      _this.connections_ = map$2(_context4 = _this.connections_).call(_context4, function (_ref2) {
+	      _this.connections_ = map$2(_context7 = _this.connections_).call(_context7, function (_ref2) {
 	        var position = _ref2.position,
 	            others = _objectWithoutProperties(_ref2, ["position"]);
 
@@ -23537,17 +24070,17 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.createBlockPorts_ = function (block) {
-	      var _context5;
+	      var _context8;
 
 	      var positionX = block.width + 4;
 	      var ports = [];
 
-	      forEach$4(_context5 = block.inputList).call(_context5, function (input, index) {
-	        var _context6;
+	      forEach$4(_context8 = block.inputList).call(_context8, function (input, index) {
+	        var _context9;
 
 	        if (index === 0) return;
 
-	        forEach$4(_context6 = input.fieldRow).call(_context6, function (_ref3) {
+	        forEach$4(_context9 = input.fieldRow).call(_context9, function (_ref3) {
 	          var _name;
 
 	          var fieldGroup_ = _ref3.fieldGroup_,
@@ -23590,9 +24123,9 @@ var CircuitVisualization = (function () {
 	    };
 
 	    this.updateConnections_ = function (block) {
-	      var _context7, _context8, _context9;
+	      var _context10, _context11, _context12;
 
-	      var connections = filter$2(_context7 = _this.connections_).call(_context7, function (connection) {
+	      var connections = filter$2(_context10 = _this.connections_).call(_context10, function (connection) {
 	        return connection.blockId === block.id;
 	      });
 
@@ -23608,18 +24141,18 @@ var CircuitVisualization = (function () {
 	          connectedTo: fixPortValue((_block$getFieldValue2 = block.getFieldValue(name)) !== null && _block$getFieldValue2 !== void 0 ? _block$getFieldValue2 : others.connectedTo)
 	        });
 	      });
-	      _this.connections_ = filter$2(_context8 = _this.connections_).call(_context8, function (connection) {
+	      _this.connections_ = filter$2(_context11 = _this.connections_).call(_context11, function (connection) {
 	        return connection.blockId !== block.id;
 	      });
-	      _this.connections_ = concat$2(_context9 = []).call(_context9, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
+	      _this.connections_ = concat$2(_context12 = []).call(_context12, _toConsumableArray(_this.connections_), _toConsumableArray(connections));
 
 	      _this.renderConnections_();
 	    };
 
 	    this.deleteConnections_ = function (blockId) {
-	      var _context10;
+	      var _context13;
 
-	      _this.connections_ = filter$2(_context10 = _this.connections_).call(_context10, function (connection) {
+	      _this.connections_ = filter$2(_context13 = _this.connections_).call(_context13, function (connection) {
 	        if (connection.blockId === blockId) {
 	          connection.wireSvg.remove();
 	          return false;
@@ -23645,39 +24178,61 @@ var CircuitVisualization = (function () {
 	    this.connections_ = [];
 	    this.workspace_ = workspace;
 	    this.dom_ = dom;
-
-	    var robotName = concat$2(_context11 = "".concat(workspace.device, "_")).call(_context11, workspace.subDevice);
-
-	    Blockly.Blocks['robot'] = createRobotBlock(robotName);
+	    this.currentRobot_ = concat$2(_context14 = "".concat(this.workspace_.device, "_")).call(_context14, this.workspace_.subDevice);
+	    this.injectRobotBoard_();
 	    this.workspace_.addChangeListener(this.onChangeListener_);
 	    this.wireGroup_ = Blockly.createSvgElement('g', {}, this.workspace_.svgGroup_);
-	    this.injectRobotBoard_();
 	    document.addEventListener('mousemove', function () {
 	      if (Blockly.dragMode_ == Blockly.DRAG_FREE || workspace.isScrolling) {
 	        _this.renderConnections_();
 	      }
 	    });
-
-	    workspace.refresh = function () {
-	      var _context12;
-
-	      forEach$4(_context12 = workspace.getAllBlocks()).call(_context12, function (block) {
-	        _this.renderBlockBackground_(block);
-
-	        _this.updateBlockPorts_(block);
-
-	        _this.renderConnections_();
-	      });
-	    };
 	  }
 
 	  _createClass(CircuitVisualization, [{
+	    key: "reset",
+	    value: function reset() {
+	      var _context15;
+
+	      var currentRobot = concat$2(_context15 = "".concat(this.workspace_.device, "_")).call(_context15, this.workspace_.subDevice);
+
+	      if (currentRobot !== this.currentRobot_) {
+	        this.currentRobot_ = currentRobot;
+	        this.clear_();
+	        this.injectRobotBoard_();
+	      }
+	    }
+	  }, {
+	    key: "refresh",
+	    value: function refresh() {
+	      var _context16,
+	          _this2 = this;
+
+	      forEach$4(_context16 = this.workspace_.getAllBlocks()).call(_context16, function (block) {
+	        _this2.renderBlockBackground_(block);
+
+	        _this2.updateBlockPorts_(block);
+
+	        _this2.renderConnections_();
+	      });
+	    }
+	  }, {
+	    key: "dispose",
+	    value: function dispose() {
+	      this.workspace_.removeChangeListener(this.onChangeListener_);
+	      this.wireGroup_.remove();
+	    }
+	  }, {
 	    key: "injectRobotBoard_",
 	    value: function injectRobotBoard_() {
+	      var _this$robotXml_;
+
+	      (_this$robotXml_ = this.robotXml_) === null || _this$robotXml_ === void 0 ? void 0 : _this$robotXml_.remove();
+	      Blockly.Blocks['robot'] = createRobotBlock(this.currentRobot_);
 	      var robotXml = "<instance x=\"250\" y=\"250\"><block type=\"robot\" id=\"robot\"></block></instance>";
 	      var oParser = new DOMParser();
-	      var robotElement = oParser.parseFromString(robotXml, 'text/xml').firstChild;
-	      this.dom_.appendChild(robotElement);
+	      this.robotXml_ = oParser.parseFromString(robotXml, 'text/xml').firstChild;
+	      this.dom_.appendChild(this.robotXml_);
 	      Blockly.Xml.domToWorkspace(this.dom_, this.workspace_);
 	      this.robot_ = this.workspace_.getBlockById('robot');
 	    }
