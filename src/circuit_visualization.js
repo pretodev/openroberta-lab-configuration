@@ -55,6 +55,7 @@ export default class CircuitVisualization {
     const currentRobot = `${this.workspace_.device}_${this.workspace_.subDevice}`;;
     if(currentRobot !== this.currentRobot_){
       this.currentRobot_ = currentRobot;
+      this.dom_ = this.getXml();
       this.clear_();
       this.injectRobotBoard_();
     }
@@ -71,6 +72,12 @@ export default class CircuitVisualization {
   dispose(){
     this.workspace_.removeChangeListener(this.onChangeListener_);
     this.wireGroup_.remove();
+  }
+
+  getXml() {
+    const xml = Blockly.Xml.workspaceToDom(this.workspace_);
+    xml.querySelector('block[type=robot]').parentNode.remove();
+    return xml;
   }
 
   injectRobotBoard_() {
@@ -112,7 +119,7 @@ export default class CircuitVisualization {
         break;
       case Blockly.Events.DELETE:
         this.deleteConnections_(event.blockId);
-        if(block.ports){
+        if(block && block.ports){
           block.ports.forEach(port => port.element.remove());
         }
         break;

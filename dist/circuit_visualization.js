@@ -6,7 +6,7 @@
 * @copyright Silas Ribeiro <santorsilas@gmail.com>
 * @license ISC
 *
-* BUILT: Sat Aug 22 2020 02:02:09 GMT-0300 (Brasilia Standard Time)
+* BUILT: Sun Aug 30 2020 01:13:48 GMT-0300 (Brasilia Standard Time)
 */;
 var CircuitVisualization = (function () {
 	'use strict';
@@ -23990,7 +23990,7 @@ var CircuitVisualization = (function () {
 	        case Blockly.Events.DELETE:
 	          _this.deleteConnections_(event.blockId);
 
-	          if (block.ports) {
+	          if (block && block.ports) {
 	            var _context4;
 
 	            forEach$4(_context4 = block.ports).call(_context4, function (port) {
@@ -24198,6 +24198,7 @@ var CircuitVisualization = (function () {
 
 	      if (currentRobot !== this.currentRobot_) {
 	        this.currentRobot_ = currentRobot;
+	        this.dom_ = this.getXml();
 	        this.clear_();
 	        this.injectRobotBoard_();
 	      }
@@ -24221,6 +24222,13 @@ var CircuitVisualization = (function () {
 	    value: function dispose() {
 	      this.workspace_.removeChangeListener(this.onChangeListener_);
 	      this.wireGroup_.remove();
+	    }
+	  }, {
+	    key: "getXml",
+	    value: function getXml() {
+	      var xml = Blockly.Xml.workspaceToDom(this.workspace_);
+	      xml.querySelector('block[type=robot]').parentNode.remove();
+	      return xml;
 	    }
 	  }, {
 	    key: "injectRobotBoard_",
