@@ -6248,6 +6248,222 @@ var CircuitVisualization = (function () {
 	    y: 9.5
 	  }
 	}, {
+	  name: '5V',
+	  position: {
+	    x: 462.4,
+	    y: 9.5
+	  }
+	}, {
+	  name: '5V',
+	  position: {
+	    x: 474.2,
+	    y: 9.5
+	  }
+	}, {
+	  name: '22',
+	  position: {
+	    x: 462.4,
+	    y: 21.3
+	  }
+	}, {
+	  name: '24',
+	  position: {
+	    x: 462.4,
+	    y: 33
+	  }
+	}, {
+	  name: '26',
+	  position: {
+	    x: 462.4,
+	    y: 44.8
+	  }
+	}, {
+	  name: '28',
+	  position: {
+	    x: 462.4,
+	    y: 56.6
+	  }
+	}, {
+	  name: '30',
+	  position: {
+	    x: 462.4,
+	    y: 68.3
+	  }
+	}, {
+	  name: '32',
+	  position: {
+	    x: 462.4,
+	    y: 80.1
+	  }
+	}, {
+	  name: '34',
+	  position: {
+	    x: 462.4,
+	    y: 91.9
+	  }
+	}, {
+	  name: '36',
+	  position: {
+	    x: 462.4,
+	    y: 103.6
+	  }
+	}, {
+	  name: '38',
+	  position: {
+	    x: 462.4,
+	    y: 115.4
+	  }
+	}, {
+	  name: '40',
+	  position: {
+	    x: 462.4,
+	    y: 127.2
+	  }
+	}, {
+	  name: '42',
+	  position: {
+	    x: 462.4,
+	    y: 138.9
+	  }
+	}, {
+	  name: '44',
+	  position: {
+	    x: 462.4,
+	    y: 150.7
+	  }
+	}, {
+	  name: '46',
+	  position: {
+	    x: 462.4,
+	    y: 162.5
+	  }
+	}, {
+	  name: '48',
+	  position: {
+	    x: 462.4,
+	    y: 174.2
+	  }
+	}, {
+	  name: '50',
+	  position: {
+	    x: 462.4,
+	    y: 186
+	  }
+	}, {
+	  name: '53',
+	  position: {
+	    x: 462.4,
+	    y: 197.8
+	  }
+	}, {
+	  name: '23',
+	  position: {
+	    x: 474.2,
+	    y: 21.3
+	  }
+	}, {
+	  name: '25',
+	  position: {
+	    x: 474.2,
+	    y: 33
+	  }
+	}, {
+	  name: '27',
+	  position: {
+	    x: 474.2,
+	    y: 44.8
+	  }
+	}, {
+	  name: '29',
+	  position: {
+	    x: 474.2,
+	    y: 56.6
+	  }
+	}, {
+	  name: '31',
+	  position: {
+	    x: 474.2,
+	    y: 68.3
+	  }
+	}, {
+	  name: '33',
+	  position: {
+	    x: 474.2,
+	    y: 80.1
+	  }
+	}, {
+	  name: '35',
+	  position: {
+	    x: 474.2,
+	    y: 91.9
+	  }
+	}, {
+	  name: '37',
+	  position: {
+	    x: 474.2,
+	    y: 103.6
+	  }
+	}, {
+	  name: '39',
+	  position: {
+	    x: 474.2,
+	    y: 115.4
+	  }
+	}, {
+	  name: '41',
+	  position: {
+	    x: 474.2,
+	    y: 127.2
+	  }
+	}, {
+	  name: '43',
+	  position: {
+	    x: 474.2,
+	    y: 138.9
+	  }
+	}, {
+	  name: '45',
+	  position: {
+	    x: 474.2,
+	    y: 150.7
+	  }
+	}, {
+	  name: '47',
+	  position: {
+	    x: 474.2,
+	    y: 162.5
+	  }
+	}, {
+	  name: '49',
+	  position: {
+	    x: 474.2,
+	    y: 174.2
+	  }
+	}, {
+	  name: '51',
+	  position: {
+	    x: 474.2,
+	    y: 186
+	  }
+	}, {
+	  name: '53',
+	  position: {
+	    x: 474.2,
+	    y: 197.8
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 462.4,
+	    y: 209.5
+	  }
+	}, {
+	  name: 'GND',
+	  position: {
+	    x: 474.2,
+	    y: 209.5
+	  }
+	}, {
 	  name: 'NOTUSER',
 	  position: {
 	    x: 156.5,
