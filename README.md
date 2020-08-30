@@ -2,6 +2,8 @@
 
 This project is a repository for Circuit Visualization for use by Open Roberta Lab. This library integrates with the Open Roberta Lab server to allow viewing of circuits in the settings tab.
 
+![image](https://github.com/santorsilas/openroberta-lab-configuration/blob/master/pictures/Screenshot%20from%202020-08-30%2004-02-18.png)
+
 This is a project developed by Silas Ribeiro, as part of the Google Summer of Code 2020, with mentors Beate Jost and
 Patrick Werner (boonto).
 
@@ -51,4 +53,15 @@ This will generate the files circuit_visualization.js and circuit_visualization.
 In the openroberta-lab clone, paste them into /OpenRobertaServer/staticResources/blockly/plugins.
 
 Also copy the robots folder inside the media and paste in /OpenRobertaServer/staticResources/blockly/media.
+
+
+## TODO
+- [x] Show component wires and ports
+- [x] Arduino Uno support
+- [x] Arduino Nano support
+- [x] Arduino Mega support 
+- [x] Open Roberta Server integration
+- [ ] Calliope support
+- [ ] Change cable color
+
 
